@@ -109,7 +109,7 @@
 .mq{
   --color-page:var(--paper);
   --color-surface:var(--white);
-  --rail-w:260px; --side-w:300px; --bar:64px;
+  --rail-w:240px; --side-w:320px; --bar:64px;
   font-family:var(--font-body); color:var(--color-fg); background:var(--color-page);
   min-height:100vh; line-height:1.5; -webkit-font-smoothing:antialiased;
 }
@@ -127,10 +127,10 @@
   --yellow-50:#2f2412;--green-100:#123830;--green-50:#0f2a24}
 
 .mq *,.mq *::before,.mq *::after{box-sizing:border-box}
-.mq h1,.mq h2,.mq h3,.mq h4{font-family:var(--font-display);font-weight:700;line-height:1.1;
-  letter-spacing:-0.03em;text-wrap:balance;margin:0;color:inherit}
+.mq h1,.mq h2,.mq h3,.mq h4{font-family:var(--font-display);font-weight:700;line-height:1.15;
+  letter-spacing:-0.02em;text-wrap:balance;margin:0;color:inherit}
 .mq h1{font-size:var(--fs-xl)}
-.mq h2{font-size:var(--fs-3xl)}
+.mq h2{font-size:var(--fs-3xl);letter-spacing:-0.03em}
 .mq h3{font-size:var(--fs-lg)}
 .mq h4{font-size:var(--fs-base);font-weight:600}
 .mq p{margin:0}
@@ -145,7 +145,7 @@
 
 /* Header band. Blue-black, white text - the one dark band on the page. */
 .mq-bar{position:sticky;top:0;z-index:20;min-height:var(--bar);background:var(--acorn-blue-black);
-  color:var(--white);display:flex;align-items:center;gap:var(--space-4);padding:var(--space-3) var(--space-5)}
+  color:var(--white);display:flex;align-items:center;gap:var(--space-4);padding:var(--space-3) var(--space-6)}
 .mq-bar .brand{display:flex;flex-direction:column;gap:2px;min-width:0}
 .mq-bar .brand .eyebrow{color:var(--green-300)}
 .mq-bar h1{color:var(--white);font-size:var(--fs-lg)}
@@ -154,8 +154,8 @@
 /* Buttons: the Acorn recipe. Signika 700, all caps, softly rounded. */
 .mq .btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);
   font-family:var(--font-display);font-weight:700;font-size:var(--fs-sm);letter-spacing:.04em;
-  text-transform:uppercase;padding:10px 18px;border:0;border-radius:var(--radius-sm);cursor:pointer;
-  transition:background var(--dur-fast) ease,color var(--dur-fast) ease;text-decoration:none;line-height:1.2}
+  text-transform:uppercase;padding:12px 22px;border:0;border-radius:var(--radius-sm);cursor:pointer;
+  transition:background var(--dur-fast) ease,color var(--dur-fast) ease;text-decoration:none;line-height:1.2;min-height:44px}
 .mq .btn:disabled{opacity:.5;cursor:not-allowed}
 .mq .btn-green{background:var(--acorn-green);color:var(--acorn-blue-black)}
 .mq .btn-green:hover:not(:disabled){background:var(--acorn-purple);color:var(--white)}
@@ -165,76 +165,84 @@
 .mq .btn-ghost:hover:not(:disabled){background:var(--purple-100);color:var(--color-fg)}
 .mq-bar .btn-ghost:hover:not(:disabled){background:var(--white);color:var(--acorn-blue-black)}
 .mq .btn-ghost[aria-current="page"]{background:var(--white);color:var(--acorn-blue-black);box-shadow:none}
-.mq .btn-sm{padding:6px 12px;font-size:var(--fs-xs)}
+.mq .btn-sm{padding:8px 14px;font-size:var(--fs-xs);min-height:36px}
 .mq .btn-text{background:none;border:0;padding:0;color:var(--color-fg-link);cursor:pointer;
   font:inherit;text-decoration:underline;text-underline-offset:2px}
 
 /* Page grid: rail, main, side. */
 .mq-page{display:grid;grid-template-columns:var(--rail-w) minmax(0,1fr) var(--side-w);
-  gap:var(--space-6);align-items:start;max-width:1280px;margin:0 auto;padding:var(--space-6) var(--space-5) var(--space-9)}
-@media (max-width:1100px){.mq-page{grid-template-columns:var(--rail-w) minmax(0,1fr)}
+  gap:var(--space-7);align-items:start;max-width:1560px;margin:0 auto;padding:var(--space-6) var(--space-6) var(--space-9)}
+@media (max-width:1280px){.mq-page{grid-template-columns:var(--rail-w) minmax(0,1fr);gap:var(--space-6)}
   .mq-side{grid-column:1 / -1;position:static}}
-@media (max-width:760px){.mq-page{grid-template-columns:1fr;gap:var(--space-5)}
+@media (max-width:800px){.mq-page{grid-template-columns:1fr;gap:var(--space-5);padding:var(--space-5) var(--space-4) var(--space-8)}
   .mq-rail{position:static;max-height:none}
   .mq-rail ol{flex-direction:row;overflow-x:auto;gap:var(--space-2);padding-bottom:var(--space-2)}
   .mq-rail li{flex:0 0 auto}
   .mq-rail .group{display:none}
-  .mq-rail .rail-step{padding:8px 12px;background:var(--color-surface);border:1px solid var(--color-border)}
+  .mq-rail .rail-step{padding:8px 12px;min-height:0;background:var(--color-surface);border:1px solid var(--color-border)}
+  .mq-rail .rail-step .label{white-space:nowrap}
   .mq-rail .rail-step[aria-current="step"]{border-color:var(--acorn-purple)}}
 
 /* Rail: the twelve steps, one current. */
 .mq-rail{position:sticky;top:calc(var(--bar) + var(--space-5));max-height:calc(100vh - var(--bar) - var(--space-7));overflow:auto}
 .mq-rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
-.mq-rail .group{margin-top:var(--space-4);padding:0 var(--space-3) var(--space-1)}
+.mq-rail .group{margin-top:var(--space-5);padding:0 var(--space-3) var(--space-2)}
 .mq-rail .group:first-child{margin-top:0}
 .mq-rail .rail-step{display:flex;align-items:center;gap:var(--space-3);width:100%;text-align:left;
-  background:none;border:0;border-radius:var(--radius-sm);padding:9px var(--space-3);cursor:pointer;
-  color:var(--color-fg);font:inherit;font-size:var(--fs-sm);transition:background var(--dur-fast) ease}
+  background:none;border:0;border-radius:var(--radius-sm);padding:8px var(--space-3);min-height:42px;cursor:pointer;
+  color:var(--color-fg);font:inherit;font-size:var(--fs-sm);line-height:1.25;transition:background var(--dur-fast) ease}
 .mq-rail .rail-step:hover{background:var(--purple-50)}
 .mq-rail .rail-step[aria-current="step"]{background:var(--acorn-purple);color:var(--white)}
-.mq-rail .rail-step .dot{flex:0 0 22px;width:22px;height:22px;border-radius:50%;display:inline-flex;
+.mq-rail .rail-step .dot{flex:0 0 24px;width:24px;height:24px;border-radius:50%;display:inline-flex;
   align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:var(--fs-xs);
   border:1.5px solid var(--color-border);color:var(--color-fg-muted);background:var(--color-surface)}
 .mq-rail .rail-step.done .dot{background:var(--acorn-green);border-color:var(--acorn-green);color:var(--acorn-blue-black)}
 .mq-rail .rail-step[aria-current="step"] .dot{background:var(--white);border-color:var(--white);color:var(--acorn-purple)}
-.mq-rail .rail-step .label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mq-rail .rail-step .pts{flex:0 0 auto;font-family:var(--font-display);font-weight:700;font-size:var(--fs-xs);
-  padding:1px 7px;border-radius:var(--radius-pill);background:var(--purple-100);color:var(--color-fg)}
+.mq-rail .rail-step .label{flex:1;min-width:0}
+.mq-rail .rail-step .pts{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;height:22px;min-width:22px;
+  font-family:var(--font-display);font-weight:700;font-size:var(--fs-xs);padding:0 7px;border-radius:var(--radius-pill);
+  background:var(--purple-100);color:var(--color-fg)}
 .mq-rail .rail-step[aria-current="step"] .pts{background:var(--white);color:var(--acorn-purple)}
 
-/* Main pane: one step as a card. */
+/* Main pane: one step as a card. Content is grouped in .sec blocks so a
+   heading sits with the thing it labels, and sections sit apart. */
 .mq-main{min-width:0}
 .mq-card{background:var(--color-surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);
-  padding:var(--space-6);display:flex;flex-direction:column;gap:var(--space-5)}
-@media (max-width:760px){.mq-card{padding:var(--space-5)}}
-.mq-card header{display:flex;flex-direction:column;gap:var(--space-2)}
-.mq-card header .lede{max-width:65ch;color:var(--color-fg-muted)}
+  padding:var(--space-7);display:flex;flex-direction:column;gap:var(--space-7)}
+@media (max-width:800px){.mq-card{padding:var(--space-5);gap:var(--space-6)}}
+.mq-card header{display:flex;flex-direction:column;gap:var(--space-3)}
+.mq-card header .lede{max-width:70ch;color:var(--color-fg-muted);font-size:var(--fs-base)}
 .mq-card footer{display:flex;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap;
-  padding-top:var(--space-4);border-top:1px solid var(--color-border)}
+  padding-top:var(--space-5);border-top:1px solid var(--color-border)}
+.mq .sec{display:flex;flex-direction:column;gap:var(--space-4)}
+.mq .sec > h3 + .why,.mq .sec > h3 + p{margin-top:calc(-1 * var(--space-2))}
 .mq .prose{max-width:65ch;display:flex;flex-direction:column;gap:var(--space-3)}
 
 /* Ask / why blocks on a factor step. */
-.mq .ask{background:var(--purple-50);border-radius:var(--radius-md);padding:var(--space-4) var(--space-5);
-  display:flex;flex-direction:column;gap:var(--space-2);max-width:72ch}
+.mq .ask{background:var(--purple-50);border-radius:var(--radius-md);padding:var(--space-5) var(--space-6);
+  display:flex;flex-direction:column;gap:var(--space-2);max-width:80ch}
 .mq .ask .eyebrow{color:var(--acorn-purple)}
-.mq .ask blockquote{margin:0;font-size:var(--fs-lg);font-family:var(--font-display);font-weight:600;line-height:1.3}
-.mq .why{max-width:72ch;color:var(--color-fg-muted);font-size:var(--fs-sm)}
+.mq .ask blockquote{margin:0;font-size:var(--fs-xl);font-family:var(--font-display);font-weight:600;line-height:1.3;letter-spacing:-0.01em}
+.mq .why{max-width:80ch;color:var(--color-fg-muted);font-size:var(--fs-sm);line-height:1.55}
 
-/* Option cards: three (or two) siblings, one chosen. */
-.mq .options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-3)}
+/* Selectable cards: options on a factor step and Care tiers. Same recipe. */
+.mq .options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4)}
 .mq .options.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width:640px){.mq .options,.mq .options.two{grid-template-columns:1fr}}
-.mq .opt{display:flex;flex-direction:column;gap:var(--space-2);text-align:left;background:var(--color-surface);
-  border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4);cursor:pointer;
-  color:var(--color-fg);font:inherit;min-height:104px;transition:border-color var(--dur-fast) ease,background var(--dur-fast) ease}
-.mq .opt:hover{border-color:var(--acorn-purple)}
-.mq .opt[aria-pressed="true"]{border-color:var(--acorn-purple);background:var(--purple-50);box-shadow:inset 0 0 0 1px var(--acorn-purple)}
+.mq .pick{position:relative;display:flex;flex-direction:column;gap:var(--space-2);text-align:left;background:var(--color-surface);
+  border:2px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-5);cursor:pointer;
+  color:var(--color-fg);font:inherit;transition:border-color var(--dur-fast) ease,background var(--dur-fast) ease}
+.mq .pick:hover{border-color:var(--purple-300)}
+.mq .pick[aria-pressed="true"]{border-color:var(--acorn-purple);background:var(--purple-50)}
+.mq .pick[aria-pressed="true"]::after{content:"✓";position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%;
+  background:var(--acorn-green);color:var(--acorn-blue-black);font-family:var(--font-display);font-weight:700;font-size:var(--fs-sm);
+  display:inline-flex;align-items:center;justify-content:center}
+.mq .opt{min-height:132px;padding-right:calc(var(--space-5) + 20px)}
 .mq .opt .pts{font-family:var(--font-display);font-weight:700;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--acorn-purple)}
-.mq .opt .txt{font-weight:500;line-height:1.35}
+.mq .opt .txt{font-weight:500;line-height:1.35;font-size:var(--fs-base)}
 .mq .opt .hint{font-size:var(--fs-sm);color:var(--color-fg-muted)}
-.mq .opt.high .pts{color:var(--color-fg)}
 .mq .rule{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3) var(--space-4);
-  border-radius:var(--radius-sm);background:var(--yellow-50);font-size:var(--fs-sm);max-width:72ch}
+  border-radius:var(--radius-sm);background:var(--yellow-50);font-size:var(--fs-sm);line-height:1.5;max-width:80ch}
 .mq .rule::before{content:"";flex:0 0 4px;align-self:stretch;border-radius:2px;background:var(--acorn-yellow)}
 .mq .rule.good{background:var(--green-50)}
 .mq .rule.good::before{background:var(--acorn-green)}
@@ -248,106 +256,123 @@
 .mq .field label,.mq .field .lbl{font-family:var(--font-display);font-weight:600;font-size:var(--fs-sm)}
 .mq input[type=text],.mq input[type=date],.mq input[type=number],.mq select{
   font:inherit;font-size:var(--fs-base);color:var(--color-fg);background:var(--color-surface);
-  border:1.5px solid var(--color-border);border-radius:var(--radius-sm);padding:10px 12px;width:100%;min-width:0}
-.mq input:focus,.mq select:focus{border-color:var(--acorn-purple);outline:none;box-shadow:0 0 0 2px var(--purple-100)}
-.mq .check{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-4);border:1.5px solid var(--color-border);border-radius:var(--radius-md)}
-.mq .check .q{font-weight:500}
-.mq .seg{display:inline-flex;border:1.5px solid var(--color-border);border-radius:var(--radius-sm);overflow:hidden;width:max-content;max-width:100%;flex-wrap:wrap}
-.mq .seg button{background:var(--color-surface);border:0;padding:8px 16px;font-family:var(--font-display);font-weight:600;
-  font-size:var(--fs-sm);color:var(--color-fg);cursor:pointer;transition:background var(--dur-fast) ease}
+  border:1.5px solid var(--color-border);border-radius:var(--radius-sm);padding:10px 14px;min-height:44px;width:100%;min-width:0}
+.mq input:focus,.mq select:focus{border-color:var(--acorn-purple);outline:none;box-shadow:0 0 0 3px var(--purple-100)}
+.mq .check{display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-5);border:1.5px solid var(--color-border);border-radius:var(--radius-md)}
+.mq .check .q{font-weight:500;line-height:1.4}
+
+/* Segmented controls: one row, never wrapping, equal height. */
+.mq .seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:minmax(0,auto);border:1.5px solid var(--color-border);
+  border-radius:var(--radius-sm);overflow:hidden;width:max-content;max-width:100%}
+.mq .seg button{background:var(--color-surface);border:0;padding:12px 20px;min-height:44px;font-family:var(--font-display);font-weight:600;
+  font-size:var(--fs-sm);color:var(--color-fg);cursor:pointer;white-space:nowrap;transition:background var(--dur-fast) ease}
 .mq .seg button + button{border-left:1.5px solid var(--color-border)}
 .mq .seg button[aria-pressed="true"]{background:var(--acorn-purple);color:var(--white)}
 .mq .seg button:hover:not([aria-pressed="true"]){background:var(--purple-50)}
-.mq .toggle{display:flex;align-items:flex-start;gap:var(--space-3);cursor:pointer}
-.mq .toggle input{width:18px;height:18px;margin:3px 0 0;accent-color:var(--acorn-purple);flex:0 0 auto}
+.mq .seg.compact button{padding:8px 16px;min-height:40px}
+@media (max-width:640px){.mq .seg:not(.compact){grid-auto-flow:row;width:100%}
+  .mq .seg:not(.compact) button + button{border-left:0;border-top:1.5px solid var(--color-border)}}
+
+/* Toggles: a bordered row with a real checkbox, centred. */
+.mq .toggle{display:flex;align-items:center;gap:var(--space-4);cursor:pointer;padding:14px var(--space-5);
+  border:1.5px solid var(--color-border);border-radius:var(--radius-md);line-height:1.45}
+.mq .toggle:has(input:checked){border-color:var(--acorn-purple);background:var(--purple-50)}
+.mq .toggle:has(input:disabled){opacity:.55;cursor:not-allowed}
+.mq .toggle input{width:20px;height:20px;margin:0;accent-color:var(--acorn-purple);flex:0 0 auto}
+.mq .toggle.small{padding:8px 12px;gap:var(--space-2);font-size:var(--fs-sm)}
 
 /* Tables. */
 .mq .tbl-wrap{overflow-x:auto}
 .mq table{width:100%;border-collapse:collapse;font-size:var(--fs-sm)}
-.mq th,.mq td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--color-border);vertical-align:top}
-.mq th{font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--color-fg-muted)}
+.mq th,.mq td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--color-border);vertical-align:top;line-height:1.45}
+.mq th{font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--color-fg-muted);white-space:nowrap}
 .mq td.num,.mq th.num{text-align:right;white-space:nowrap}
 .mq tr.total td{font-family:var(--font-display);font-weight:700;font-size:var(--fs-base);border-bottom:0;border-top:2px solid var(--color-fg)}
-.mq tr.sub td{color:var(--color-fg-muted)}
-.mq td .detail{display:block;color:var(--color-fg-muted);font-size:var(--fs-xs)}
+.mq tr.current td{font-weight:700;background:var(--purple-50)}
+.mq td .detail{display:block;color:var(--color-fg-muted);font-size:var(--fs-xs);font-weight:400}
 
-/* Care tier picker. */
-.mq .care-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-3)}
-@media (max-width:760px){.mq .care-grid{grid-template-columns:1fr}}
-.mq .care{display:flex;flex-direction:column;gap:var(--space-2);text-align:left;background:var(--color-surface);
-  border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4);cursor:pointer;color:var(--color-fg);font:inherit}
-.mq .care:hover{border-color:var(--acorn-purple)}
-.mq .care[aria-pressed="true"]{border-color:var(--acorn-purple);background:var(--purple-50);box-shadow:inset 0 0 0 1px var(--acorn-purple)}
-.mq .care .name{font-family:var(--font-display);font-weight:700;font-size:var(--fs-lg)}
-.mq .care .fee{font-family:var(--font-display);font-weight:700;font-size:var(--fs-2xl);letter-spacing:-0.02em}
-.mq .care dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:var(--fs-sm)}
-.mq .care dt{color:var(--color-fg-muted)}
-.mq .care dd{margin:0}
+/* Care tier picker: the same selectable card, with a 2x2 stat grid. */
+.mq .care-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4)}
+@media (max-width:800px){.mq .care-grid{grid-template-columns:1fr}}
+.mq .care .name{font-family:var(--font-display);font-weight:700;font-size:var(--fs-lg);padding-right:32px}
+.mq .care .fee{font-family:var(--font-display);font-weight:700;font-size:var(--fs-3xl);letter-spacing:-0.03em;line-height:1;margin-top:var(--space-1)}
+.mq .care .basis{font-size:var(--fs-sm);color:var(--color-fg-muted)}
+.mq .care .stats{display:flex;flex-direction:column;gap:var(--space-3);margin-top:var(--space-3);
+  padding-top:var(--space-4);border-top:1px solid var(--color-border)}
+.mq .care .stat{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-3);min-width:0}
+.mq .care .stat .v{text-align:right}
+.mq .care .stat .k{font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--color-fg-muted)}
+.mq .care .stat .v{font-size:var(--fs-sm);font-weight:500;line-height:1.35}
 
 /* Tier result. */
-.mq .tier-hero{display:grid;grid-template-columns:auto 1fr;gap:var(--space-5);align-items:center;padding:var(--space-5);
+.mq .tier-hero{display:grid;grid-template-columns:auto 1fr;gap:var(--space-6);align-items:center;padding:var(--space-6);
   border-radius:var(--radius-md);background:var(--purple-50)}
 @media (max-width:640px){.mq .tier-hero{grid-template-columns:1fr}}
-.mq .tier-hero .score{font-family:var(--font-display);font-weight:700;font-size:var(--fs-5xl);line-height:1;letter-spacing:-0.04em;color:var(--acorn-purple)}
-.mq .tier-hero .score small{display:block;font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--color-fg-muted);font-weight:600;margin-top:4px}
-.mq .tier-hero .name{font-family:var(--font-display);font-weight:700;font-size:var(--fs-3xl);letter-spacing:-0.03em}
-.mq .factor-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2) var(--space-5)}
+.mq .tier-hero .score{font-family:var(--font-display);font-weight:700;font-size:var(--fs-6xl);line-height:1;letter-spacing:-0.04em;color:var(--acorn-purple);text-align:center}
+.mq .tier-hero .score small{display:block;font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--color-fg-muted);font-weight:600;margin-top:6px}
+.mq .tier-hero .name{font-family:var(--font-display);font-weight:700;font-size:var(--fs-4xl);letter-spacing:-0.03em;line-height:1.05;margin-bottom:var(--space-2)}
+.mq .factor-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 var(--space-6)}
 @media (max-width:640px){.mq .factor-list{grid-template-columns:1fr}}
-.mq .factor-list li{display:flex;justify-content:space-between;gap:var(--space-3);padding:8px 0;border-bottom:1px solid var(--color-border);font-size:var(--fs-sm)}
-.mq .factor-list .pts{flex:0 0 auto;font-family:var(--font-display);font-weight:700;padding:0 8px;border-radius:var(--radius-pill);background:var(--purple-100);color:var(--color-fg)}
+.mq .factor-list li{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-3);padding:12px 0;border-bottom:1px solid var(--color-border);font-size:var(--fs-sm)}
+.mq .factor-list .f{display:block;font-weight:500}
+.mq .factor-list .o{display:block;color:var(--color-fg-muted);font-size:var(--fs-xs);margin-top:2px}
+.mq .factor-list .pts{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;height:26px;min-width:26px;padding:0 9px;
+  font-family:var(--font-display);font-weight:700;border-radius:var(--radius-pill);background:var(--purple-100);color:var(--color-fg)}
 .mq .factor-list .pts.three{background:var(--acorn-yellow);color:var(--acorn-blue-black)}
 .mq .lower{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-2)}
-.mq .lower li{display:flex;justify-content:space-between;gap:var(--space-3);padding:10px 14px;border-radius:var(--radius-sm);background:var(--green-50);font-size:var(--fs-sm)}
-.mq .lower li b{white-space:nowrap}
+.mq .lower li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:var(--space-4);padding:12px 16px;border-radius:var(--radius-sm);background:var(--green-50);font-size:var(--fs-sm);line-height:1.45}
+.mq .lower li b.num{white-space:nowrap;font-family:var(--font-display);font-size:var(--fs-base)}
 
 /* Extra lines editor. */
 .mq .extras{display:flex;flex-direction:column;gap:var(--space-2)}
-.mq .extra-row{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) auto auto auto;gap:var(--space-2);align-items:center}
-@media (max-width:760px){.mq .extra-row{grid-template-columns:1fr 1fr;} .mq .extra-row .seg{grid-column:1 / -1}}
-.mq .extra-row .del{background:none;border:0;color:var(--color-fg-muted);cursor:pointer;font:inherit;text-decoration:underline;padding:4px}
+.mq .extra-row{display:grid;grid-template-columns:minmax(0,2fr) 160px auto auto auto;gap:var(--space-3);align-items:center}
+@media (max-width:800px){.mq .extra-row{grid-template-columns:1fr 1fr} .mq .extra-row .seg{grid-column:1 / -1}}
 
 /* Side summary. */
 .mq-side{position:sticky;top:calc(var(--bar) + var(--space-5));display:flex;flex-direction:column;gap:var(--space-4)}
-.mq-side .panel{background:var(--acorn-blue-black);color:var(--white);border-radius:var(--radius-lg);padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-4)}
+.mq-side .panel{background:var(--acorn-blue-black);color:var(--white);border-radius:var(--radius-lg);padding:var(--space-6);display:flex;flex-direction:column;gap:var(--space-5)}
 .mq-side .panel .eyebrow{color:var(--green-300)}
-.mq-side .big{font-family:var(--font-display);font-weight:700;font-size:var(--fs-3xl);letter-spacing:-0.03em;line-height:1}
-.mq-side .big small{display:block;font-family:var(--font-body);font-weight:400;font-size:var(--fs-sm);color:var(--gray-100);opacity:.8;margin-top:6px;letter-spacing:0}
-.mq-side dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:var(--fs-sm)}
+.mq-side .big{font-family:var(--font-display);font-weight:700;font-size:var(--fs-4xl);letter-spacing:-0.03em;line-height:1}
+.mq-side .big small{display:block;font-family:var(--font-body);font-weight:400;font-size:var(--fs-sm);color:var(--gray-100);opacity:.8;margin-top:8px;letter-spacing:0}
+.mq-side dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:10px 12px;font-size:var(--fs-sm)}
 .mq-side dt{opacity:.8}
 .mq-side dd{margin:0;text-align:right;font-weight:500}
-.mq-side .score-track{display:grid;grid-template-columns:repeat(8,1fr);gap:3px}
+.mq-side .score-track{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}
 .mq-side .score-track span{height:6px;border-radius:3px;background:rgba(255,255,255,.18)}
 .mq-side .score-track span.p1{background:var(--acorn-green)}
 .mq-side .score-track span.p2{background:var(--purple-300)}
 .mq-side .score-track span.p3{background:var(--acorn-yellow)}
-.mq-side .note{font-size:var(--fs-xs);opacity:.75}
+.mq-side .note{font-size:var(--fs-xs);opacity:.75;line-height:1.5}
+.mq-side .who{padding:0 var(--space-2);font-size:var(--fs-sm);color:var(--color-fg-muted)}
 
 /* Quote step. */
-.mq .quote-head{display:flex;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap;align-items:flex-end}
-.mq .quote-head .meta{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:var(--fs-sm)}
+.mq .quote-head{display:flex;justify-content:space-between;gap:var(--space-5);flex-wrap:wrap;align-items:flex-end}
+.mq .quote-head .meta{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:var(--fs-sm);margin:0}
 .mq .quote-head .meta dt{color:var(--color-fg-muted)}
-.mq .quote-head .meta dd{margin:0}
-.mq .totals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-3)}
+.mq .quote-head .meta dd{margin:0;font-weight:500}
+.mq .totals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4)}
 @media (max-width:640px){.mq .totals{grid-template-columns:1fr}}
-.mq .tile{border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4);display:flex;flex-direction:column;gap:4px}
+.mq .tile{border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-5);display:flex;flex-direction:column;gap:6px}
 .mq .tile.lead{background:var(--acorn-green);border-color:var(--acorn-green);color:var(--acorn-blue-black)}
-.mq .tile .v{font-family:var(--font-display);font-weight:700;font-size:var(--fs-2xl);letter-spacing:-0.02em;line-height:1.1}
+.mq .tile .v{font-family:var(--font-display);font-weight:700;font-size:var(--fs-3xl);letter-spacing:-0.03em;line-height:1.05}
 .mq .tile .k{font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;font-weight:600;font-family:var(--font-display)}
-.mq .tile.lead .k{color:var(--acorn-blue-black)}
+.mq .tile.lead .k,.mq .tile.lead .small{color:var(--acorn-blue-black)}
 .mq .tile:not(.lead) .k{color:var(--color-fg-muted)}
-.mq .cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-5)}
+.mq .cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-6)}
 @media (max-width:640px){.mq .cols{grid-template-columns:1fr}}
-.mq .cols ul{margin:0;padding-left:1.1em;font-size:var(--fs-sm);display:flex;flex-direction:column;gap:6px}
-.mq .actions{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
+.mq .cols ul{margin:0;padding-left:1.1em;font-size:var(--fs-sm);display:flex;flex-direction:column;gap:8px;line-height:1.5}
+.mq .cols h4{margin-bottom:var(--space-3)}
+.mq .actions{display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:center}
 .mq .toast{font-size:var(--fs-sm);color:var(--color-fg-muted)}
-.mq details.terms summary{cursor:pointer;font-family:var(--font-display);font-weight:600}
-.mq details.terms{border-top:1px solid var(--color-border);padding-top:var(--space-3)}
+.mq details.terms summary{cursor:pointer;font-family:var(--font-display);font-weight:600;font-size:var(--fs-lg)}
+.mq details.terms{border-top:1px solid var(--color-border);padding-top:var(--space-4)}
 
 /* Library. */
-.mq-lib{max-width:1280px;margin:0 auto;padding:var(--space-6) var(--space-5) var(--space-9);display:flex;flex-direction:column;gap:var(--space-5)}
+.mq-lib{max-width:1560px;margin:0 auto;padding:var(--space-6) var(--space-6) var(--space-9);display:flex;flex-direction:column;gap:var(--space-5)}
+.mq-lib header{display:flex;flex-direction:column;gap:var(--space-2)}
 .mq-lib .row-actions{display:flex;gap:var(--space-2);white-space:nowrap}
-.mq .empty{padding:var(--space-6);text-align:center;color:var(--color-fg-muted);border:1.5px dashed var(--color-border);border-radius:var(--radius-md)}
-.mq .chip{display:inline-block;font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);padding:2px 9px;border-radius:var(--radius-pill);background:var(--purple-100);color:var(--color-fg)}
+.mq .empty{padding:var(--space-7);text-align:center;color:var(--color-fg-muted);border:1.5px dashed var(--color-border);border-radius:var(--radius-md)}
+.mq .chip{display:inline-block;font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);padding:3px 10px;border-radius:var(--radius-pill);background:var(--purple-100);color:var(--color-fg)}
 .mq .chip.green{background:var(--green-100)}
 
 @media (prefers-reduced-motion:reduce){.mq *{transition-duration:1ms!important}}
@@ -357,7 +382,7 @@
   .mq{background:#fff;color:#000}
   .mq-bar,.mq-rail,.mq-side,.mq-card footer,.mq .actions,.mq .no-print{display:none!important}
   .mq-page{display:block;padding:0;max-width:none}
-  .mq-card{box-shadow:none;padding:0;border-radius:0}
+  .mq-card{box-shadow:none;padding:0;border-radius:0;gap:var(--space-5)}
   .mq .tile.lead{background:#fff;border:2px solid #000}
   .mq details.terms{display:block}
   .mq details.terms[open] summary{display:none}
@@ -780,26 +805,26 @@
       out.push('<div class="rule info"><div>This is the worked example from the commercial model (supplier onboarding, Moderate, Standard Care), loaded so you can see the tool at rest. ' +
         '<button type="button" class="btn-text" data-act="new">Start a blank quote</button> when you are on a call.</div></div>');
     }
-    out.push('<div class="fields">' +
+    out.push('<div class="sec"><div class="fields">' +
       field("client", "Client", e.client, "text", "Organisation name") +
       field("workflow", "Workflow", e.workflow, "text", "The process, in the client's words") +
       field("preparedBy", "Prepared by", e.preparedBy, "text", "Your name") +
-      field("date", "Date", e.date, "date", "") + "</div>");
-    out.push('<h3>Four questions before the scorecard</h3><p class="why">The pre-scope exists to set the tier before the client commits, and to disqualify. Each of these is a fork in the call, not a blocker in the tool.</p>');
+      field("date", "Date", e.date, "date", "") + "</div></div>");
+    out.push('<div class="sec"><h3>Four questions before the scorecard</h3><p class="why">The pre-scope exists to set the tier before the client commits, and to disqualify. Each of these is a fork in the call, not a blocker in the tool.</p>');
     out.push('<div class="fields">');
     model.pre_scope.checks.forEach(function (c) {
       var v = e.checks[c.key];
       var msg = v === "yes" ? c.yes : v === "no" ? c.no : "";
       var flagged = v && v === c.flag_when;
       out.push('<div class="check"><div class="q">' + esc(c.question) + "</div>" +
-        '<div class="seg" role="group">' +
+        '<div class="seg compact" role="group">' +
         '<button type="button" data-act="check" data-key="' + c.key + '" data-val="yes"' + (v === "yes" ? ' aria-pressed="true"' : "") + ">Yes</button>" +
         '<button type="button" data-act="check" data-key="' + c.key + '" data-val="no"' + (v === "no" ? ' aria-pressed="true"' : "") + ">No</button></div>" +
         (msg ? '<div class="rule' + (flagged ? "" : " good") + '"><div>' + esc(msg) + "</div></div>" : "") + "</div>");
     });
-    out.push("</div>");
-    out.push('<label class="toggle"><input type="checkbox" data-act="linked"' + (state.inputs.linked ? " checked" : "") + "><span><b>Multiple linked workflows, or a cross-workflow dependency.</b> " +
-      '<span class="muted">' + esc(model.scorecard.programme_rule.text) + "</span></span></label>");
+    out.push("</div></div>");
+    out.push('<div class="sec"><h3>Programme check</h3><label class="toggle"><input type="checkbox" data-act="linked"' + (state.inputs.linked ? " checked" : "") + "><span><b>Multiple linked workflows, or a cross-workflow dependency.</b> " +
+      '<span class="muted">' + esc(model.scorecard.programme_rule.text) + "</span></span></label></div>");
     out.push(navFooter(state.step) + "</section>");
     return out.join("");
   }
@@ -814,9 +839,9 @@
     var out = ['<section class="mq-card"><header><span class="eyebrow">Step ' + (state.step + 1) + " of " + STEPS.length + " · Factor " + (s.index + 1) + " of 8</span><h2>" + esc(f.label) + "</h2></header>"];
     out.push('<div class="ask"><span class="eyebrow">Ask the client</span><blockquote>' + esc(f.ask) + "</blockquote></div>");
     out.push('<p class="why">' + esc(f.why) + "</p>");
-    out.push('<div class="options' + (f.options.length === 2 ? " two" : "") + '" role="group" aria-label="Score">');
+    out.push('<div class="sec"><h3>Score it</h3><div class="options' + (f.options.length === 2 ? " two" : "") + '" role="group" aria-label="Score">');
     f.options.forEach(function (o) {
-      out.push('<button type="button" class="opt' + (o.points === 3 ? " high" : "") + '" data-act="score" data-key="' + f.key + '" data-pts="' + o.points + '"' + (chosen === o.points ? ' aria-pressed="true"' : "") + ">" +
+      out.push('<button type="button" class="pick opt" data-act="score" data-key="' + f.key + '" data-pts="' + o.points + '"' + (chosen === o.points ? ' aria-pressed="true"' : "") + ">" +
         '<span class="pts">' + o.points + (o.points === 1 ? " point" : " points") + "</span>" +
         '<span class="txt">' + esc(o.label) + "</span>" +
         (o.points === 3 && f.key === model.scorecard.floor_rule.factor ? '<span class="hint">Floor rule: Moderate or above.</span>' : "") +
@@ -825,7 +850,7 @@
     out.push("</div>");
     out.push('<div class="rule"><div><b>Score conservatively.</b> Where the answer is unclear, pick the higher score. Discovery re-scores with full information and only the difference between tiers is billed or credited.</div></div>');
     if (st.scored) out.push('<p class="small muted num">Running score ' + st.total + " across " + st.scored + " of 8 factors" + (st.threes ? ", " + st.threes + " at 3" : "") + ".</p>");
-    out.push(navFooter(state.step) + "</section>");
+    out.push("</div>" + navFooter(state.step) + "</section>");
     return out.join("");
   }
 
@@ -848,28 +873,28 @@
       '<p class="small">' + (st.tierKey === "programme" ? esc(model.scorecard.tiers[3].text) + " Figures below are from-prices." :
         "Discovery " + money(p.discovery) + " and Build " + money(p.build) + ". " + esc(MQ.sprintsText(model, st.tierKey)) + ", then five business days of UAT, ten of hypercare and thirty of warranty.") + "</p></div></div>");
     st.rules.forEach(function (r) { out.push('<div class="rule"><div><b>Rule applied.</b> ' + esc(r.text) + "</div></div>"); });
-    out.push("<h3>What drove it</h3><ul class=\"factor-list\">");
+    out.push('<div class="sec"><h3>What drove it</h3><ul class="factor-list">');
     model.scorecard.factors.forEach(function (f) {
       var pts = inp.scores[f.key], lbl = "";
       f.options.forEach(function (o) { if (o.points === pts) lbl = o.label; });
-      out.push("<li><span>" + esc(f.label) + ' <span class="muted">· ' + esc(lbl) + "</span></span>" + '<span class="pts' + (pts === 3 ? " three" : "") + '">' + pts + "</span></li>");
+      out.push('<li><span><span class="f">' + esc(f.label) + '</span><span class="o">' + esc(lbl) + "</span></span>" + '<span class="pts' + (pts === 3 ? " three" : "") + '">' + pts + "</span></li>");
     });
-    out.push("</ul>");
+    out.push("</ul></div>");
     if (q.lowering.length) {
-      out.push("<h3>What simplifying would save</h3><p class=\"why\">Publishing the scorecard means the client can see what drives the price and what a simpler requirement would save. Each line is one factor scored one step lower.</p><ul class=\"lower\">");
+      out.push('<div class="sec"><h3>What simplifying would save</h3><p class="why">Publishing the scorecard means the client can see what drives the price and what a simpler requirement would save. Each line is one factor scored one step lower.</p><ul class="lower">');
       q.lowering.forEach(function (l) {
         out.push("<li><span>" + esc(l.factor) + " at " + esc(l.toLabel) + " would make it <b>" + esc(l.tier) + "</b></span><b class=\"num\">saves " + money(l.saving) + "</b></li>");
       });
-      out.push("</ul>");
+      out.push("</ul></div>");
     } else if (st.tierKey === "simple") {
       out.push('<div class="rule good"><div>This is already the minimum engagement: one Simple workflow.</div></div>');
     }
-    out.push('<div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Score</th><th class="num">Discovery</th><th class="num">Build</th><th class="num">Care (Standard)</th><th class="num">Year 1</th></tr></thead><tbody>');
+    out.push('<div class="sec"><h3>The published tiers</h3><div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Score</th><th class="num">Discovery</th><th class="num">Build</th><th class="num">Care (Standard)</th><th class="num">Year 1 total</th></tr></thead><tbody>');
     model.scorecard.tiers.forEach(function (t) {
       var pr = model.prices[t.key], care = model.care.table[t.key].standard, from = pr.indicative ? "from " : "";
-      out.push("<tr" + (t.key === st.tierKey ? ' style="font-weight:700"' : "") + "><td>" + esc(t.label) + "</td><td>" + (t.min !== null ? t.min + " to " + t.max : "Linked workflows") + '</td><td class="num">' + from + money(pr.discovery) + '</td><td class="num">' + from + money(pr.build) + '</td><td class="num">' + from + money(care) + '</td><td class="num">' + (pr.indicative ? "Scoped individually" : money(pr.discovery + pr.build + care)) + "</td></tr>");
+      out.push("<tr" + (t.key === st.tierKey ? ' class="current"' : "") + "><td>" + esc(t.label) + "</td><td>" + (t.min !== null ? t.min + " to " + t.max : "Linked") + '</td><td class="num">' + from + money(pr.discovery) + '</td><td class="num">' + from + money(pr.build) + '</td><td class="num">' + from + money(care) + '</td><td class="num">' + (pr.indicative ? "Scoped" : money(pr.discovery + pr.build + care)) + "</td></tr>");
     });
-    out.push("</tbody></table></div>");
+    out.push("</tbody></table></div></div>");
     out.push(navFooter(state.step) + "</section>");
     return out.join("");
   }
@@ -880,41 +905,47 @@
     var out = ['<section class="mq-card"><header><span class="eyebrow">Step ' + (state.step + 1) + " of " + STEPS.length + " · Commercials</span><h2>Care and commercials</h2>",
       '<p class="lede">' + esc(model.care.text) + "</p></header>"];
     if (!st.complete) out.push('<div class="rule"><div>Score all eight factors first. Care is priced from the workflow tier, so the fees below will appear once the tier is known.</div></div>');
-    out.push("<h3>Care tier</h3><div class=\"care-grid\">");
+    out.push('<div class="sec"><h3>Care tier</h3><div class="care-grid">');
     model.care.tiers.forEach(function (ct) {
       var fee = st.complete ? model.care.table[st.tierKey][ct.key] : null;
       var from = st.tierKey === "programme" ? "from " : "";
-      out.push('<button type="button" class="care" data-act="care" data-key="' + ct.key + '"' + (inp.careTier === ct.key ? ' aria-pressed="true"' : "") + ">" +
+      out.push('<button type="button" class="pick care" data-act="care" data-key="' + ct.key + '"' + (inp.careTier === ct.key ? ' aria-pressed="true"' : "") + ">" +
         '<span class="name">' + esc(ct.label) + "</span>" +
-        '<span class="fee num">' + (fee !== null ? from + money(fee) : "—") + '</span><span class="small muted">a year, ' + ct.percent_of_build + "% of build, min " + money(ct.minimum) + "</span>" +
-        "<dl><dt>Allowance</dt><dd>" + ct.allowance_hours + " hrs / yr</dd><dt>Review</dt><dd>" + esc(ct.cadence) + "</dd><dt>Critical</dt><dd>" + esc(ct.critical_response) + "</dd><dt>Credits</dt><dd>" + (ct.service_credits ? "Yes" : "No") + "</dd></dl></button>");
+        '<span class="fee num">' + (fee !== null ? from + money(fee) : "—") + '</span><span class="basis">a year · ' + ct.percent_of_build + "% of build, min " + money(ct.minimum) + "</span>" +
+        '<span class="stats">' +
+        '<span class="stat"><span class="k">Allowance</span><span class="v">' + ct.allowance_hours + " hrs a year</span></span>" +
+        '<span class="stat"><span class="k">Critical response</span><span class="v">' + esc(ct.critical_response) + "</span></span>" +
+        '<span class="stat"><span class="k">Review</span><span class="v">' + esc(ct.cadence) + "</span></span>" +
+        '<span class="stat"><span class="k">Service credits</span><span class="v">' + (ct.service_credits ? "Yes" : "No") + "</span></span>" +
+        "</span></button>");
     });
     out.push("</div>");
     var ext = model.care.extended_coverage;
     out.push('<label class="toggle"><input type="checkbox" data-act="extended"' + (inp.extendedCoverage ? " checked" : "") + (inp.careTier !== ext.tier ? " disabled" : "") + "><span><b>" + esc(ext.label) + ".</b> " +
-      '<span class="muted">' + esc(ext.text) + (inp.careTier !== ext.tier ? " Choose Premier to add it." : "") + "</span></span></label>");
+      '<span class="muted">' + esc(ext.text) + (inp.careTier !== ext.tier ? " Choose Premier to add it." : "") + "</span></span></label></div>");
 
-    out.push("<h3>Term</h3><p class=\"why\">Only Care recurs. Care increases by " + model.indexation.cpi_percent + "% at each anniversary and is invoiced annually in advance, co-terminus with the Momentum license.</p>");
+    out.push('<div class="sec"><h3>Term</h3><p class="why">Only Care recurs. Care increases by ' + model.indexation.cpi_percent + "% at each anniversary and is invoiced annually in advance, co-terminus with the Momentum license.</p>");
     out.push('<div class="seg" role="group" aria-label="Term">' + [1, 2, 3].map(function (y) {
       return '<button type="button" data-act="years" data-years="' + y + '"' + (inp.years === y ? ' aria-pressed="true"' : "") + ">" + (y === 1 ? "12 months" : y + " years") + "</button>";
-    }).join("") + "</div>");
+    }).join("") + "</div></div>");
 
-    out.push("<h3>Repeat workflow</h3><p class=\"why\">" + esc(model.discounts.repeat_workflow.text) + "</p>");
+    var repeatLabels = { first: "First workflow", second: "Second · 10% off", third: "Third or later · 15% off" };
+    out.push('<div class="sec"><h3>Repeat workflow</h3><p class="why">' + esc(model.discounts.repeat_workflow.text) + "</p>");
     out.push('<div class="seg" role="group" aria-label="Repeat workflow">' + model.discounts.repeat_workflow.positions.map(function (p) {
-      return '<button type="button" data-act="repeat" data-key="' + p.key + '"' + (inp.repeat === p.key ? ' aria-pressed="true"' : "") + ">" + esc(p.label) + (p.percent ? " · " + p.percent + "% off" : "") + "</button>";
-    }).join("") + "</div>");
+      return '<button type="button" data-act="repeat" data-key="' + p.key + '"' + (inp.repeat === p.key ? ' aria-pressed="true"' : "") + ">" + esc(repeatLabels[p.key] || p.label) + "</button>";
+    }).join("") + "</div></div>");
 
-    out.push("<h3>Other lines</h3><p class=\"why\">Anything quoted alongside the service: a Studio license uplift, a custom integration, data migration, on-site delivery. Annual lines repeat each year; tick indexed to escalate one at " + model.indexation.cpi_percent + "% with Care.</p>");
+    out.push('<div class="sec"><h3>Other lines</h3><p class="why">Anything quoted alongside the service: a Studio license uplift, a custom integration, data migration, on-site delivery. Annual lines repeat each year; tick indexed to escalate one at ' + model.indexation.cpi_percent + "% with Care.</p>");
     out.push('<div class="extras">');
     inp.extras.forEach(function (x, i) {
       out.push('<div class="extra-row">' +
         '<input type="text" aria-label="Line label" data-act="extra" data-i="' + i + '" data-key="label" value="' + esc(x.label) + '" placeholder="Label">' +
-        '<input type="number" aria-label="Amount" data-act="extra" data-i="' + i + '" data-key="amount" value="' + esc(x.amount || "") + '" placeholder="Amount" min="0" step="1">' +
-        '<div class="seg"><button type="button" data-act="extra-kind" data-i="' + i + '" data-kind="oneoff"' + (x.kind !== "annual" ? ' aria-pressed="true"' : "") + '>One-off</button><button type="button" data-act="extra-kind" data-i="' + i + '" data-kind="annual"' + (x.kind === "annual" ? ' aria-pressed="true"' : "") + ">Annual</button></div>" +
+        '<input type="number" aria-label="Amount" data-act="extra" data-i="' + i + '" data-key="amount" value="' + esc(x.amount || "") + '" placeholder="Amount, AUD" min="0" step="1">' +
+        '<div class="seg compact"><button type="button" data-act="extra-kind" data-i="' + i + '" data-kind="oneoff"' + (x.kind !== "annual" ? ' aria-pressed="true"' : "") + '>One-off</button><button type="button" data-act="extra-kind" data-i="' + i + '" data-kind="annual"' + (x.kind === "annual" ? ' aria-pressed="true"' : "") + ">Annual</button></div>" +
         '<label class="toggle small"><input type="checkbox" data-act="extra-indexed" data-i="' + i + '"' + (x.indexed ? " checked" : "") + (x.kind !== "annual" ? " disabled" : "") + "><span>Indexed</span></label>" +
-        '<button type="button" class="del" data-act="extra-del" data-i="' + i + '">Remove</button></div>');
+        '<button type="button" class="btn btn-ghost btn-sm" data-act="extra-del" data-i="' + i + '">Remove</button></div>');
     });
-    out.push('<div><button type="button" class="btn btn-ghost btn-sm" data-act="extra-add">Add a line</button></div></div>');
+    out.push('<div><button type="button" class="btn btn-ghost btn-sm" data-act="extra-add">Add a line</button></div></div></div>');
     out.push(navFooter(state.step) + "</section>");
     return out.join("");
   }
@@ -942,37 +973,37 @@
       '<div class="tile"><span class="k">Year 1</span><span class="v num">' + from + money(q.year1) + '</span><span class="small muted">Discovery, Build and first year of Care</span></div>' +
       '<div class="tile"><span class="k">Recurring from year 2</span><span class="v num">' + from + money(q.schedule[1] ? q.schedule[1].total : MQ.rnd(q.recurring * (1 + q.cpiPercent / 100))) + '</span><span class="small muted">Care, +' + q.cpiPercent + "% each anniversary</span></div></div>");
 
-    out.push("<h3>What is included</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Line</th><th class=\"num\">Year 1 rate</th>" + (q.repeatPercent ? '<th class="num">Discount</th>' : "") + '<th class="num">Amount</th></tr></thead><tbody>');
+    out.push("<div class=\"sec\"><h3>What is included</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Line</th><th class=\"num\">Year 1 rate</th>" + (q.repeatPercent ? '<th class="num">Discount</th>' : "") + '<th class="num">Amount</th></tr></thead><tbody>');
     q.lines.forEach(function (l) {
       out.push("<tr><td>" + esc(l.label) + '<span class="detail">' + esc(l.detail) + '</span></td><td class="num">' + from + money(l.amount) + (l.recurs ? " / yr" : "") + "</td>" +
         (q.repeatPercent ? '<td class="num">' + (l.discount ? "-" + money(l.discount) : "—") + "</td>" : "") +
         '<td class="num">' + from + money(l.net) + (l.recurs ? " / yr" : "") + "</td></tr>");
     });
-    out.push('<tr class="total"><td>Year 1</td><td></td>' + (q.repeatPercent ? "<td></td>" : "") + '<td class="num">' + from + money(q.year1) + "</td></tr></tbody></table></div>");
+    out.push('<tr class="total"><td>Year 1</td><td></td>' + (q.repeatPercent ? "<td></td>" : "") + '<td class="num">' + from + money(q.year1) + "</td></tr></tbody></table></div></div>");
 
-    out.push("<h3>Year by year</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Year</th><th class=\"num\">One-off</th><th class=\"num\">Care</th>" + (q.schedule.some(function (s) { return s.extras; }) ? '<th class="num">Other annual</th>' : "") + '<th class="num">Total</th></tr></thead><tbody>');
+    out.push("<div class=\"sec\"><h3>Year by year</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Year</th><th class=\"num\">One-off</th><th class=\"num\">Care</th>" + (q.schedule.some(function (s) { return s.extras; }) ? '<th class="num">Other annual</th>' : "") + '<th class="num">Total</th></tr></thead><tbody>');
     var hasExtras = q.schedule.some(function (s) { return s.extras; });
     q.schedule.forEach(function (s) {
       out.push("<tr><td>Year " + s.year + (s.year > 1 ? ' <span class="detail">Care +' + q.cpiPercent + "% on year " + (s.year - 1) + "</span>" : "") + '</td><td class="num">' + (s.oneOff ? from + money(s.oneOff) : "—") + '</td><td class="num">' + from + money(s.care) + "</td>" +
         (hasExtras ? '<td class="num">' + (s.extras ? money(s.extras) : "—") + "</td>" : "") + '<td class="num">' + from + money(s.total) + "</td></tr>");
     });
-    out.push('<tr class="total"><td>Total over ' + termLabel + "</td><td></td><td></td>" + (hasExtras ? "<td></td>" : "") + '<td class="num">' + from + money(q.contract) + "</td></tr></tbody></table></div>");
+    out.push('<tr class="total"><td>Total over ' + termLabel + "</td><td></td><td></td>" + (hasExtras ? "<td></td>" : "") + '<td class="num">' + from + money(q.contract) + "</td></tr></tbody></table></div></div>");
 
-    out.push("<h3>Payment schedule</h3><div class=\"tbl-wrap\"><table><thead><tr><th>When</th><th>What</th><th class=\"num\">Amount</th></tr></thead><tbody>");
+    out.push("<div class=\"sec\"><h3>Payment schedule</h3><div class=\"tbl-wrap\"><table><thead><tr><th>When</th><th>What</th><th class=\"num\">Amount</th></tr></thead><tbody>");
     q.milestones.forEach(function (m) { out.push("<tr><td>" + esc(m.when) + "</td><td>" + esc(m.what) + '</td><td class="num">' + from + money(m.amount) + "</td></tr>"); });
-    out.push("</tbody></table></div>");
+    out.push("</tbody></table></div></div>");
 
-    out.push("<h3>How it runs</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Stage</th><th>Duration</th><th>What happens</th><th>Client time</th></tr></thead><tbody>");
+    out.push("<div class=\"sec\"><h3>How it runs</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Stage</th><th>Duration</th><th>What happens</th><th>Client time</th></tr></thead><tbody>");
     out.push("<tr><td>Discovery</td><td>A week or two</td><td>" + esc(model.discovery.text) + "</td><td>Two 60-minute sessions</td></tr>");
     model.build.stages.forEach(function (s) {
       var dur = s.stage === "Build sprints" && q.sprints !== null ? esc(MQ.sprintsText(model, q.tierKey)) : esc(s.duration);
       out.push("<tr><td>" + esc(s.stage) + "</td><td>" + dur + "</td><td>" + esc(s.text) + "</td><td>" + esc(s.client_time || "—") + "</td></tr>");
     });
-    out.push("</tbody></table></div>");
+    out.push("</tbody></table></div></div>");
 
-    out.push('<div class="cols"><div><h4>Momentum Care covers</h4><ul>' + model.care.covered.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div>" +
+    out.push('<div class="sec"><h3>Momentum Care</h3><div class="cols"><div><h4>Covered</h4><ul>' + model.care.covered.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div>" +
       "<div><h4>Not covered</h4><ul>" + model.care.not_covered.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div></div>");
-    out.push('<p class="small muted">' + esc(q.careTier.label) + " Care: " + q.careTier.allowance_hours + " hours of change allowance a year, " + esc(q.careTier.cadence.toLowerCase()) + ", critical response " + esc(q.careTier.critical_response) + ". " + esc(model.care.allowance_note) + " Coverage " + esc(model.care.coverage) + "</p>");
+    out.push('<p class="small muted">' + esc(q.careTier.label) + " Care: " + q.careTier.allowance_hours + " hours of change allowance a year, " + esc(q.careTier.cadence.toLowerCase()) + ", critical response " + esc(q.careTier.critical_response) + ". " + esc(model.care.allowance_note) + " Coverage " + esc(model.care.coverage) + "</p></div>");
 
     out.push('<details class="terms"><summary>Commercial terms and what we need from you</summary><div class="cols" style="margin-top:12px"><div><h4>Terms</h4><ul>' +
       model.terms.map(function (t) { return "<li><b>" + esc(t.term) + ".</b> " + esc(t.position) + "</li>"; }).join("") + "</ul></div><div><h4>What we need from the client</h4><ul>" +
@@ -1012,7 +1043,7 @@
     }
     out.push("</div>");
     if (inp.engagement.client || inp.engagement.workflow) {
-      out.push('<div class="small muted" style="padding:0 4px">' + esc(inp.engagement.client) + (inp.engagement.workflow ? " · " + esc(inp.engagement.workflow) : "") + (state.savedId ? ' <span class="chip green">Saved</span>' : "") + "</div>");
+      out.push('<div class="who">' + esc(inp.engagement.client) + (inp.engagement.workflow ? " · " + esc(inp.engagement.workflow) : "") + (state.savedId ? ' <span class="chip green">Saved</span>' : "") + "</div>");
     }
     out.push("</aside>");
     return out.join("");

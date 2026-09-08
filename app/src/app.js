@@ -159,26 +159,26 @@
       out.push('<div class="rule info"><div>This is the worked example from the commercial model (supplier onboarding, Moderate, Standard Care), loaded so you can see the tool at rest. ' +
         '<button type="button" class="btn-text" data-act="new">Start a blank quote</button> when you are on a call.</div></div>');
     }
-    out.push('<div class="fields">' +
+    out.push('<div class="sec"><div class="fields">' +
       field("client", "Client", e.client, "text", "Organisation name") +
       field("workflow", "Workflow", e.workflow, "text", "The process, in the client's words") +
       field("preparedBy", "Prepared by", e.preparedBy, "text", "Your name") +
-      field("date", "Date", e.date, "date", "") + "</div>");
-    out.push('<h3>Four questions before the scorecard</h3><p class="why">The pre-scope exists to set the tier before the client commits, and to disqualify. Each of these is a fork in the call, not a blocker in the tool.</p>');
+      field("date", "Date", e.date, "date", "") + "</div></div>");
+    out.push('<div class="sec"><h3>Four questions before the scorecard</h3><p class="why">The pre-scope exists to set the tier before the client commits, and to disqualify. Each of these is a fork in the call, not a blocker in the tool.</p>');
     out.push('<div class="fields">');
     model.pre_scope.checks.forEach(function (c) {
       var v = e.checks[c.key];
       var msg = v === "yes" ? c.yes : v === "no" ? c.no : "";
       var flagged = v && v === c.flag_when;
       out.push('<div class="check"><div class="q">' + esc(c.question) + "</div>" +
-        '<div class="seg" role="group">' +
+        '<div class="seg compact" role="group">' +
         '<button type="button" data-act="check" data-key="' + c.key + '" data-val="yes"' + (v === "yes" ? ' aria-pressed="true"' : "") + ">Yes</button>" +
         '<button type="button" data-act="check" data-key="' + c.key + '" data-val="no"' + (v === "no" ? ' aria-pressed="true"' : "") + ">No</button></div>" +
         (msg ? '<div class="rule' + (flagged ? "" : " good") + '"><div>' + esc(msg) + "</div></div>" : "") + "</div>");
     });
-    out.push("</div>");
-    out.push('<label class="toggle"><input type="checkbox" data-act="linked"' + (state.inputs.linked ? " checked" : "") + "><span><b>Multiple linked workflows, or a cross-workflow dependency.</b> " +
-      '<span class="muted">' + esc(model.scorecard.programme_rule.text) + "</span></span></label>");
+    out.push("</div></div>");
+    out.push('<div class="sec"><h3>Programme check</h3><label class="toggle"><input type="checkbox" data-act="linked"' + (state.inputs.linked ? " checked" : "") + "><span><b>Multiple linked workflows, or a cross-workflow dependency.</b> " +
+      '<span class="muted">' + esc(model.scorecard.programme_rule.text) + "</span></span></label></div>");
     out.push(navFooter(state.step) + "</section>");
     return out.join("");
   }
@@ -193,9 +193,9 @@
     var out = ['<section class="mq-card"><header><span class="eyebrow">Step ' + (state.step + 1) + " of " + STEPS.length + " · Factor " + (s.index + 1) + " of 8</span><h2>" + esc(f.label) + "</h2></header>"];
     out.push('<div class="ask"><span class="eyebrow">Ask the client</span><blockquote>' + esc(f.ask) + "</blockquote></div>");
     out.push('<p class="why">' + esc(f.why) + "</p>");
-    out.push('<div class="options' + (f.options.length === 2 ? " two" : "") + '" role="group" aria-label="Score">');
+    out.push('<div class="sec"><h3>Score it</h3><div class="options' + (f.options.length === 2 ? " two" : "") + '" role="group" aria-label="Score">');
     f.options.forEach(function (o) {
-      out.push('<button type="button" class="opt' + (o.points === 3 ? " high" : "") + '" data-act="score" data-key="' + f.key + '" data-pts="' + o.points + '"' + (chosen === o.points ? ' aria-pressed="true"' : "") + ">" +
+      out.push('<button type="button" class="pick opt" data-act="score" data-key="' + f.key + '" data-pts="' + o.points + '"' + (chosen === o.points ? ' aria-pressed="true"' : "") + ">" +
         '<span class="pts">' + o.points + (o.points === 1 ? " point" : " points") + "</span>" +
         '<span class="txt">' + esc(o.label) + "</span>" +
         (o.points === 3 && f.key === model.scorecard.floor_rule.factor ? '<span class="hint">Floor rule: Moderate or above.</span>' : "") +
@@ -204,7 +204,7 @@
     out.push("</div>");
     out.push('<div class="rule"><div><b>Score conservatively.</b> Where the answer is unclear, pick the higher score. Discovery re-scores with full information and only the difference between tiers is billed or credited.</div></div>');
     if (st.scored) out.push('<p class="small muted num">Running score ' + st.total + " across " + st.scored + " of 8 factors" + (st.threes ? ", " + st.threes + " at 3" : "") + ".</p>");
-    out.push(navFooter(state.step) + "</section>");
+    out.push("</div>" + navFooter(state.step) + "</section>");
     return out.join("");
   }
 
@@ -227,28 +227,28 @@
       '<p class="small">' + (st.tierKey === "programme" ? esc(model.scorecard.tiers[3].text) + " Figures below are from-prices." :
         "Discovery " + money(p.discovery) + " and Build " + money(p.build) + ". " + esc(MQ.sprintsText(model, st.tierKey)) + ", then five business days of UAT, ten of hypercare and thirty of warranty.") + "</p></div></div>");
     st.rules.forEach(function (r) { out.push('<div class="rule"><div><b>Rule applied.</b> ' + esc(r.text) + "</div></div>"); });
-    out.push("<h3>What drove it</h3><ul class=\"factor-list\">");
+    out.push('<div class="sec"><h3>What drove it</h3><ul class="factor-list">');
     model.scorecard.factors.forEach(function (f) {
       var pts = inp.scores[f.key], lbl = "";
       f.options.forEach(function (o) { if (o.points === pts) lbl = o.label; });
-      out.push("<li><span>" + esc(f.label) + ' <span class="muted">· ' + esc(lbl) + "</span></span>" + '<span class="pts' + (pts === 3 ? " three" : "") + '">' + pts + "</span></li>");
+      out.push('<li><span><span class="f">' + esc(f.label) + '</span><span class="o">' + esc(lbl) + "</span></span>" + '<span class="pts' + (pts === 3 ? " three" : "") + '">' + pts + "</span></li>");
     });
-    out.push("</ul>");
+    out.push("</ul></div>");
     if (q.lowering.length) {
-      out.push("<h3>What simplifying would save</h3><p class=\"why\">Publishing the scorecard means the client can see what drives the price and what a simpler requirement would save. Each line is one factor scored one step lower.</p><ul class=\"lower\">");
+      out.push('<div class="sec"><h3>What simplifying would save</h3><p class="why">Publishing the scorecard means the client can see what drives the price and what a simpler requirement would save. Each line is one factor scored one step lower.</p><ul class="lower">');
       q.lowering.forEach(function (l) {
         out.push("<li><span>" + esc(l.factor) + " at " + esc(l.toLabel) + " would make it <b>" + esc(l.tier) + "</b></span><b class=\"num\">saves " + money(l.saving) + "</b></li>");
       });
-      out.push("</ul>");
+      out.push("</ul></div>");
     } else if (st.tierKey === "simple") {
       out.push('<div class="rule good"><div>This is already the minimum engagement: one Simple workflow.</div></div>');
     }
-    out.push('<div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Score</th><th class="num">Discovery</th><th class="num">Build</th><th class="num">Care (Standard)</th><th class="num">Year 1</th></tr></thead><tbody>');
+    out.push('<div class="sec"><h3>The published tiers</h3><div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Score</th><th class="num">Discovery</th><th class="num">Build</th><th class="num">Care (Standard)</th><th class="num">Year 1 total</th></tr></thead><tbody>');
     model.scorecard.tiers.forEach(function (t) {
       var pr = model.prices[t.key], care = model.care.table[t.key].standard, from = pr.indicative ? "from " : "";
-      out.push("<tr" + (t.key === st.tierKey ? ' style="font-weight:700"' : "") + "><td>" + esc(t.label) + "</td><td>" + (t.min !== null ? t.min + " to " + t.max : "Linked workflows") + '</td><td class="num">' + from + money(pr.discovery) + '</td><td class="num">' + from + money(pr.build) + '</td><td class="num">' + from + money(care) + '</td><td class="num">' + (pr.indicative ? "Scoped individually" : money(pr.discovery + pr.build + care)) + "</td></tr>");
+      out.push("<tr" + (t.key === st.tierKey ? ' class="current"' : "") + "><td>" + esc(t.label) + "</td><td>" + (t.min !== null ? t.min + " to " + t.max : "Linked") + '</td><td class="num">' + from + money(pr.discovery) + '</td><td class="num">' + from + money(pr.build) + '</td><td class="num">' + from + money(care) + '</td><td class="num">' + (pr.indicative ? "Scoped" : money(pr.discovery + pr.build + care)) + "</td></tr>");
     });
-    out.push("</tbody></table></div>");
+    out.push("</tbody></table></div></div>");
     out.push(navFooter(state.step) + "</section>");
     return out.join("");
   }
@@ -259,41 +259,47 @@
     var out = ['<section class="mq-card"><header><span class="eyebrow">Step ' + (state.step + 1) + " of " + STEPS.length + " · Commercials</span><h2>Care and commercials</h2>",
       '<p class="lede">' + esc(model.care.text) + "</p></header>"];
     if (!st.complete) out.push('<div class="rule"><div>Score all eight factors first. Care is priced from the workflow tier, so the fees below will appear once the tier is known.</div></div>');
-    out.push("<h3>Care tier</h3><div class=\"care-grid\">");
+    out.push('<div class="sec"><h3>Care tier</h3><div class="care-grid">');
     model.care.tiers.forEach(function (ct) {
       var fee = st.complete ? model.care.table[st.tierKey][ct.key] : null;
       var from = st.tierKey === "programme" ? "from " : "";
-      out.push('<button type="button" class="care" data-act="care" data-key="' + ct.key + '"' + (inp.careTier === ct.key ? ' aria-pressed="true"' : "") + ">" +
+      out.push('<button type="button" class="pick care" data-act="care" data-key="' + ct.key + '"' + (inp.careTier === ct.key ? ' aria-pressed="true"' : "") + ">" +
         '<span class="name">' + esc(ct.label) + "</span>" +
-        '<span class="fee num">' + (fee !== null ? from + money(fee) : "—") + '</span><span class="small muted">a year, ' + ct.percent_of_build + "% of build, min " + money(ct.minimum) + "</span>" +
-        "<dl><dt>Allowance</dt><dd>" + ct.allowance_hours + " hrs / yr</dd><dt>Review</dt><dd>" + esc(ct.cadence) + "</dd><dt>Critical</dt><dd>" + esc(ct.critical_response) + "</dd><dt>Credits</dt><dd>" + (ct.service_credits ? "Yes" : "No") + "</dd></dl></button>");
+        '<span class="fee num">' + (fee !== null ? from + money(fee) : "—") + '</span><span class="basis">a year · ' + ct.percent_of_build + "% of build, min " + money(ct.minimum) + "</span>" +
+        '<span class="stats">' +
+        '<span class="stat"><span class="k">Allowance</span><span class="v">' + ct.allowance_hours + " hrs a year</span></span>" +
+        '<span class="stat"><span class="k">Critical response</span><span class="v">' + esc(ct.critical_response) + "</span></span>" +
+        '<span class="stat"><span class="k">Review</span><span class="v">' + esc(ct.cadence) + "</span></span>" +
+        '<span class="stat"><span class="k">Service credits</span><span class="v">' + (ct.service_credits ? "Yes" : "No") + "</span></span>" +
+        "</span></button>");
     });
     out.push("</div>");
     var ext = model.care.extended_coverage;
     out.push('<label class="toggle"><input type="checkbox" data-act="extended"' + (inp.extendedCoverage ? " checked" : "") + (inp.careTier !== ext.tier ? " disabled" : "") + "><span><b>" + esc(ext.label) + ".</b> " +
-      '<span class="muted">' + esc(ext.text) + (inp.careTier !== ext.tier ? " Choose Premier to add it." : "") + "</span></span></label>");
+      '<span class="muted">' + esc(ext.text) + (inp.careTier !== ext.tier ? " Choose Premier to add it." : "") + "</span></span></label></div>");
 
-    out.push("<h3>Term</h3><p class=\"why\">Only Care recurs. Care increases by " + model.indexation.cpi_percent + "% at each anniversary and is invoiced annually in advance, co-terminus with the Momentum license.</p>");
+    out.push('<div class="sec"><h3>Term</h3><p class="why">Only Care recurs. Care increases by ' + model.indexation.cpi_percent + "% at each anniversary and is invoiced annually in advance, co-terminus with the Momentum license.</p>");
     out.push('<div class="seg" role="group" aria-label="Term">' + [1, 2, 3].map(function (y) {
       return '<button type="button" data-act="years" data-years="' + y + '"' + (inp.years === y ? ' aria-pressed="true"' : "") + ">" + (y === 1 ? "12 months" : y + " years") + "</button>";
-    }).join("") + "</div>");
+    }).join("") + "</div></div>");
 
-    out.push("<h3>Repeat workflow</h3><p class=\"why\">" + esc(model.discounts.repeat_workflow.text) + "</p>");
+    var repeatLabels = { first: "First workflow", second: "Second · 10% off", third: "Third or later · 15% off" };
+    out.push('<div class="sec"><h3>Repeat workflow</h3><p class="why">' + esc(model.discounts.repeat_workflow.text) + "</p>");
     out.push('<div class="seg" role="group" aria-label="Repeat workflow">' + model.discounts.repeat_workflow.positions.map(function (p) {
-      return '<button type="button" data-act="repeat" data-key="' + p.key + '"' + (inp.repeat === p.key ? ' aria-pressed="true"' : "") + ">" + esc(p.label) + (p.percent ? " · " + p.percent + "% off" : "") + "</button>";
-    }).join("") + "</div>");
+      return '<button type="button" data-act="repeat" data-key="' + p.key + '"' + (inp.repeat === p.key ? ' aria-pressed="true"' : "") + ">" + esc(repeatLabels[p.key] || p.label) + "</button>";
+    }).join("") + "</div></div>");
 
-    out.push("<h3>Other lines</h3><p class=\"why\">Anything quoted alongside the service: a Studio license uplift, a custom integration, data migration, on-site delivery. Annual lines repeat each year; tick indexed to escalate one at " + model.indexation.cpi_percent + "% with Care.</p>");
+    out.push('<div class="sec"><h3>Other lines</h3><p class="why">Anything quoted alongside the service: a Studio license uplift, a custom integration, data migration, on-site delivery. Annual lines repeat each year; tick indexed to escalate one at ' + model.indexation.cpi_percent + "% with Care.</p>");
     out.push('<div class="extras">');
     inp.extras.forEach(function (x, i) {
       out.push('<div class="extra-row">' +
         '<input type="text" aria-label="Line label" data-act="extra" data-i="' + i + '" data-key="label" value="' + esc(x.label) + '" placeholder="Label">' +
-        '<input type="number" aria-label="Amount" data-act="extra" data-i="' + i + '" data-key="amount" value="' + esc(x.amount || "") + '" placeholder="Amount" min="0" step="1">' +
-        '<div class="seg"><button type="button" data-act="extra-kind" data-i="' + i + '" data-kind="oneoff"' + (x.kind !== "annual" ? ' aria-pressed="true"' : "") + '>One-off</button><button type="button" data-act="extra-kind" data-i="' + i + '" data-kind="annual"' + (x.kind === "annual" ? ' aria-pressed="true"' : "") + ">Annual</button></div>" +
+        '<input type="number" aria-label="Amount" data-act="extra" data-i="' + i + '" data-key="amount" value="' + esc(x.amount || "") + '" placeholder="Amount, AUD" min="0" step="1">' +
+        '<div class="seg compact"><button type="button" data-act="extra-kind" data-i="' + i + '" data-kind="oneoff"' + (x.kind !== "annual" ? ' aria-pressed="true"' : "") + '>One-off</button><button type="button" data-act="extra-kind" data-i="' + i + '" data-kind="annual"' + (x.kind === "annual" ? ' aria-pressed="true"' : "") + ">Annual</button></div>" +
         '<label class="toggle small"><input type="checkbox" data-act="extra-indexed" data-i="' + i + '"' + (x.indexed ? " checked" : "") + (x.kind !== "annual" ? " disabled" : "") + "><span>Indexed</span></label>" +
-        '<button type="button" class="del" data-act="extra-del" data-i="' + i + '">Remove</button></div>');
+        '<button type="button" class="btn btn-ghost btn-sm" data-act="extra-del" data-i="' + i + '">Remove</button></div>');
     });
-    out.push('<div><button type="button" class="btn btn-ghost btn-sm" data-act="extra-add">Add a line</button></div></div>');
+    out.push('<div><button type="button" class="btn btn-ghost btn-sm" data-act="extra-add">Add a line</button></div></div></div>');
     out.push(navFooter(state.step) + "</section>");
     return out.join("");
   }
@@ -321,37 +327,37 @@
       '<div class="tile"><span class="k">Year 1</span><span class="v num">' + from + money(q.year1) + '</span><span class="small muted">Discovery, Build and first year of Care</span></div>' +
       '<div class="tile"><span class="k">Recurring from year 2</span><span class="v num">' + from + money(q.schedule[1] ? q.schedule[1].total : MQ.rnd(q.recurring * (1 + q.cpiPercent / 100))) + '</span><span class="small muted">Care, +' + q.cpiPercent + "% each anniversary</span></div></div>");
 
-    out.push("<h3>What is included</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Line</th><th class=\"num\">Year 1 rate</th>" + (q.repeatPercent ? '<th class="num">Discount</th>' : "") + '<th class="num">Amount</th></tr></thead><tbody>');
+    out.push("<div class=\"sec\"><h3>What is included</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Line</th><th class=\"num\">Year 1 rate</th>" + (q.repeatPercent ? '<th class="num">Discount</th>' : "") + '<th class="num">Amount</th></tr></thead><tbody>');
     q.lines.forEach(function (l) {
       out.push("<tr><td>" + esc(l.label) + '<span class="detail">' + esc(l.detail) + '</span></td><td class="num">' + from + money(l.amount) + (l.recurs ? " / yr" : "") + "</td>" +
         (q.repeatPercent ? '<td class="num">' + (l.discount ? "-" + money(l.discount) : "—") + "</td>" : "") +
         '<td class="num">' + from + money(l.net) + (l.recurs ? " / yr" : "") + "</td></tr>");
     });
-    out.push('<tr class="total"><td>Year 1</td><td></td>' + (q.repeatPercent ? "<td></td>" : "") + '<td class="num">' + from + money(q.year1) + "</td></tr></tbody></table></div>");
+    out.push('<tr class="total"><td>Year 1</td><td></td>' + (q.repeatPercent ? "<td></td>" : "") + '<td class="num">' + from + money(q.year1) + "</td></tr></tbody></table></div></div>");
 
-    out.push("<h3>Year by year</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Year</th><th class=\"num\">One-off</th><th class=\"num\">Care</th>" + (q.schedule.some(function (s) { return s.extras; }) ? '<th class="num">Other annual</th>' : "") + '<th class="num">Total</th></tr></thead><tbody>');
+    out.push("<div class=\"sec\"><h3>Year by year</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Year</th><th class=\"num\">One-off</th><th class=\"num\">Care</th>" + (q.schedule.some(function (s) { return s.extras; }) ? '<th class="num">Other annual</th>' : "") + '<th class="num">Total</th></tr></thead><tbody>');
     var hasExtras = q.schedule.some(function (s) { return s.extras; });
     q.schedule.forEach(function (s) {
       out.push("<tr><td>Year " + s.year + (s.year > 1 ? ' <span class="detail">Care +' + q.cpiPercent + "% on year " + (s.year - 1) + "</span>" : "") + '</td><td class="num">' + (s.oneOff ? from + money(s.oneOff) : "—") + '</td><td class="num">' + from + money(s.care) + "</td>" +
         (hasExtras ? '<td class="num">' + (s.extras ? money(s.extras) : "—") + "</td>" : "") + '<td class="num">' + from + money(s.total) + "</td></tr>");
     });
-    out.push('<tr class="total"><td>Total over ' + termLabel + "</td><td></td><td></td>" + (hasExtras ? "<td></td>" : "") + '<td class="num">' + from + money(q.contract) + "</td></tr></tbody></table></div>");
+    out.push('<tr class="total"><td>Total over ' + termLabel + "</td><td></td><td></td>" + (hasExtras ? "<td></td>" : "") + '<td class="num">' + from + money(q.contract) + "</td></tr></tbody></table></div></div>");
 
-    out.push("<h3>Payment schedule</h3><div class=\"tbl-wrap\"><table><thead><tr><th>When</th><th>What</th><th class=\"num\">Amount</th></tr></thead><tbody>");
+    out.push("<div class=\"sec\"><h3>Payment schedule</h3><div class=\"tbl-wrap\"><table><thead><tr><th>When</th><th>What</th><th class=\"num\">Amount</th></tr></thead><tbody>");
     q.milestones.forEach(function (m) { out.push("<tr><td>" + esc(m.when) + "</td><td>" + esc(m.what) + '</td><td class="num">' + from + money(m.amount) + "</td></tr>"); });
-    out.push("</tbody></table></div>");
+    out.push("</tbody></table></div></div>");
 
-    out.push("<h3>How it runs</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Stage</th><th>Duration</th><th>What happens</th><th>Client time</th></tr></thead><tbody>");
+    out.push("<div class=\"sec\"><h3>How it runs</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Stage</th><th>Duration</th><th>What happens</th><th>Client time</th></tr></thead><tbody>");
     out.push("<tr><td>Discovery</td><td>A week or two</td><td>" + esc(model.discovery.text) + "</td><td>Two 60-minute sessions</td></tr>");
     model.build.stages.forEach(function (s) {
       var dur = s.stage === "Build sprints" && q.sprints !== null ? esc(MQ.sprintsText(model, q.tierKey)) : esc(s.duration);
       out.push("<tr><td>" + esc(s.stage) + "</td><td>" + dur + "</td><td>" + esc(s.text) + "</td><td>" + esc(s.client_time || "—") + "</td></tr>");
     });
-    out.push("</tbody></table></div>");
+    out.push("</tbody></table></div></div>");
 
-    out.push('<div class="cols"><div><h4>Momentum Care covers</h4><ul>' + model.care.covered.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div>" +
+    out.push('<div class="sec"><h3>Momentum Care</h3><div class="cols"><div><h4>Covered</h4><ul>' + model.care.covered.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div>" +
       "<div><h4>Not covered</h4><ul>" + model.care.not_covered.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div></div>");
-    out.push('<p class="small muted">' + esc(q.careTier.label) + " Care: " + q.careTier.allowance_hours + " hours of change allowance a year, " + esc(q.careTier.cadence.toLowerCase()) + ", critical response " + esc(q.careTier.critical_response) + ". " + esc(model.care.allowance_note) + " Coverage " + esc(model.care.coverage) + "</p>");
+    out.push('<p class="small muted">' + esc(q.careTier.label) + " Care: " + q.careTier.allowance_hours + " hours of change allowance a year, " + esc(q.careTier.cadence.toLowerCase()) + ", critical response " + esc(q.careTier.critical_response) + ". " + esc(model.care.allowance_note) + " Coverage " + esc(model.care.coverage) + "</p></div>");
 
     out.push('<details class="terms"><summary>Commercial terms and what we need from you</summary><div class="cols" style="margin-top:12px"><div><h4>Terms</h4><ul>' +
       model.terms.map(function (t) { return "<li><b>" + esc(t.term) + ".</b> " + esc(t.position) + "</li>"; }).join("") + "</ul></div><div><h4>What we need from the client</h4><ul>" +
@@ -391,7 +397,7 @@
     }
     out.push("</div>");
     if (inp.engagement.client || inp.engagement.workflow) {
-      out.push('<div class="small muted" style="padding:0 4px">' + esc(inp.engagement.client) + (inp.engagement.workflow ? " · " + esc(inp.engagement.workflow) : "") + (state.savedId ? ' <span class="chip green">Saved</span>' : "") + "</div>");
+      out.push('<div class="who">' + esc(inp.engagement.client) + (inp.engagement.workflow ? " · " + esc(inp.engagement.workflow) : "") + (state.savedId ? ' <span class="chip green">Saved</span>' : "") + "</div>");
     }
     out.push("</aside>");
     return out.join("");
