@@ -94,7 +94,7 @@ test("extra lines: one-off stays in year 1, annual repeats, indexed annual escal
   const scores = examples[0].scores;
   const q = MQ.quote(model, { scores, careTier: "standard", years: 3, extras: [
     { label: "Data migration", amount: 1800, kind: "oneoff" },
-    { label: "Studio license uplift", amount: 10800, kind: "annual", indexed: false },
+    { label: "Advanced Momentum uplift", amount: 10800, kind: "annual", indexed: false },
     { label: "Indexed thing", amount: 1000, kind: "annual", indexed: true },
   ] });
   assert.equal(q.schedule[0].oneOff, 3450 + 16950 + 1800);

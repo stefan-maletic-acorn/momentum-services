@@ -289,7 +289,7 @@
       return '<button type="button" data-act="repeat" data-key="' + p.key + '"' + (inp.repeat === p.key ? ' aria-pressed="true"' : "") + ">" + esc(repeatLabels[p.key] || p.label) + "</button>";
     }).join("") + "</div></div>");
 
-    out.push('<div class="sec"><h3>Other lines</h3><p class="why">Anything quoted alongside the service: a Studio license uplift, a custom integration, data migration, on-site delivery. Annual lines repeat each year; tick indexed to escalate one at ' + model.indexation.cpi_percent + "% with Care.</p>");
+    out.push('<div class="sec"><h3>Other lines</h3><p class="why">Anything quoted alongside the service: an Advanced Momentum license uplift, a custom integration, data migration, on-site delivery. Annual lines repeat each year; tick indexed to escalate one at ' + model.indexation.cpi_percent + "% with Care.</p>");
     out.push('<div class="extras">');
     inp.extras.forEach(function (x, i) {
       out.push('<div class="extra-row">' +

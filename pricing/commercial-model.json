@@ -13,7 +13,7 @@
 
   "service": {
     "name": "Momentum Solutions Architect Service",
-    "summary": "A Momentum Studio license gives you the visual Builder and the right to create workflows yourself. The Solutions Architect Service is the option to have Acorn do it instead: we scope the process, design the workflow, build it in your tenant, and own it from go-live.",
+    "summary": "An Advanced Momentum license gives you the visual Builder and the right to create workflows yourself. The Solutions Architect Service is the option to have Acorn do it instead: we scope the process, design the workflow, build it in your tenant, and own it from go-live.",
     "components": [
       {"key": "discovery", "label": "Discovery", "recurs": false, "text": "We map the process and produce a Workflow Design Document."},
       {"key": "build", "label": "Build", "recurs": false, "text": "We configure, test and deploy the workflow."},
@@ -25,16 +25,16 @@
   "pre_scope": {
     "text": "No charge. One 45-minute call. Produces a provisional Complexity Scorecard, a tier and a quotable price. Score conservatively: where a factor is unclear, it scores high. Discovery re-scores with full information; if the tier moves, only the difference is billed or credited, once, in writing, at the end of Discovery.",
     "checks": [
-      {"key": "studio", "question": "Does the client hold a Momentum Studio license?",
-       "yes": "Studio is in place. A custom workflow needs the Advanced Momentum Tenant feature, which Studio carries.",
-       "no": "A custom workflow needs the Advanced Momentum Tenant feature, so a Base client moves to Studio first. Quote the Studio uplift as its own line and add it under extra lines.",
+      {"key": "studio", "question": "Does the client hold an Advanced Momentum license?",
+       "yes": "Advanced Momentum is in place, so the tenant carries the feature a custom workflow needs.",
+       "no": "A custom workflow needs the Advanced Momentum Tenant feature, so a Base client moves to Advanced Momentum first. Quote the Advanced Momentum uplift as its own line and add it under extra lines.",
        "flag_when": "no"},
       {"key": "blueprint", "question": "Does the process match a pre-built Blueprint?",
        "yes": "Tell the client so on this call. A Blueprint is the cheaper answer and this service is not the right fit.",
        "no": "No Blueprint covers it, so a custom build is the right conversation.",
        "flag_when": "yes"},
       {"key": "self_build", "question": "Does the client have the admin capacity and appetite to build it themselves?",
-       "yes": "Say so. The Builder is included in Studio and disqualifying in an hour is cheaper than disqualifying in a Discovery.",
+       "yes": "Say so. The Builder is included in Advanced Momentum and disqualifying in an hour is cheaper than disqualifying in a Discovery.",
        "no": "The client wants Acorn to own the build. Continue.",
        "flag_when": "yes"},
       {"key": "integration", "question": "Does the workflow need data reported out to an external system beyond what Acorn's APIs support?",
@@ -223,7 +223,7 @@
   ],
 
   "terms": [
-    {"term": "Eligibility", "position": "Momentum Studio license required. A custom workflow needs the Advanced Momentum Tenant feature, so Base clients move to Studio first."},
+    {"term": "Eligibility", "position": "Advanced Momentum license required. A custom workflow needs the Advanced Momentum Tenant feature, so Base clients move to Advanced Momentum first."},
     {"term": "Pre-scope", "position": "No charge, one call, before quote. Not a design engagement and produces no deliverable beyond a tier and a price."},
     {"term": "Discovery invoicing", "position": "In full on order, as part of the committed line item."},
     {"term": "Build invoicing", "position": "50% on commencement of the first build sprint, 50% at go-live."},

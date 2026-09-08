@@ -13,7 +13,7 @@ https://claude.ai/code/artifact/85723876-7412-4f43-b4e0-3438b1a5b8df
 Twelve steps in a rail, one on screen at a time.
 
 1. **The engagement.** Client, workflow, who is quoting, and the four
-   pre-scope questions that can disqualify in the first call: Studio license,
+   pre-scope questions that can disqualify in the first call: Advanced Momentum license,
    Blueprint match, self-build capacity, external integration.
 2. **The eight scorecard factors, one per step.** Each shows the question to
    ask the client, why the factor drives effort, and the 1 / 2 / 3 options
@@ -23,7 +23,7 @@ Twelve steps in a rail, one on screen at a time.
    what simplifying a factor would save.
 4. **Care and commercials.** Essential, Standard or Premier Care; extended
    coverage on Premier; the term; the repeat-workflow discount; other lines
-   such as a Studio uplift or an integration quoted separately.
+   such as an Advanced Momentum uplift or an integration quoted separately.
 5. **Quote.** Year 1, year by year with Care stepping up 7% at each
    anniversary, the total for the term, the payment schedule, how the build
    runs, what Care covers, terms. Save to the shared library, copy a plain-text
