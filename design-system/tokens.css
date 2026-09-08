@@ -1,0 +1,149 @@
+/* Acorn design system - tokens.
+ *
+ * The whole palette, type scale, radii, shadows, spacing and motion. Nothing
+ * outside this file invents a colour, font, size, radius or shadow.
+ *
+ * Declares no element styles and no classes, so it is safe to inline anywhere,
+ * including into a fragment that will be embedded in somebody else's page.
+ * Element styles live in base.css, components in components.css.
+ *
+ * Components should reference the semantic --color-* tokens, not the raw brand
+ * vars above them.
+ */
+:root {
+  /* Brand core */
+  --acorn-green:      #23dba7;  /* signature mint - CTAs, accents */
+  --acorn-purple:     #743bfc;  /* primary purple - headings, CTA bg */
+  --acorn-red:        #ea5274;  /* pink/red accent */
+  --acorn-yellow:     #fcb01a;  /* warm yellow accent */
+  --acorn-blue-black: #16252d;  /* primary text, dark sections */
+
+  /* Neutrals */
+  --white:    #ffffff;
+  --paper:    #fbfbfb;
+  --ink:      #16252d;
+  --gray-100: #f5f5f5;
+  --gray-600: #405f7c;
+  --gray-700: #2c3539;
+  --slate-100:#d5d8d9;  /* brand ink at 18% over white. The only value
+                           here that is not a brand colour - see README
+                           "Charts" for why the Other bucket needs it */
+
+  /* Colour scales - 500 is the brand value, 300/100/50 are tints */
+  --green-500:  #23dba7;  --green-300:  #91edd3;  --green-100:  #d3f8ed;  --green-50:  #e9fbf6;
+  --purple-500: #743bfc;  --purple-300: #b99dfd;  --purple-100: #e3d8fd;  --purple-50: #f1ebff;
+  --yellow-500: #fcb01a;  --yellow-300: #fdd78c;  --yellow-100: #feefd1;  --yellow-50: #fff7e8;
+  --red-500:    #ea5274;  --red-300:    #f4a8b9;  --red-100:    #fbdce3;  --red-50:    #fdedf1;
+
+  /* Semantic - components should reference THESE, not raw brand vars */
+  --color-bg:            var(--white);
+  --color-bg-muted:      var(--gray-100);
+  --color-bg-dark:       var(--acorn-blue-black);
+  --color-bg-brand:      var(--acorn-purple);
+  --color-bg-accent:     var(--acorn-green);
+  --color-fg:            var(--acorn-blue-black);
+  --color-fg-muted:      var(--gray-600);
+  --color-fg-on-dark:    var(--white);
+  --color-fg-on-brand:   var(--white);
+  --color-fg-accent:     var(--acorn-green);
+  --color-fg-link:       var(--acorn-purple);
+  --color-border:        #e5e7eb;
+  --color-focus-ring:    var(--acorn-purple);
+  --color-success:       var(--acorn-green);
+  --color-warning:       var(--acorn-yellow);
+  --color-danger:        var(--acorn-red);
+
+  /* Chart ramps ------------------------------------------------------------
+   * CATEGORICAL. Fill and border only - never a text colour. Hue here carries
+   * identity, not magnitude, which is why these may be the pale brand colours
+   * that base.css forbids as text: the label sits beside the mark in ink, not
+   * on it.
+   *
+   * The ORDER is load-bearing and was chosen by measurement, not by eye.
+   * Validated with the dataviz validator against the white chart surface:
+   * worst adjacent pair is mint vs slate at deltaE 33.5 under deuteranopia and
+   * 35.7 under normal vision, both far above the 8 / 15 floors. Interleaving
+   * the two near-neutrals (slate at 3, ink at 5) is what buys that margin -
+   * dropping ink to avoid two greyish slots collapses the worst pair to 15.2,
+   * because it puts lilac next to mint.
+   *
+   * Two checks fail and cannot be made to pass from this palette. Mint (0.79)
+   * and yellow (0.81) sit above the validator's lightness band, and ink and
+   * slate fall below its chroma floor - they are pale and near-neutral
+   * respectively, which is what Acorn's brand is. Darkening mint and yellow
+   * into the band was tried and measured: it drops the normal-vision
+   * separation between darkened mint and slate to deltaE 11.9, a hard failure
+   * that no labelling excuses. Separation is the check that decides whether a
+   * reader can tell two slices apart, so it wins. The contrast warning is
+   * discharged the way the validator requires - every slice is directly
+   * labelled and every chart ships its table twin.
+   *
+   * Six categories maximum, then --chart-other.
+   */
+  --chart-1:     var(--purple-500);
+  --chart-2:     var(--yellow-500);
+  --chart-3:     var(--gray-600);
+  --chart-4:     var(--green-500);
+  --chart-5:     var(--acorn-blue-black);
+  --chart-6:     var(--purple-300);
+  --chart-other: var(--slate-100);
+
+  /* SEQUENTIAL, for ORDERED series - funnel stages, and the switched-on /
+   * built / in-use triple. One hue, dark to light, so the axis a reader should
+   * trust most carries the most ink. Four steps; a chart needing a fifth
+   * ordered level is the wrong chart. */
+  --chart-seq-1:    var(--acorn-blue-black);
+  --chart-seq-2:    var(--purple-500);
+  --chart-seq-3:    var(--purple-300);
+  --chart-seq-4:    var(--purple-100);
+  --chart-seq-edge: var(--purple-300);   /* hairline, so seq-4 reads on white */
+
+  /* NOT MEASURED. A hatched track - never an empty one, and never a zero. */
+  --chart-nm:       var(--color-border);
+
+  /* Momentum builder node colours.
+   *
+   * NOT Acorn brand values, and not available for anything else. These are
+   * the colours the Momentum canvas draws its own node types in, and a
+   * document that draws the same workflow has to match them or it is a
+   * picture of a different thing. They are fixed by the product; the
+   * builder's border colour also follows the tenancy's primary theme, but
+   * the strip and badge colours are always these.
+   */
+  --momentum-trigger:     #e64f77;  /* circle - starts a flow */
+  --momentum-event:       #54b394;  /* diamond - email, junction, assign */
+  --momentum-action-form: #223976;  /* rectangle - a form somebody fills in */
+  --momentum-action-wait: #e64f77;  /* rectangle - a wait */
+  --momentum-terminal:    #9d5ca4;  /* circle - ends a flow */
+
+  /* Type families */
+  --font-display: "Signika", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-hand:    "Gochi Hand", cursive;
+  --font-mono:    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Type scale */
+  --fs-xs: 0.75rem; --fs-sm: 0.875rem; --fs-base: 1rem; --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;  --fs-2xl: 1.75rem; --fs-3xl: 2rem;  --fs-4xl: 2.5rem;
+  --fs-5xl: 3.375rem; --fs-6xl: 4rem;
+
+  /* Radii */
+  --radius-xs: 4px; --radius-sm: 8px; --radius-md: 12px;
+  --radius-lg: 16px; --radius-xl: 24px; --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-sm:   0 1px 2px rgba(22,37,45,.06);
+  --shadow-md:   0 4px 12px rgba(22,37,45,.08);
+  --shadow-lg:   0 10px 25px rgba(22,37,45,.10);
+  --shadow-card: 0 10px 30px rgba(116,59,252,.08);
+
+  /* Spacing - 4px base */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 96px;
+
+  /* Motion */
+  --ease-acorn: cubic-bezier(0.77, 0, 0.18, 1);
+  --dur-fast: 200ms;
+  --dur-med:  500ms;
+  --dur-slow: 2s;
+}

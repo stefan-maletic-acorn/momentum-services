@@ -1,0 +1,19 @@
+/* Acorn design system - webfonts.
+ *
+ * Single source of truth for the font URL. Three families:
+ *   Signika    display/headings and all button labels (600-700)
+ *   Roboto     all body copy
+ *   Gochi Hand handwritten accent, one word per section at most
+ *
+ * In a document that has a <head>, prefer the <link> form for the preconnect
+ * hints - it is measurably faster than @import:
+ *
+ *   <link rel="preconnect" href="https://fonts.googleapis.com">
+ *   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ *   <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&family=Gochi+Hand&display=swap" rel="stylesheet">
+ *
+ * This file exists for the consumers that only get to inject CSS - notably the
+ * Momentum document renderer, which emits an embeddable fragment with no <head> of its
+ * own. Keep the two URLs identical.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Signika:wght@300..700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&family=Gochi+Hand&display=swap");

@@ -1,0 +1,1191 @@
+<title>Momentum Quoting Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  
+  --acorn-green:      #23dba7;  
+  --acorn-purple:     #743bfc;  
+  --acorn-red:        #ea5274;  
+  --acorn-yellow:     #fcb01a;  
+  --acorn-blue-black: #16252d;  
+
+  
+  --white:    #ffffff;
+  --paper:    #fbfbfb;
+  --ink:      #16252d;
+  --gray-100: #f5f5f5;
+  --gray-600: #405f7c;
+  --gray-700: #2c3539;
+  --slate-100:#d5d8d9;  
+
+  
+  --green-500:  #23dba7;  --green-300:  #91edd3;  --green-100:  #d3f8ed;  --green-50:  #e9fbf6;
+  --purple-500: #743bfc;  --purple-300: #b99dfd;  --purple-100: #e3d8fd;  --purple-50: #f1ebff;
+  --yellow-500: #fcb01a;  --yellow-300: #fdd78c;  --yellow-100: #feefd1;  --yellow-50: #fff7e8;
+  --red-500:    #ea5274;  --red-300:    #f4a8b9;  --red-100:    #fbdce3;  --red-50:    #fdedf1;
+
+  
+  --color-bg:            var(--white);
+  --color-bg-muted:      var(--gray-100);
+  --color-bg-dark:       var(--acorn-blue-black);
+  --color-bg-brand:      var(--acorn-purple);
+  --color-bg-accent:     var(--acorn-green);
+  --color-fg:            var(--acorn-blue-black);
+  --color-fg-muted:      var(--gray-600);
+  --color-fg-on-dark:    var(--white);
+  --color-fg-on-brand:   var(--white);
+  --color-fg-accent:     var(--acorn-green);
+  --color-fg-link:       var(--acorn-purple);
+  --color-border:        #e5e7eb;
+  --color-focus-ring:    var(--acorn-purple);
+  --color-success:       var(--acorn-green);
+  --color-warning:       var(--acorn-yellow);
+  --color-danger:        var(--acorn-red);
+
+  
+  --chart-1:     var(--purple-500);
+  --chart-2:     var(--yellow-500);
+  --chart-3:     var(--gray-600);
+  --chart-4:     var(--green-500);
+  --chart-5:     var(--acorn-blue-black);
+  --chart-6:     var(--purple-300);
+  --chart-other: var(--slate-100);
+
+  
+  --chart-seq-1:    var(--acorn-blue-black);
+  --chart-seq-2:    var(--purple-500);
+  --chart-seq-3:    var(--purple-300);
+  --chart-seq-4:    var(--purple-100);
+  --chart-seq-edge: var(--purple-300);   
+
+  
+  --chart-nm:       var(--color-border);
+
+  
+  --momentum-trigger:     #e64f77;  
+  --momentum-event:       #54b394;  
+  --momentum-action-form: #223976;  
+  --momentum-action-wait: #e64f77;  
+  --momentum-terminal:    #9d5ca4;  
+
+  
+  --font-display: "Signika", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-hand:    "Gochi Hand", cursive;
+  --font-mono:    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  
+  --fs-xs: 0.75rem; --fs-sm: 0.875rem; --fs-base: 1rem; --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;  --fs-2xl: 1.75rem; --fs-3xl: 2rem;  --fs-4xl: 2.5rem;
+  --fs-5xl: 3.375rem; --fs-6xl: 4rem;
+
+  
+  --radius-xs: 4px; --radius-sm: 8px; --radius-md: 12px;
+  --radius-lg: 16px; --radius-xl: 24px; --radius-pill: 9999px;
+
+  
+  --shadow-sm:   0 1px 2px rgba(22,37,45,.06);
+  --shadow-md:   0 4px 12px rgba(22,37,45,.08);
+  --shadow-lg:   0 10px 25px rgba(22,37,45,.10);
+  --shadow-card: 0 10px 30px rgba(116,59,252,.08);
+
+  
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 96px;
+
+  
+  --ease-acorn: cubic-bezier(0.77, 0, 0.18, 1);
+  --dur-fast: 200ms;
+  --dur-med:  500ms;
+  --dur-slow: 2s;
+}
+</style>
+<style>
+/* The quoting tool's own styles. Tokens only: every colour, font, size,
+ * radius and shadow is a design-system variable. Scoped under .mq. */
+
+.mq{
+  --color-page:var(--paper);
+  --color-surface:var(--white);
+  --rail-w:260px; --side-w:300px; --bar:64px;
+  font-family:var(--font-body); color:var(--color-fg); background:var(--color-page);
+  min-height:100vh; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+@media (prefers-color-scheme:dark){.mq:not([data-theme="light"]){
+  --color-surface:#131b21;--color-page:#0b1014;--color-bg:#131b21;--color-bg-muted:#1a2329;
+  --paper:#172026;--color-fg:#e6edf1;--color-fg-muted:#9aa7ae;
+  --color-fg-link:var(--purple-300);--color-border:#2a353d;--gray-100:#1a2329;
+  --purple-100:#2b2148;--purple-50:#1c1733;--red-50:#2f171e;
+  --yellow-50:#2f2412;--green-100:#123830;--green-50:#0f2a24}}
+.mq[data-theme="dark"]{
+  --color-surface:#131b21;--color-page:#0b1014;--color-bg:#131b21;--color-bg-muted:#1a2329;
+  --paper:#172026;--color-fg:#e6edf1;--color-fg-muted:#9aa7ae;
+  --color-fg-link:var(--purple-300);--color-border:#2a353d;--gray-100:#1a2329;
+  --purple-100:#2b2148;--purple-50:#1c1733;--red-50:#2f171e;
+  --yellow-50:#2f2412;--green-100:#123830;--green-50:#0f2a24}
+
+.mq *,.mq *::before,.mq *::after{box-sizing:border-box}
+.mq h1,.mq h2,.mq h3,.mq h4{font-family:var(--font-display);font-weight:700;line-height:1.1;
+  letter-spacing:-0.03em;text-wrap:balance;margin:0;color:inherit}
+.mq h1{font-size:var(--fs-xl)}
+.mq h2{font-size:var(--fs-3xl)}
+.mq h3{font-size:var(--fs-lg)}
+.mq h4{font-size:var(--fs-base);font-weight:600}
+.mq p{margin:0}
+.mq a{color:var(--color-fg-link)}
+.mq :focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
+.mq .num{font-variant-numeric:tabular-nums}
+.mq .muted{color:var(--color-fg-muted)}
+.mq .small{font-size:var(--fs-sm)}
+.mq .eyebrow{font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);
+  letter-spacing:.08em;text-transform:uppercase;color:var(--color-fg-muted)}
+.mq-noscript{padding:var(--space-6);text-align:center}
+
+/* Header band. Blue-black, white text - the one dark band on the page. */
+.mq-bar{position:sticky;top:0;z-index:20;min-height:var(--bar);background:var(--acorn-blue-black);
+  color:var(--white);display:flex;align-items:center;gap:var(--space-4);padding:var(--space-3) var(--space-5)}
+.mq-bar .brand{display:flex;flex-direction:column;gap:2px;min-width:0}
+.mq-bar .brand .eyebrow{color:var(--green-300)}
+.mq-bar h1{color:var(--white);font-size:var(--fs-lg)}
+.mq-bar nav{margin-left:auto;display:flex;gap:var(--space-2);flex-wrap:wrap;justify-content:flex-end}
+
+/* Buttons: the Acorn recipe. Signika 700, all caps, softly rounded. */
+.mq .btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);
+  font-family:var(--font-display);font-weight:700;font-size:var(--fs-sm);letter-spacing:.04em;
+  text-transform:uppercase;padding:10px 18px;border:0;border-radius:var(--radius-sm);cursor:pointer;
+  transition:background var(--dur-fast) ease,color var(--dur-fast) ease;text-decoration:none;line-height:1.2}
+.mq .btn:disabled{opacity:.5;cursor:not-allowed}
+.mq .btn-green{background:var(--acorn-green);color:var(--acorn-blue-black)}
+.mq .btn-green:hover:not(:disabled){background:var(--acorn-purple);color:var(--white)}
+.mq .btn-purple{background:var(--acorn-purple);color:var(--white)}
+.mq .btn-purple:hover:not(:disabled){background:var(--acorn-blue-black);color:var(--white)}
+.mq .btn-ghost{background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+.mq .btn-ghost:hover:not(:disabled){background:var(--purple-100);color:var(--color-fg)}
+.mq-bar .btn-ghost:hover:not(:disabled){background:var(--white);color:var(--acorn-blue-black)}
+.mq .btn-ghost[aria-current="page"]{background:var(--white);color:var(--acorn-blue-black);box-shadow:none}
+.mq .btn-sm{padding:6px 12px;font-size:var(--fs-xs)}
+.mq .btn-text{background:none;border:0;padding:0;color:var(--color-fg-link);cursor:pointer;
+  font:inherit;text-decoration:underline;text-underline-offset:2px}
+
+/* Page grid: rail, main, side. */
+.mq-page{display:grid;grid-template-columns:var(--rail-w) minmax(0,1fr) var(--side-w);
+  gap:var(--space-6);align-items:start;max-width:1280px;margin:0 auto;padding:var(--space-6) var(--space-5) var(--space-9)}
+@media (max-width:1100px){.mq-page{grid-template-columns:var(--rail-w) minmax(0,1fr)}
+  .mq-side{grid-column:1 / -1;position:static}}
+@media (max-width:760px){.mq-page{grid-template-columns:1fr;gap:var(--space-5)}
+  .mq-rail{position:static;max-height:none}
+  .mq-rail ol{flex-direction:row;overflow-x:auto;gap:var(--space-2);padding-bottom:var(--space-2)}
+  .mq-rail li{flex:0 0 auto}
+  .mq-rail .group{display:none}
+  .mq-rail .rail-step{padding:8px 12px;background:var(--color-surface);border:1px solid var(--color-border)}
+  .mq-rail .rail-step[aria-current="step"]{border-color:var(--acorn-purple)}}
+
+/* Rail: the twelve steps, one current. */
+.mq-rail{position:sticky;top:calc(var(--bar) + var(--space-5));max-height:calc(100vh - var(--bar) - var(--space-7));overflow:auto}
+.mq-rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.mq-rail .group{margin-top:var(--space-4);padding:0 var(--space-3) var(--space-1)}
+.mq-rail .group:first-child{margin-top:0}
+.mq-rail .rail-step{display:flex;align-items:center;gap:var(--space-3);width:100%;text-align:left;
+  background:none;border:0;border-radius:var(--radius-sm);padding:9px var(--space-3);cursor:pointer;
+  color:var(--color-fg);font:inherit;font-size:var(--fs-sm);transition:background var(--dur-fast) ease}
+.mq-rail .rail-step:hover{background:var(--purple-50)}
+.mq-rail .rail-step[aria-current="step"]{background:var(--acorn-purple);color:var(--white)}
+.mq-rail .rail-step .dot{flex:0 0 22px;width:22px;height:22px;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:var(--fs-xs);
+  border:1.5px solid var(--color-border);color:var(--color-fg-muted);background:var(--color-surface)}
+.mq-rail .rail-step.done .dot{background:var(--acorn-green);border-color:var(--acorn-green);color:var(--acorn-blue-black)}
+.mq-rail .rail-step[aria-current="step"] .dot{background:var(--white);border-color:var(--white);color:var(--acorn-purple)}
+.mq-rail .rail-step .label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mq-rail .rail-step .pts{flex:0 0 auto;font-family:var(--font-display);font-weight:700;font-size:var(--fs-xs);
+  padding:1px 7px;border-radius:var(--radius-pill);background:var(--purple-100);color:var(--color-fg)}
+.mq-rail .rail-step[aria-current="step"] .pts{background:var(--white);color:var(--acorn-purple)}
+
+/* Main pane: one step as a card. */
+.mq-main{min-width:0}
+.mq-card{background:var(--color-surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);
+  padding:var(--space-6);display:flex;flex-direction:column;gap:var(--space-5)}
+@media (max-width:760px){.mq-card{padding:var(--space-5)}}
+.mq-card header{display:flex;flex-direction:column;gap:var(--space-2)}
+.mq-card header .lede{max-width:65ch;color:var(--color-fg-muted)}
+.mq-card footer{display:flex;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap;
+  padding-top:var(--space-4);border-top:1px solid var(--color-border)}
+.mq .prose{max-width:65ch;display:flex;flex-direction:column;gap:var(--space-3)}
+
+/* Ask / why blocks on a factor step. */
+.mq .ask{background:var(--purple-50);border-radius:var(--radius-md);padding:var(--space-4) var(--space-5);
+  display:flex;flex-direction:column;gap:var(--space-2);max-width:72ch}
+.mq .ask .eyebrow{color:var(--acorn-purple)}
+.mq .ask blockquote{margin:0;font-size:var(--fs-lg);font-family:var(--font-display);font-weight:600;line-height:1.3}
+.mq .why{max-width:72ch;color:var(--color-fg-muted);font-size:var(--fs-sm)}
+
+/* Option cards: three (or two) siblings, one chosen. */
+.mq .options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-3)}
+.mq .options.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:640px){.mq .options,.mq .options.two{grid-template-columns:1fr}}
+.mq .opt{display:flex;flex-direction:column;gap:var(--space-2);text-align:left;background:var(--color-surface);
+  border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4);cursor:pointer;
+  color:var(--color-fg);font:inherit;min-height:104px;transition:border-color var(--dur-fast) ease,background var(--dur-fast) ease}
+.mq .opt:hover{border-color:var(--acorn-purple)}
+.mq .opt[aria-pressed="true"]{border-color:var(--acorn-purple);background:var(--purple-50);box-shadow:inset 0 0 0 1px var(--acorn-purple)}
+.mq .opt .pts{font-family:var(--font-display);font-weight:700;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--acorn-purple)}
+.mq .opt .txt{font-weight:500;line-height:1.35}
+.mq .opt .hint{font-size:var(--fs-sm);color:var(--color-fg-muted)}
+.mq .opt.high .pts{color:var(--color-fg)}
+.mq .rule{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3) var(--space-4);
+  border-radius:var(--radius-sm);background:var(--yellow-50);font-size:var(--fs-sm);max-width:72ch}
+.mq .rule::before{content:"";flex:0 0 4px;align-self:stretch;border-radius:2px;background:var(--acorn-yellow)}
+.mq .rule.good{background:var(--green-50)}
+.mq .rule.good::before{background:var(--acorn-green)}
+.mq .rule.info{background:var(--purple-50)}
+.mq .rule.info::before{background:var(--acorn-purple)}
+
+/* Form fields. */
+.mq .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4)}
+@media (max-width:640px){.mq .fields{grid-template-columns:1fr}}
+.mq .field{display:flex;flex-direction:column;gap:6px}
+.mq .field label,.mq .field .lbl{font-family:var(--font-display);font-weight:600;font-size:var(--fs-sm)}
+.mq input[type=text],.mq input[type=date],.mq input[type=number],.mq select{
+  font:inherit;font-size:var(--fs-base);color:var(--color-fg);background:var(--color-surface);
+  border:1.5px solid var(--color-border);border-radius:var(--radius-sm);padding:10px 12px;width:100%;min-width:0}
+.mq input:focus,.mq select:focus{border-color:var(--acorn-purple);outline:none;box-shadow:0 0 0 2px var(--purple-100)}
+.mq .check{display:flex;flex-direction:column;gap:var(--space-2);padding:var(--space-4);border:1.5px solid var(--color-border);border-radius:var(--radius-md)}
+.mq .check .q{font-weight:500}
+.mq .seg{display:inline-flex;border:1.5px solid var(--color-border);border-radius:var(--radius-sm);overflow:hidden;width:max-content;max-width:100%;flex-wrap:wrap}
+.mq .seg button{background:var(--color-surface);border:0;padding:8px 16px;font-family:var(--font-display);font-weight:600;
+  font-size:var(--fs-sm);color:var(--color-fg);cursor:pointer;transition:background var(--dur-fast) ease}
+.mq .seg button + button{border-left:1.5px solid var(--color-border)}
+.mq .seg button[aria-pressed="true"]{background:var(--acorn-purple);color:var(--white)}
+.mq .seg button:hover:not([aria-pressed="true"]){background:var(--purple-50)}
+.mq .toggle{display:flex;align-items:flex-start;gap:var(--space-3);cursor:pointer}
+.mq .toggle input{width:18px;height:18px;margin:3px 0 0;accent-color:var(--acorn-purple);flex:0 0 auto}
+
+/* Tables. */
+.mq .tbl-wrap{overflow-x:auto}
+.mq table{width:100%;border-collapse:collapse;font-size:var(--fs-sm)}
+.mq th,.mq td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--color-border);vertical-align:top}
+.mq th{font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--color-fg-muted)}
+.mq td.num,.mq th.num{text-align:right;white-space:nowrap}
+.mq tr.total td{font-family:var(--font-display);font-weight:700;font-size:var(--fs-base);border-bottom:0;border-top:2px solid var(--color-fg)}
+.mq tr.sub td{color:var(--color-fg-muted)}
+.mq td .detail{display:block;color:var(--color-fg-muted);font-size:var(--fs-xs)}
+
+/* Care tier picker. */
+.mq .care-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-3)}
+@media (max-width:760px){.mq .care-grid{grid-template-columns:1fr}}
+.mq .care{display:flex;flex-direction:column;gap:var(--space-2);text-align:left;background:var(--color-surface);
+  border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4);cursor:pointer;color:var(--color-fg);font:inherit}
+.mq .care:hover{border-color:var(--acorn-purple)}
+.mq .care[aria-pressed="true"]{border-color:var(--acorn-purple);background:var(--purple-50);box-shadow:inset 0 0 0 1px var(--acorn-purple)}
+.mq .care .name{font-family:var(--font-display);font-weight:700;font-size:var(--fs-lg)}
+.mq .care .fee{font-family:var(--font-display);font-weight:700;font-size:var(--fs-2xl);letter-spacing:-0.02em}
+.mq .care dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:var(--fs-sm)}
+.mq .care dt{color:var(--color-fg-muted)}
+.mq .care dd{margin:0}
+
+/* Tier result. */
+.mq .tier-hero{display:grid;grid-template-columns:auto 1fr;gap:var(--space-5);align-items:center;padding:var(--space-5);
+  border-radius:var(--radius-md);background:var(--purple-50)}
+@media (max-width:640px){.mq .tier-hero{grid-template-columns:1fr}}
+.mq .tier-hero .score{font-family:var(--font-display);font-weight:700;font-size:var(--fs-5xl);line-height:1;letter-spacing:-0.04em;color:var(--acorn-purple)}
+.mq .tier-hero .score small{display:block;font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--color-fg-muted);font-weight:600;margin-top:4px}
+.mq .tier-hero .name{font-family:var(--font-display);font-weight:700;font-size:var(--fs-3xl);letter-spacing:-0.03em}
+.mq .factor-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2) var(--space-5)}
+@media (max-width:640px){.mq .factor-list{grid-template-columns:1fr}}
+.mq .factor-list li{display:flex;justify-content:space-between;gap:var(--space-3);padding:8px 0;border-bottom:1px solid var(--color-border);font-size:var(--fs-sm)}
+.mq .factor-list .pts{flex:0 0 auto;font-family:var(--font-display);font-weight:700;padding:0 8px;border-radius:var(--radius-pill);background:var(--purple-100);color:var(--color-fg)}
+.mq .factor-list .pts.three{background:var(--acorn-yellow);color:var(--acorn-blue-black)}
+.mq .lower{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-2)}
+.mq .lower li{display:flex;justify-content:space-between;gap:var(--space-3);padding:10px 14px;border-radius:var(--radius-sm);background:var(--green-50);font-size:var(--fs-sm)}
+.mq .lower li b{white-space:nowrap}
+
+/* Extra lines editor. */
+.mq .extras{display:flex;flex-direction:column;gap:var(--space-2)}
+.mq .extra-row{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) auto auto auto;gap:var(--space-2);align-items:center}
+@media (max-width:760px){.mq .extra-row{grid-template-columns:1fr 1fr;} .mq .extra-row .seg{grid-column:1 / -1}}
+.mq .extra-row .del{background:none;border:0;color:var(--color-fg-muted);cursor:pointer;font:inherit;text-decoration:underline;padding:4px}
+
+/* Side summary. */
+.mq-side{position:sticky;top:calc(var(--bar) + var(--space-5));display:flex;flex-direction:column;gap:var(--space-4)}
+.mq-side .panel{background:var(--acorn-blue-black);color:var(--white);border-radius:var(--radius-lg);padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-4)}
+.mq-side .panel .eyebrow{color:var(--green-300)}
+.mq-side .big{font-family:var(--font-display);font-weight:700;font-size:var(--fs-3xl);letter-spacing:-0.03em;line-height:1}
+.mq-side .big small{display:block;font-family:var(--font-body);font-weight:400;font-size:var(--fs-sm);color:var(--gray-100);opacity:.8;margin-top:6px;letter-spacing:0}
+.mq-side dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:var(--fs-sm)}
+.mq-side dt{opacity:.8}
+.mq-side dd{margin:0;text-align:right;font-weight:500}
+.mq-side .score-track{display:grid;grid-template-columns:repeat(8,1fr);gap:3px}
+.mq-side .score-track span{height:6px;border-radius:3px;background:rgba(255,255,255,.18)}
+.mq-side .score-track span.p1{background:var(--acorn-green)}
+.mq-side .score-track span.p2{background:var(--purple-300)}
+.mq-side .score-track span.p3{background:var(--acorn-yellow)}
+.mq-side .note{font-size:var(--fs-xs);opacity:.75}
+
+/* Quote step. */
+.mq .quote-head{display:flex;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap;align-items:flex-end}
+.mq .quote-head .meta{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;font-size:var(--fs-sm)}
+.mq .quote-head .meta dt{color:var(--color-fg-muted)}
+.mq .quote-head .meta dd{margin:0}
+.mq .totals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-3)}
+@media (max-width:640px){.mq .totals{grid-template-columns:1fr}}
+.mq .tile{border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4);display:flex;flex-direction:column;gap:4px}
+.mq .tile.lead{background:var(--acorn-green);border-color:var(--acorn-green);color:var(--acorn-blue-black)}
+.mq .tile .v{font-family:var(--font-display);font-weight:700;font-size:var(--fs-2xl);letter-spacing:-0.02em;line-height:1.1}
+.mq .tile .k{font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;font-weight:600;font-family:var(--font-display)}
+.mq .tile.lead .k{color:var(--acorn-blue-black)}
+.mq .tile:not(.lead) .k{color:var(--color-fg-muted)}
+.mq .cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-5)}
+@media (max-width:640px){.mq .cols{grid-template-columns:1fr}}
+.mq .cols ul{margin:0;padding-left:1.1em;font-size:var(--fs-sm);display:flex;flex-direction:column;gap:6px}
+.mq .actions{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
+.mq .toast{font-size:var(--fs-sm);color:var(--color-fg-muted)}
+.mq details.terms summary{cursor:pointer;font-family:var(--font-display);font-weight:600}
+.mq details.terms{border-top:1px solid var(--color-border);padding-top:var(--space-3)}
+
+/* Library. */
+.mq-lib{max-width:1280px;margin:0 auto;padding:var(--space-6) var(--space-5) var(--space-9);display:flex;flex-direction:column;gap:var(--space-5)}
+.mq-lib .row-actions{display:flex;gap:var(--space-2);white-space:nowrap}
+.mq .empty{padding:var(--space-6);text-align:center;color:var(--color-fg-muted);border:1.5px dashed var(--color-border);border-radius:var(--radius-md)}
+.mq .chip{display:inline-block;font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);padding:2px 9px;border-radius:var(--radius-pill);background:var(--purple-100);color:var(--color-fg)}
+.mq .chip.green{background:var(--green-100)}
+
+@media (prefers-reduced-motion:reduce){.mq *{transition-duration:1ms!important}}
+
+/* Print: the client-facing quote sheet only. */
+@media print{
+  .mq{background:#fff;color:#000}
+  .mq-bar,.mq-rail,.mq-side,.mq-card footer,.mq .actions,.mq .no-print{display:none!important}
+  .mq-page{display:block;padding:0;max-width:none}
+  .mq-card{box-shadow:none;padding:0;border-radius:0}
+  .mq .tile.lead{background:#fff;border:2px solid #000}
+  .mq details.terms{display:block}
+  .mq details.terms[open] summary{display:none}
+}
+
+</style>
+<div class="mq" id="app">
+  <noscript><p class="mq-noscript">The quoting tool needs JavaScript to score a workflow and price it.</p></noscript>
+</div>
+<script id="model-json" type="application/json">{"_readme": ["The one place a Momentum Services number lives. Taken from 'Momentum Solutions Architect", "Service - Commercial model, rate card and service levels' (Acorn Works, September 2026),", "client-facing sections 1 to 12 only. app/src/model.js reads it; tools/build_app.py inlines", "it into the quoting tool. Change a value here and rebuild; never edit a number in the page.", "Indexation is set at 7% a year on Care, replacing the document's 'greater of CPI or 3.5%'."], "version": "2026-09-08", "source": "Momentum SA commercial model v4, September 2026", "currency": "AUD", "tax_note": "All figures AUD, ex GST, Year 1 rates.", "service": {"name": "Momentum Solutions Architect Service", "summary": "A Momentum Studio license gives you the visual Builder and the right to create workflows yourself. The Solutions Architect Service is the option to have Acorn do it instead: we scope the process, design the workflow, build it in your tenant, and own it from go-live.", "components": [{"key": "discovery", "label": "Discovery", "recurs": false, "text": "We map the process and produce a Workflow Design Document."}, {"key": "build", "label": "Build", "recurs": false, "text": "We configure, test and deploy the workflow."}, {"key": "care", "label": "Momentum Care", "recurs": true, "text": "We own the workflow from go-live."}], "commitment": "Discovery and Build are one-off. Care is annual and recurs with your license. All three are committed together: Discovery is not sold on its own."}, "pre_scope": {"text": "No charge. One 45-minute call. Produces a provisional Complexity Scorecard, a tier and a quotable price. Score conservatively: where a factor is unclear, it scores high. Discovery re-scores with full information; if the tier moves, only the difference is billed or credited, once, in writing, at the end of Discovery.", "checks": [{"key": "studio", "question": "Does the client hold a Momentum Studio license?", "yes": "Studio is in place. A custom workflow needs the Advanced Momentum Tenant feature, which Studio carries.", "no": "A custom workflow needs the Advanced Momentum Tenant feature, so a Base client moves to Studio first. Quote the Studio uplift as its own line and add it under extra lines.", "flag_when": "no"}, {"key": "blueprint", "question": "Does the process match a pre-built Blueprint?", "yes": "Tell the client so on this call. A Blueprint is the cheaper answer and this service is not the right fit.", "no": "No Blueprint covers it, so a custom build is the right conversation.", "flag_when": "yes"}, {"key": "self_build", "question": "Does the client have the admin capacity and appetite to build it themselves?", "yes": "Say so. The Builder is included in Studio and disqualifying in an hour is cheaper than disqualifying in a Discovery.", "no": "The client wants Acorn to own the build. Continue.", "flag_when": "yes"}, {"key": "integration", "question": "Does the workflow need data reported out to an external system beyond what Acorn's APIs support?", "yes": "Custom integration is not included in this service. Momentum cannot receive data pushed in; integration is read-only reporting out. Quote it as a separate line item.", "no": "No integration line. Where the client reads Momentum data themselves with Acorn's APIs there is no charge.", "flag_when": "yes"}]}, "scorecard": {"rule": "Eight factors, each scoring 1, 2 or 3. The total sets the tier. Where a factor is unclear, it scores high.", "factors": [{"key": "nodes", "label": "Nodes / steps", "ask": "Walk me through the process from the moment somebody starts a request to the moment it closes. How many distinct steps does it pass through?", "why": "Every box on the Builder canvas is a step: a form somebody fills in, an automatic email, a wait, a hand-off, an end. Count every one, including the automatic ones the client does not think of as steps.", "options": [{"points": 1, "label": "6 or fewer"}, {"points": 2, "label": "7 to 15"}, {"points": 3, "label": "16 or more"}]}, {"key": "transitions", "label": "Transitions", "ask": "At the busiest step, how many different ways can a request leave it? Include send-back, reject and loop-back paths.", "why": "Transitions covers every path out of a step, including send-back and loop-back paths. It is scored on the busiest step, not the average. Momentum has no decision step: an approval is a form and the branching lives on the paths leaving it, so a reviewer with approve, reject, send back and escalate is four paths.", "options": [{"points": 1, "label": "1 to 2 per step"}, {"points": 2, "label": "3 to 4 per step"}, {"points": 3, "label": "5 or more per step"}]}, {"key": "forms", "label": "Forms", "ask": "How many points are there where somebody has to fill something in or make a decision: the intake, each approval, each escalation, each review?", "why": "Forms carries the approval and escalation load. Each approval or escalation stage needs its own form, so form count is the measure rather than tier count.", "options": [{"points": 1, "label": "1 to 2"}, {"points": 2, "label": "3 to 5"}, {"points": 3, "label": "6 or more"}]}, {"key": "routing", "label": "Routing data availability", "ask": "When a request has to reach the right person, how does the system know who that is? Is the manager relationship, cost centre or team already held in the platform and kept current?", "why": "Every field the workflow relies on to route correctly has to exist and be populated. Data that is not confirmed to exist is the most reliable predictor of a build running long, which is why a 3 here places the workflow at Moderate or above regardless of total.", "options": [{"points": 1, "label": "Confirmed in platform"}, {"points": 2, "label": "Derivable from existing fields"}, {"points": 3, "label": "Unconfirmed, or requires data not held in the platform"}]}, {"key": "external", "label": "External Momentum (public intake)", "ask": "Does anybody outside the client's user base need to start a request without logging in, such as a supplier, an applicant or a member of the public?", "why": "A public intake page means anonymous submitters, spam and duplicate handling, and a different test plan. It is either needed or it is not, so this factor scores 1 or 3.", "options": [{"points": 1, "label": "Not required"}, {"points": 3, "label": "Required"}]}, {"key": "course", "label": "Course / Momentum activity tie-in", "ask": "Does the process connect to training? Does completing or enrolling in a course start it, or does it begin from inside a course itself?", "why": "A completion or enrolment trigger needs the course link set up and tested with a real learner. A workflow that commences from a Course Momentum activity inside a course adds the activity, its timing setting and a test enrolment.", "options": [{"points": 1, "label": "None"}, {"points": 2, "label": "Completion or enrolment trigger"}, {"points": 3, "label": "Commences from a Course Momentum activity"}]}, {"key": "reporting", "label": "Reporting requirement", "ask": "What does the client need to see afterwards? Is the live table of requests and its export enough, or do they need particular fields reported, or a generated report delivered somewhere?", "why": "Standard Momentum reporting is the live table of every request with status and an export. Custom constant reporting surfaces routing-rule values. Generated reports delivered by email or SFTP are built and scheduled work.", "options": [{"points": 1, "label": "Standard Momentum reporting"}, {"points": 2, "label": "Custom constant reporting"}, {"points": 3, "label": "Custom generated reports delivered by email or SFTP"}]}, {"key": "visibility", "label": "Form visibility scopes", "ask": "Should different people see different parts of the request? How many distinct audiences need to see only their own step or their own questions?", "why": "Each visibility scope is a list to configure and a test from both sides: who can see it and who cannot. HR-only fields, a manager's view, an auditor's read-only view each count.", "options": [{"points": 1, "label": "1 to 2"}, {"points": 2, "label": "3 to 4"}, {"points": 3, "label": "5 or more"}]}], "tiers": [{"key": "simple", "label": "Simple", "min": 8, "max": 11}, {"key": "moderate", "label": "Moderate", "min": 12, "max": 16}, {"key": "complex", "label": "Complex", "min": 17, "max": 24}, {"key": "programme", "label": "Programme", "min": null, "max": null, "text": "Multiple linked workflows, or cross-workflow dependency. Scoped individually."}], "floor_rule": {"factor": "routing", "points": 3, "min_tier": "moderate", "text": "A 3 on routing data availability places the workflow at Moderate or above regardless of total."}, "ceiling_rule": {"threes": 6, "tier": "programme", "text": "A workflow scoring 3 on six or more factors is quoted as a Programme even if the total lands below 17."}, "programme_rule": {"text": "Multiple linked workflows, or a cross-workflow dependency, is a Programme regardless of score."}}, "prices": {"_note": "Year 1 rates per workflow tier. Programme figures are 'from' and scoped individually.", "simple": {"discovery": 2450, "build": 7450, "indicative": false}, "moderate": {"discovery": 3450, "build": 16950, "indicative": false}, "complex": {"discovery": 5650, "build": 32500, "indicative": false}, "programme": {"discovery": 7500, "build": 46000, "indicative": true}}, "build": {"sprints": {"simple": 0.5, "moderate": 1, "complex": 2, "programme": null}, "sprint_weeks": 2, "stages": [{"stage": "Build sprints", "duration": "0.5 to 3 sprints", "text": "Configuration in staging, internal functional and regression testing, demonstration at the end of each sprint.", "client_time": "60-minute demo per sprint"}, {"stage": "UAT", "duration": "5 business days", "text": "Client tests against the design document. Defects returned as one consolidated list.", "client_time": "Client-led"}, {"stage": "Rework", "duration": "Included", "text": "One consolidated rework pass.", "client_time": "Sign-off"}, {"stage": "Go-live", "duration": "Scheduled", "text": "Deployment against the release calendar, handover pack, administrator walkthrough.", "client_time": "60-minute session"}, {"stage": "Hypercare", "duration": "10 business days", "text": "Included. Critical issues handled at fastest response levels regardless of Care tier.", "client_time": "As needed"}, {"stage": "Warranty", "duration": "30 business days", "text": "Any defect measured against the signed design is fixed at no charge.", "client_time": ""}], "included": ["Detailed design of nodes, transitions, constants, forms and routing rules.", "Configuration in staging, including notification templates and role scoping.", "Internal testing before anything reaches the client.", "UAT support and one consolidated rework pass.", "Production deployment, handover pack (workflow documentation, form question set, escalation map) and administrator walkthrough.", "Ten business days hypercare, thirty business days warranty."]}, "discovery": {"text": "Two sixty-minute working sessions inside a week or two, plus a documentation handover. The first walks the current process end to end; the second confirms the design drafted from it.", "deliverables": ["Workflow Design Document. Every step, branch, approval tier, form question, notification and escalation path, in the client's language.", "Confirmed Complexity Scorecard. The provisional pre-scope score re-run with full information. Confirms or adjusts the tier.", "Data-dependency register. Every field the workflow relies on to route correctly, verified as present and populated.", "Build schedule. Sprint slots and a go-live date against the Acorn release calendar."]}, "care": {"text": "Approvers leave and need reassigning. The platform releases and configurations need re-checking. Processes change. Care is Acorn continuing to own the workflow rather than handing it over at go-live. Care at Essential or above is a condition of the service.", "tiers": [{"key": "essential", "label": "Essential", "percent_of_build": 18, "minimum": 2450, "allowance_hours": 8, "cadence": "Annual health report", "critical_response": "4 business hrs", "service_credits": false}, {"key": "standard", "label": "Standard", "percent_of_build": 25, "minimum": 3950, "allowance_hours": 15, "cadence": "Quarterly health check", "critical_response": "2 business hrs", "service_credits": true}, {"key": "premier", "label": "Premier", "percent_of_build": 35, "minimum": 5950, "allowance_hours": 30, "cadence": "Monthly review, named Solutions Architect", "critical_response": "1 business hr", "service_credits": true}], "table": {"_note": "Published Year 1 Care fee by workflow tier and Care tier. Programme rows are 'from', derived from the from-Build at the tier percentage.", "simple": {"essential": 2450, "standard": 3950, "premier": 5950}, "moderate": {"essential": 3050, "standard": 4240, "premier": 5950}, "complex": {"essential": 5850, "standard": 8120, "premier": 11380}, "programme": {"essential": 8280, "standard": 11500, "premier": 16100}}, "extended_coverage": {"tier": "premier", "percent_of_care": 20, "label": "Extended coverage, 7:00am to 7:00pm AET", "text": "Premier can add 7:00am to 7:00pm coverage for 20% of the Care fee."}, "coverage": "8:30am to 5:30pm AET, Monday to Friday, excluding national public holidays and the Acorn end-of-year shutdown.", "covered": ["Break-fix on any defect in an Acorn-built workflow.", "Compatibility check against every platform release, and remediation of anything a release breaks.", "Correction of configuration drift.", "Reassignment of constants and roles when people move or leave. In practice the most common request.", "Notification and form wording changes, within allowance.", "Incident triage and coordination with Support and Engineering."], "not_covered": ["New nodes, branches, forms or approval tiers.", "New integration points.", "Redesign that changes the complexity tier. Re-scoped as a build increment.", "Changes made by the client's own admins in the Builder. Re-baselining is billable and suspends service levels on that workflow until complete.", "Platform defects, covered by Acorn Support under the license.", "Training beyond the included administrator walkthrough."], "allowance_note": "Valid 12 months. Unused allowance does not carry over."}, "indexation": {"cpi_percent": 7, "applies_to": "Care fees, and any line marked as indexed, at each anniversary.", "text": "Care fees increase at each anniversary by 7%."}, "discounts": {"repeat_workflow": {"text": "Second workflow within 12 months: 10% off Discovery and Build. Third and subsequent: 15%. Care is not volume-discounted.", "positions": [{"key": "first", "label": "First workflow", "percent": 0}, {"key": "second", "label": "Second workflow within 12 months", "percent": 10}, {"key": "third", "label": "Third or subsequent workflow", "percent": 15}]}}, "service_levels": [{"severity": "Critical", "definition": "Workflow cannot be submitted, approved or progressed at all, and is blocking a statutory, safety, payroll-linked or time-critical process.", "response": "1 to 4 business hrs by Care tier", "workaround": "1 business day", "resolution": "3 business days"}, {"severity": "High", "definition": "Core function broken, workaround exists. Escalations not firing, wrong approver, notifications not sending.", "response": "4 business hrs", "workaround": "2 business days", "resolution": "5 business days"}, {"severity": "Medium", "definition": "Isolated defect or single-user impact. Cosmetic, non-blocking.", "response": "1 business day", "workaround": "", "resolution": "10 business days"}, {"severity": "Low / request", "definition": "Configuration change within Care allowance.", "response": "2 business days", "workaround": "", "resolution": "Next sprint slot, or 15 business days"}], "terms": [{"term": "Eligibility", "position": "Momentum Studio license required. A custom workflow needs the Advanced Momentum Tenant feature, so Base clients move to Studio first."}, {"term": "Pre-scope", "position": "No charge, one call, before quote. Not a design engagement and produces no deliverable beyond a tier and a price."}, {"term": "Discovery invoicing", "position": "In full on order, as part of the committed line item."}, {"term": "Build invoicing", "position": "50% on commencement of the first build sprint, 50% at go-live."}, {"term": "Care invoicing", "position": "Annually in advance, first year at go-live, co-terminus with the Momentum license."}, {"term": "Tier adjustment", "position": "One adjustment permitted, at the end of Discovery, in writing, priced as the difference between tiers only."}, {"term": "Care as a condition", "position": "Care at Essential or above is a condition of the service. Acorn does not hand over a workflow it built and decline responsibility for it."}, {"term": "Annual indexation", "position": "Care fees increase at each anniversary by 7%."}, {"term": "Sprint deferral", "position": "Over 10 business days' notice, no charge. Six to ten, 50% of the sprint fee. Five or fewer, 100%."}, {"term": "Integration", "position": "Not included. Scoped and quoted as a separate line item."}, {"term": "Minimum engagement", "position": "One Simple workflow."}, {"term": "Currency and tax", "position": "AUD, ex GST, Year 1 rates."}], "client_needs": ["A named business owner and a named decision maker. They can be the same person.", "Test users and representative test data in staging before Discovery closes, covering every role and approval path.", "Responses to our questions within three business days. Slower and the sprint clock stops.", "Data dependencies verified together during Discovery, not during testing.", "UAT completed inside the five-day window. A window that drifts pushes go-live to the next release slot.", "Change requests raised through the agreed channel. Anything said in a demo is a candidate, not a commitment."], "rate_card": {"role": "Solutions Architect", "hourly": 225, "day": 1675, "sprint": 16400, "out_of_hours": "1.5x rate", "text": "Applies to change requests beyond the Care allowance, work outside a signed design, and engagements quoted on time rather than fixed price."}, "worked_examples": [{"_note": "Section 12 of the document. The per-factor split of example B is inferred so that it totals 21 with five 3s, which is what keeps it Complex under the ceiling rule."}, {"name": "Supplier onboarding, 5,000 users", "scores": {"nodes": 2, "transitions": 2, "forms": 2, "routing": 1, "external": 1, "course": 1, "reporting": 1, "visibility": 2}, "total": 12, "tier": "moderate", "care": "standard", "year1_service": 24640, "recurring": 4240}, {"name": "Grievance handling, 500 users", "scores": {"nodes": 3, "transitions": 2, "forms": 3, "routing": 3, "external": 3, "course": 2, "reporting": 3, "visibility": 2}, "total": 21, "tier": "complex", "care": "premier", "year1_service": 49530, "recurring": 11380}]}</script>
+<script>
+/* The Momentum Services pricing engine.
+ *
+ * Pure functions over the commercial model (pricing/commercial-model.json)
+ * and a set of inputs. No DOM, no state, so app/test/model.test.mjs can hold
+ * it to the worked examples in the document and the page can call the same
+ * code. Every number comes from the model; this file only does arithmetic.
+ *
+ *   MQ.scoreTier(model, scores, linked)   -> the tier and the rules that fired
+ *   MQ.quote(model, inputs)               -> lines, a year-by-year schedule, totals
+ *   MQ.summaryText(model, q, inputs)      -> the plain-text cut for the clipboard
+ */
+(function (root) {
+  "use strict";
+
+  /** Round half away from zero to whole dollars, the way a spreadsheet
+   *  does, so the page and the document agree to the dollar. */
+  function rnd(v) {
+    var sign = v < 0 ? -1 : 1;
+    return sign * Math.round(Math.abs(v) + 1e-9);
+  }
+
+  function tierByKey(model, key) {
+    for (var i = 0; i < model.scorecard.tiers.length; i++) {
+      if (model.scorecard.tiers[i].key === key) return model.scorecard.tiers[i];
+    }
+    return null;
+  }
+
+  function careTierByKey(model, key) {
+    for (var i = 0; i < model.care.tiers.length; i++) {
+      if (model.care.tiers[i].key === key) return model.care.tiers[i];
+    }
+    return null;
+  }
+
+  var ORDER = ["simple", "moderate", "complex", "programme"];
+
+  function tierForTotal(model, total) {
+    var tiers = model.scorecard.tiers;
+    for (var i = 0; i < tiers.length; i++) {
+      var t = tiers[i];
+      if (t.min !== null && t.max !== null && total >= t.min && total <= t.max) return t.key;
+    }
+    return total > 24 ? "programme" : "simple";
+  }
+
+  /**
+   * Score the eight factors. `scores` maps factor key to points (1, 2 or 3);
+   * an unscored factor is missing. `linked` is true when the client has
+   * multiple linked workflows or a cross-workflow dependency.
+   */
+  function scoreTier(model, scores, linked) {
+    var sc = model.scorecard;
+    var total = 0, threes = 0, scored = 0;
+    for (var i = 0; i < sc.factors.length; i++) {
+      var pts = scores[sc.factors[i].key];
+      if (pts) { total += pts; scored += 1; if (pts === 3) threes += 1; }
+    }
+    var complete = scored === sc.factors.length;
+    var rules = [];
+    var key = complete ? tierForTotal(model, total) : null;
+
+    if (complete && scores[sc.floor_rule.factor] === sc.floor_rule.points &&
+        ORDER.indexOf(key) < ORDER.indexOf(sc.floor_rule.min_tier)) {
+      key = sc.floor_rule.min_tier;
+      rules.push({ key: "floor", text: sc.floor_rule.text });
+    }
+    if (complete && threes >= sc.ceiling_rule.threes && key !== "programme") {
+      key = sc.ceiling_rule.tier;
+      rules.push({ key: "ceiling", text: sc.ceiling_rule.text });
+    }
+    if (linked && key !== "programme") {
+      key = "programme";
+      rules.push({ key: "linked", text: sc.programme_rule.text });
+    }
+    return {
+      total: total, threes: threes, scored: scored, complete: complete,
+      tierKey: key, tier: key ? tierByKey(model, key) : null, rules: rules,
+    };
+  }
+
+  /** Year 1 Care fee for a workflow tier and a Care tier, from the published
+   *  table, plus extended coverage where chosen and allowed. */
+  function careFee(model, tierKey, careKey, extended) {
+    var base = model.care.table[tierKey][careKey];
+    var ext = model.care.extended_coverage;
+    var extra = (extended && careKey === ext.tier) ? rnd(base * ext.percent_of_care / 100) : 0;
+    return { base: base, extended: extra, total: base + extra };
+  }
+
+  function repeatPercent(model, positionKey) {
+    var ps = model.discounts.repeat_workflow.positions;
+    for (var i = 0; i < ps.length; i++) if (ps[i].key === positionKey) return ps[i].percent;
+    return 0;
+  }
+
+  /** The savings a lower score on one factor would bring: for each factor
+   *  scored above 1, what tier a one-point reduction would land in. */
+  function whatWouldLower(model, scores, linked) {
+    var now = scoreTier(model, scores, linked);
+    var out = [];
+    if (!now.complete || linked) return out;
+    for (var i = 0; i < model.scorecard.factors.length; i++) {
+      var f = model.scorecard.factors[i];
+      var pts = scores[f.key];
+      if (!pts || pts === 1) continue;
+      var lower = f.options[0].points;
+      for (var j = 0; j < f.options.length; j++) if (f.options[j].points < pts) lower = f.options[j].points;
+      var copy = {}; for (var k in scores) copy[k] = scores[k];
+      copy[f.key] = lower;
+      var then = scoreTier(model, copy, linked);
+      if (then.tierKey !== now.tierKey && ORDER.indexOf(then.tierKey) < ORDER.indexOf(now.tierKey)) {
+        var saving = (model.prices[now.tierKey].discovery + model.prices[now.tierKey].build) -
+                     (model.prices[then.tierKey].discovery + model.prices[then.tierKey].build);
+        var label = "";
+        for (var o = 0; o < f.options.length; o++) if (f.options[o].points === lower) label = f.options[o].label;
+        out.push({ factor: f.label, from: pts, to: lower, toLabel: label,
+                   tier: then.tier.label, saving: saving });
+      }
+    }
+    return out;
+  }
+
+  /**
+   * Price an engagement.
+   *
+   * inputs: {
+   *   scores: {factorKey: points}, linked: bool,
+   *   careTier: "essential"|"standard"|"premier", extendedCoverage: bool,
+   *   repeat: "first"|"second"|"third", years: 1|2|3,
+   *   extras: [{label, amount, kind: "oneoff"|"annual", indexed: bool}]
+   * }
+   */
+  function quote(model, inputs) {
+    var st = scoreTier(model, inputs.scores || {}, !!inputs.linked);
+    if (!st.tierKey) return { ready: false, score: st };
+
+    var tierKey = st.tierKey;
+    var prices = model.prices[tierKey];
+    var careKey = inputs.careTier || "standard";
+    var care = careFee(model, tierKey, careKey, !!inputs.extendedCoverage);
+    var pct = repeatPercent(model, inputs.repeat || "first");
+    var years = Math.max(1, Math.min(3, inputs.years || 1));
+    var cpi = model.indexation.cpi_percent / 100;
+    var extras = (inputs.extras || []).filter(function (e) { return e && e.label && isFinite(e.amount) && e.amount !== 0; });
+
+    var discovery = prices.discovery, build = prices.build;
+    var discDiscount = rnd(discovery * pct / 100), buildDiscount = rnd(build * pct / 100);
+
+    var lines = [
+      { key: "discovery", label: "Discovery", detail: "Workflow Design Document, confirmed scorecard, data-dependency register", amount: discovery, discount: discDiscount, net: discovery - discDiscount, recurs: false },
+      { key: "build", label: "Build", detail: sprintsText(model, tierKey) + ", UAT, go-live, hypercare and warranty", amount: build, discount: buildDiscount, net: build - buildDiscount, recurs: false },
+      { key: "care", label: "Momentum Care, " + careTierByKey(model, careKey).label, detail: "Year 1, annually in advance from go-live", amount: care.base, discount: 0, net: care.base, recurs: true },
+    ];
+    if (care.extended) {
+      lines.push({ key: "extended", label: model.care.extended_coverage.label, detail: model.care.extended_coverage.percent_of_care + "% of the Care fee", amount: care.extended, discount: 0, net: care.extended, recurs: true });
+    }
+    extras.forEach(function (e, i) {
+      lines.push({ key: "extra-" + i, label: e.label, detail: e.kind === "annual" ? (e.indexed ? "Annual, indexed at " + model.indexation.cpi_percent + "%" : "Annual, not indexed") : "One-off", amount: rnd(e.amount), discount: 0, net: rnd(e.amount), recurs: e.kind === "annual", indexed: !!e.indexed, extra: true });
+    });
+
+    var oneOff = 0, careY1 = care.total, annualIndexed = 0, annualFlat = 0;
+    lines.forEach(function (l) {
+      if (!l.recurs) oneOff += l.net;
+      else if (l.extra) { if (l.indexed) annualIndexed += l.net; else annualFlat += l.net; }
+    });
+
+    var schedule = [];
+    for (var y = 1; y <= years; y++) {
+      var factor = Math.pow(1 + cpi, y - 1);
+      var careY = rnd(careY1 * factor);
+      var extrasY = rnd(annualIndexed * factor) + annualFlat;
+      schedule.push({
+        year: y, factor: factor,
+        oneOff: y === 1 ? oneOff : 0,
+        care: careY, extras: extrasY,
+        total: (y === 1 ? oneOff : 0) + careY + extrasY,
+        uplift: y === 1 ? 0 : careY - rnd(careY1 * Math.pow(1 + cpi, y - 2)),
+      });
+    }
+    var contract = 0; schedule.forEach(function (s) { contract += s.total; });
+
+    var milestones = [
+      { when: "On order", what: "Discovery, in full", amount: discovery - discDiscount },
+      { when: "First build sprint", what: "Build, 50%", amount: rnd((build - buildDiscount) / 2) },
+      { when: "Go-live", what: "Build, 50%", amount: (build - buildDiscount) - rnd((build - buildDiscount) / 2) },
+      { when: "Go-live", what: "Care year 1, annually in advance", amount: careY1 + annualIndexed + annualFlat },
+    ];
+    for (var yy = 2; yy <= years; yy++) {
+      milestones.push({ when: "Anniversary " + (yy - 1), what: "Care year " + yy + ", +" + model.indexation.cpi_percent + "%", amount: schedule[yy - 1].total });
+    }
+    var oneOffExtras = 0; lines.forEach(function (l) { if (l.extra && !l.recurs) oneOffExtras += l.net; });
+    if (oneOffExtras) milestones.splice(1, 0, { when: "On order", what: "Other one-off lines", amount: oneOffExtras });
+
+    return {
+      ready: true, score: st, tierKey: tierKey, tier: st.tier, indicative: !!prices.indicative,
+      careTier: careTierByKey(model, careKey), care: care, repeatPercent: pct, years: years,
+      cpiPercent: model.indexation.cpi_percent,
+      lines: lines, schedule: schedule, contract: contract,
+      year1: schedule[0].total, recurring: careY1 + annualIndexed + annualFlat,
+      serviceYear1: (discovery - discDiscount) + (build - buildDiscount) + careY1,
+      milestones: milestones, sprints: model.build.sprints[tierKey],
+      lowering: whatWouldLower(model, inputs.scores || {}, !!inputs.linked),
+    };
+  }
+
+  function sprintsText(model, tierKey) {
+    var n = model.build.sprints[tierKey];
+    if (n === null || n === undefined) return "Sprints scoped individually";
+    if (n === 0.5) return "Half a two-week sprint";
+    return n + (n === 1 ? " two-week sprint" : " two-week sprints");
+  }
+
+  function money(model, v) {
+    var neg = v < 0;
+    var s = Math.abs(rnd(v)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return (neg ? "-" : "") + "$" + s;
+  }
+
+  /** The quote as plain text, for the clipboard. */
+  function summaryText(model, q, inputs) {
+    var eng = inputs.engagement || {};
+    var out = [];
+    var from = q.indicative ? "from " : "";
+    out.push("Momentum Solutions Architect Service - quote");
+    if (eng.client) out.push("Client: " + eng.client);
+    if (eng.workflow) out.push("Workflow: " + eng.workflow);
+    out.push("Tier: " + q.tier.label + " (scorecard " + q.score.total + ")" + (q.indicative ? " - scoped individually, figures are indicative" : ""));
+    out.push("Care: " + q.careTier.label + (q.care.extended ? " with extended coverage" : ""));
+    out.push("");
+    q.lines.forEach(function (l) {
+      out.push(l.label + ": " + from + money(model, l.net) + (l.discount ? " (" + q.repeatPercent + "% repeat-workflow discount applied)" : "") + (l.recurs ? " a year" : ""));
+    });
+    out.push("");
+    q.schedule.forEach(function (s) {
+      out.push("Year " + s.year + ": " + from + money(model, s.total) + (s.year > 1 ? " (Care +" + q.cpiPercent + "%)" : ""));
+    });
+    out.push("Total over " + (q.years === 1 ? "12 months" : q.years + " years") + ": " + from + money(model, q.contract));
+    out.push("");
+    out.push(model.tax_note + " Care indexes at " + q.cpiPercent + "% each anniversary.");
+    return out.join("\n");
+  }
+
+  var MQ = { rnd: rnd, money: money, ORDER: ORDER, tierByKey: tierByKey, careTierByKey: careTierByKey,
+             scoreTier: scoreTier, careFee: careFee, whatWouldLower: whatWouldLower, quote: quote,
+             sprintsText: sprintsText, summaryText: summaryText };
+  root.MQ = MQ;
+  if (typeof module !== "undefined" && module.exports) module.exports = MQ;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+/* The Momentum quoting tool: a step-by-step pre-scope that ends in a quote.
+ *
+ * Twelve steps in a rail: the engagement, the eight scorecard factors, the
+ * tier, Care and commercials, and the quote. Everything is rendered from one
+ * state object; every change re-renders. Saved quotes live in the artifact's
+ * database (the `db` capability) when it is there, and the working draft is
+ * mirrored to localStorage so a refresh does not lose a call's worth of
+ * answers. Customer strings reach the DOM only through esc().
+ */
+(function (root) {
+  "use strict";
+  var MQ = root.MQ;
+  var model = JSON.parse(document.getElementById("model-json").textContent);
+  var DRAFT_KEY = "mq-draft-v1";
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function money(v) { return MQ.money(model, v); }
+  function today() { return new Date().toISOString().slice(0, 10); }
+  function friendlyDate(iso) {
+    if (!iso) return "";
+    var d = new Date(iso + (iso.length === 10 ? "T00:00:00" : ""));
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" });
+  }
+
+  // ---------------------------------------------------------------------
+  // state
+  // ---------------------------------------------------------------------
+
+  function blankInputs() {
+    var checks = {};
+    model.pre_scope.checks.forEach(function (c) { checks[c.key] = null; });
+    return {
+      engagement: { client: "", workflow: "", preparedBy: "", date: today(), checks: checks, notes: "" },
+      scores: {}, linked: false,
+      careTier: "standard", extendedCoverage: false, repeat: "first", years: 1, extras: [],
+    };
+  }
+
+  function exampleInputs() {
+    var ex = model.worked_examples.filter(function (e) { return e.scores; })[0];
+    var inp = blankInputs();
+    inp.engagement.client = "Example client";
+    inp.engagement.workflow = ex.name.split(",")[0];
+    inp.engagement.checks = { studio: "yes", blueprint: "no", self_build: "no", integration: "no" };
+    inp.scores = Object.assign({}, ex.scores);
+    inp.careTier = ex.care;
+    inp.years = 3;
+    inp.example = true;
+    return inp;
+  }
+
+  var state = {
+    view: "wizard", step: 0, inputs: null,
+    db: null, dbState: "connecting", quotes: [], quotesLoaded: false, savedId: null, toast: "",
+  };
+
+  function loadDraft() {
+    try {
+      var raw = root.localStorage.getItem(DRAFT_KEY);
+      if (raw) { var d = JSON.parse(raw); if (d && d.inputs) { state.inputs = d.inputs; state.step = d.step || 0; state.savedId = d.savedId || null; return; } }
+    } catch (e) { /* storage may be unavailable */ }
+    state.inputs = exampleInputs();
+  }
+  function saveDraft() {
+    try { root.localStorage.setItem(DRAFT_KEY, JSON.stringify({ inputs: state.inputs, step: state.step, savedId: state.savedId })); } catch (e) { /* ignore */ }
+  }
+
+  // ---------------------------------------------------------------------
+  // steps
+  // ---------------------------------------------------------------------
+
+  var STEPS = [{ key: "engagement", label: "The engagement", group: "Pre-scope" }];
+  model.scorecard.factors.forEach(function (f, i) {
+    STEPS.push({ key: "factor", factor: f, index: i, label: f.label, group: i === 0 ? "Complexity Scorecard" : null });
+  });
+  STEPS.push({ key: "tier", label: "Tier", group: "Result" });
+  STEPS.push({ key: "care", label: "Care and commercials", group: null });
+  STEPS.push({ key: "quote", label: "Quote", group: null });
+
+  function stepDone(i) {
+    var s = STEPS[i], inp = state.inputs;
+    if (s.key === "engagement") return !!(inp.engagement.client && inp.engagement.workflow);
+    if (s.key === "factor") return !!inp.scores[s.factor.key];
+    if (s.key === "tier") return MQ.scoreTier(model, inp.scores, inp.linked).complete;
+    if (s.key === "care") return !!inp.careTier;
+    return false;
+  }
+
+  function currentQuote() { return MQ.quote(model, state.inputs); }
+
+  // ---------------------------------------------------------------------
+  // rendering
+  // ---------------------------------------------------------------------
+
+  function render() {
+    var app = document.getElementById("app");
+    var html = renderBar();
+    if (state.view === "library") html += renderLibrary();
+    else html += '<div class="mq-page">' + renderRail() + '<main class="mq-main">' + renderStep() + "</main>" + renderSide() + "</div>";
+    app.innerHTML = html;
+    var cur = app.querySelector('.mq-rail [aria-current="step"]');
+    if (cur && cur.scrollIntoView) { try { cur.scrollIntoView({ block: "nearest" }); } catch (e) { /* ignore */ } }
+  }
+
+  function renderBar() {
+    var lib = state.view === "library";
+    var n = state.quotes.length;
+    return '<header class="mq-bar"><div class="brand"><span class="eyebrow">Acorn Works · Momentum Services</span>' +
+      "<h1>Momentum Quoting Tool</h1></div><nav>" +
+      '<button type="button" class="btn btn-ghost btn-sm" data-act="view" data-view="wizard"' + (lib ? "" : ' aria-current="page"') + ">Quote</button>" +
+      '<button type="button" class="btn btn-ghost btn-sm" data-act="view" data-view="library"' + (lib ? ' aria-current="page"' : "") + ">Library" + (state.quotesLoaded ? " (" + n + ")" : "") + "</button>" +
+      '<button type="button" class="btn btn-green btn-sm" data-act="new">New quote</button>' +
+      "</nav></header>";
+  }
+
+  function renderRail() {
+    var out = ['<nav class="mq-rail" aria-label="Steps"><ol>'];
+    STEPS.forEach(function (s, i) {
+      if (s.group) out.push('<li class="group eyebrow">' + esc(s.group) + "</li>");
+      var done = stepDone(i), cur = i === state.step;
+      var pts = s.key === "factor" ? state.inputs.scores[s.factor.key] : null;
+      out.push('<li><button type="button" class="rail-step' + (done ? " done" : "") + '" data-act="go" data-step="' + i + '"' + (cur ? ' aria-current="step"' : "") + ">" +
+        '<span class="dot">' + (s.key === "factor" ? (s.index + 1) : (done ? "✓" : "")) + "</span>" +
+        '<span class="label">' + esc(s.label) + "</span>" +
+        (pts ? '<span class="pts">' + pts + "</span>" : "") + "</button></li>");
+    });
+    out.push("</ol></nav>");
+    return out.join("");
+  }
+
+  function navFooter(i) {
+    var prev = i > 0, next = i < STEPS.length - 1;
+    var nextLabel = STEPS[i + 1] ? (STEPS[i + 1].key === "factor" ? "Next: " + STEPS[i + 1].label : STEPS[i + 1].label) : "";
+    return "<footer>" +
+      (prev ? '<button type="button" class="btn btn-ghost" data-act="go" data-step="' + (i - 1) + '">Back</button>' : "<span></span>") +
+      (next ? '<button type="button" class="btn btn-purple" data-act="go" data-step="' + (i + 1) + '">' + esc(nextLabel) + "</button>" : "") +
+      "</footer>";
+  }
+
+  function renderStep() {
+    var s = STEPS[state.step];
+    if (s.key === "engagement") return renderEngagement();
+    if (s.key === "factor") return renderFactor(s);
+    if (s.key === "tier") return renderTier();
+    if (s.key === "care") return renderCare();
+    return renderQuote();
+  }
+
+  function renderEngagement() {
+    var e = state.inputs.engagement;
+    var out = ['<section class="mq-card"><header><span class="eyebrow">Step 1 of ' + STEPS.length + " · Pre-scope</span><h2>The engagement</h2>",
+      '<p class="lede">' + esc(model.pre_scope.text) + "</p></header>"];
+    if (state.inputs.example) {
+      out.push('<div class="rule info"><div>This is the worked example from the commercial model (supplier onboarding, Moderate, Standard Care), loaded so you can see the tool at rest. ' +
+        '<button type="button" class="btn-text" data-act="new">Start a blank quote</button> when you are on a call.</div></div>');
+    }
+    out.push('<div class="fields">' +
+      field("client", "Client", e.client, "text", "Organisation name") +
+      field("workflow", "Workflow", e.workflow, "text", "The process, in the client's words") +
+      field("preparedBy", "Prepared by", e.preparedBy, "text", "Your name") +
+      field("date", "Date", e.date, "date", "") + "</div>");
+    out.push('<h3>Four questions before the scorecard</h3><p class="why">The pre-scope exists to set the tier before the client commits, and to disqualify. Each of these is a fork in the call, not a blocker in the tool.</p>');
+    out.push('<div class="fields">');
+    model.pre_scope.checks.forEach(function (c) {
+      var v = e.checks[c.key];
+      var msg = v === "yes" ? c.yes : v === "no" ? c.no : "";
+      var flagged = v && v === c.flag_when;
+      out.push('<div class="check"><div class="q">' + esc(c.question) + "</div>" +
+        '<div class="seg" role="group">' +
+        '<button type="button" data-act="check" data-key="' + c.key + '" data-val="yes"' + (v === "yes" ? ' aria-pressed="true"' : "") + ">Yes</button>" +
+        '<button type="button" data-act="check" data-key="' + c.key + '" data-val="no"' + (v === "no" ? ' aria-pressed="true"' : "") + ">No</button></div>" +
+        (msg ? '<div class="rule' + (flagged ? "" : " good") + '"><div>' + esc(msg) + "</div></div>" : "") + "</div>");
+    });
+    out.push("</div>");
+    out.push('<label class="toggle"><input type="checkbox" data-act="linked"' + (state.inputs.linked ? " checked" : "") + "><span><b>Multiple linked workflows, or a cross-workflow dependency.</b> " +
+      '<span class="muted">' + esc(model.scorecard.programme_rule.text) + "</span></span></label>");
+    out.push(navFooter(state.step) + "</section>");
+    return out.join("");
+  }
+
+  function field(key, label, value, type, placeholder) {
+    return '<div class="field"><label for="f-' + key + '">' + esc(label) + '</label><input id="f-' + key + '" type="' + type + '" data-act="eng" data-key="' + key + '" value="' + esc(value) + '" placeholder="' + esc(placeholder) + '"></div>';
+  }
+
+  function renderFactor(s) {
+    var f = s.factor, chosen = state.inputs.scores[f.key];
+    var st = MQ.scoreTier(model, state.inputs.scores, state.inputs.linked);
+    var out = ['<section class="mq-card"><header><span class="eyebrow">Step ' + (state.step + 1) + " of " + STEPS.length + " · Factor " + (s.index + 1) + " of 8</span><h2>" + esc(f.label) + "</h2></header>"];
+    out.push('<div class="ask"><span class="eyebrow">Ask the client</span><blockquote>' + esc(f.ask) + "</blockquote></div>");
+    out.push('<p class="why">' + esc(f.why) + "</p>");
+    out.push('<div class="options' + (f.options.length === 2 ? " two" : "") + '" role="group" aria-label="Score">');
+    f.options.forEach(function (o) {
+      out.push('<button type="button" class="opt' + (o.points === 3 ? " high" : "") + '" data-act="score" data-key="' + f.key + '" data-pts="' + o.points + '"' + (chosen === o.points ? ' aria-pressed="true"' : "") + ">" +
+        '<span class="pts">' + o.points + (o.points === 1 ? " point" : " points") + "</span>" +
+        '<span class="txt">' + esc(o.label) + "</span>" +
+        (o.points === 3 && f.key === model.scorecard.floor_rule.factor ? '<span class="hint">Floor rule: Moderate or above.</span>' : "") +
+        "</button>");
+    });
+    out.push("</div>");
+    out.push('<div class="rule"><div><b>Score conservatively.</b> Where the answer is unclear, pick the higher score. Discovery re-scores with full information and only the difference between tiers is billed or credited.</div></div>');
+    if (st.scored) out.push('<p class="small muted num">Running score ' + st.total + " across " + st.scored + " of 8 factors" + (st.threes ? ", " + st.threes + " at 3" : "") + ".</p>");
+    out.push(navFooter(state.step) + "</section>");
+    return out.join("");
+  }
+
+  function renderTier() {
+    var inp = state.inputs;
+    var st = MQ.scoreTier(model, inp.scores, inp.linked);
+    var out = ['<section class="mq-card"><header><span class="eyebrow">Step ' + (state.step + 1) + " of " + STEPS.length + " · Result</span><h2>Provisional tier</h2>"];
+    if (!st.complete) {
+      var missing = model.scorecard.factors.filter(function (f) { return !inp.scores[f.key]; });
+      out.push('<p class="lede">' + missing.length + " of 8 factors still to score: " + esc(missing.map(function (f) { return f.label; }).join(", ")) + ".</p></header>");
+      out.push('<button type="button" class="btn btn-purple" data-act="go" data-step="' + (STEPS.findIndex(function (s) { return s.key === "factor" && s.factor.key === missing[0].key; })) + '">Score ' + esc(missing[0].label) + "</button>");
+      out.push(navFooter(state.step) + "</section>");
+      return out.join("");
+    }
+    var q = currentQuote();
+    var p = model.prices[st.tierKey];
+    out.push('<p class="lede">Price is set by workflow complexity, not account size. The scorecard total places the workflow in a tier; the tier sets the Discovery and Build price.</p></header>');
+    out.push('<div class="tier-hero"><div class="score num">' + st.total + "<small>of 24</small></div><div>" +
+      '<div class="eyebrow">Tier</div><div class="name">' + esc(st.tier.label) + "</div>" +
+      '<p class="small">' + (st.tierKey === "programme" ? esc(model.scorecard.tiers[3].text) + " Figures below are from-prices." :
+        "Discovery " + money(p.discovery) + " and Build " + money(p.build) + ". " + esc(MQ.sprintsText(model, st.tierKey)) + ", then five business days of UAT, ten of hypercare and thirty of warranty.") + "</p></div></div>");
+    st.rules.forEach(function (r) { out.push('<div class="rule"><div><b>Rule applied.</b> ' + esc(r.text) + "</div></div>"); });
+    out.push("<h3>What drove it</h3><ul class=\"factor-list\">");
+    model.scorecard.factors.forEach(function (f) {
+      var pts = inp.scores[f.key], lbl = "";
+      f.options.forEach(function (o) { if (o.points === pts) lbl = o.label; });
+      out.push("<li><span>" + esc(f.label) + ' <span class="muted">· ' + esc(lbl) + "</span></span>" + '<span class="pts' + (pts === 3 ? " three" : "") + '">' + pts + "</span></li>");
+    });
+    out.push("</ul>");
+    if (q.lowering.length) {
+      out.push("<h3>What simplifying would save</h3><p class=\"why\">Publishing the scorecard means the client can see what drives the price and what a simpler requirement would save. Each line is one factor scored one step lower.</p><ul class=\"lower\">");
+      q.lowering.forEach(function (l) {
+        out.push("<li><span>" + esc(l.factor) + " at " + esc(l.toLabel) + " would make it <b>" + esc(l.tier) + "</b></span><b class=\"num\">saves " + money(l.saving) + "</b></li>");
+      });
+      out.push("</ul>");
+    } else if (st.tierKey === "simple") {
+      out.push('<div class="rule good"><div>This is already the minimum engagement: one Simple workflow.</div></div>');
+    }
+    out.push('<div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Score</th><th class="num">Discovery</th><th class="num">Build</th><th class="num">Care (Standard)</th><th class="num">Year 1</th></tr></thead><tbody>');
+    model.scorecard.tiers.forEach(function (t) {
+      var pr = model.prices[t.key], care = model.care.table[t.key].standard, from = pr.indicative ? "from " : "";
+      out.push("<tr" + (t.key === st.tierKey ? ' style="font-weight:700"' : "") + "><td>" + esc(t.label) + "</td><td>" + (t.min !== null ? t.min + " to " + t.max : "Linked workflows") + '</td><td class="num">' + from + money(pr.discovery) + '</td><td class="num">' + from + money(pr.build) + '</td><td class="num">' + from + money(care) + '</td><td class="num">' + (pr.indicative ? "Scoped individually" : money(pr.discovery + pr.build + care)) + "</td></tr>");
+    });
+    out.push("</tbody></table></div>");
+    out.push(navFooter(state.step) + "</section>");
+    return out.join("");
+  }
+
+  function renderCare() {
+    var inp = state.inputs;
+    var st = MQ.scoreTier(model, inp.scores, inp.linked);
+    var out = ['<section class="mq-card"><header><span class="eyebrow">Step ' + (state.step + 1) + " of " + STEPS.length + " · Commercials</span><h2>Care and commercials</h2>",
+      '<p class="lede">' + esc(model.care.text) + "</p></header>"];
+    if (!st.complete) out.push('<div class="rule"><div>Score all eight factors first. Care is priced from the workflow tier, so the fees below will appear once the tier is known.</div></div>');
+    out.push("<h3>Care tier</h3><div class=\"care-grid\">");
+    model.care.tiers.forEach(function (ct) {
+      var fee = st.complete ? model.care.table[st.tierKey][ct.key] : null;
+      var from = st.tierKey === "programme" ? "from " : "";
+      out.push('<button type="button" class="care" data-act="care" data-key="' + ct.key + '"' + (inp.careTier === ct.key ? ' aria-pressed="true"' : "") + ">" +
+        '<span class="name">' + esc(ct.label) + "</span>" +
+        '<span class="fee num">' + (fee !== null ? from + money(fee) : "—") + '</span><span class="small muted">a year, ' + ct.percent_of_build + "% of build, min " + money(ct.minimum) + "</span>" +
+        "<dl><dt>Allowance</dt><dd>" + ct.allowance_hours + " hrs / yr</dd><dt>Review</dt><dd>" + esc(ct.cadence) + "</dd><dt>Critical</dt><dd>" + esc(ct.critical_response) + "</dd><dt>Credits</dt><dd>" + (ct.service_credits ? "Yes" : "No") + "</dd></dl></button>");
+    });
+    out.push("</div>");
+    var ext = model.care.extended_coverage;
+    out.push('<label class="toggle"><input type="checkbox" data-act="extended"' + (inp.extendedCoverage ? " checked" : "") + (inp.careTier !== ext.tier ? " disabled" : "") + "><span><b>" + esc(ext.label) + ".</b> " +
+      '<span class="muted">' + esc(ext.text) + (inp.careTier !== ext.tier ? " Choose Premier to add it." : "") + "</span></span></label>");
+
+    out.push("<h3>Term</h3><p class=\"why\">Only Care recurs. Care increases by " + model.indexation.cpi_percent + "% at each anniversary and is invoiced annually in advance, co-terminus with the Momentum license.</p>");
+    out.push('<div class="seg" role="group" aria-label="Term">' + [1, 2, 3].map(function (y) {
+      return '<button type="button" data-act="years" data-years="' + y + '"' + (inp.years === y ? ' aria-pressed="true"' : "") + ">" + (y === 1 ? "12 months" : y + " years") + "</button>";
+    }).join("") + "</div>");
+
+    out.push("<h3>Repeat workflow</h3><p class=\"why\">" + esc(model.discounts.repeat_workflow.text) + "</p>");
+    out.push('<div class="seg" role="group" aria-label="Repeat workflow">' + model.discounts.repeat_workflow.positions.map(function (p) {
+      return '<button type="button" data-act="repeat" data-key="' + p.key + '"' + (inp.repeat === p.key ? ' aria-pressed="true"' : "") + ">" + esc(p.label) + (p.percent ? " · " + p.percent + "% off" : "") + "</button>";
+    }).join("") + "</div>");
+
+    out.push("<h3>Other lines</h3><p class=\"why\">Anything quoted alongside the service: a Studio license uplift, a custom integration, data migration, on-site delivery. Annual lines repeat each year; tick indexed to escalate one at " + model.indexation.cpi_percent + "% with Care.</p>");
+    out.push('<div class="extras">');
+    inp.extras.forEach(function (x, i) {
+      out.push('<div class="extra-row">' +
+        '<input type="text" aria-label="Line label" data-act="extra" data-i="' + i + '" data-key="label" value="' + esc(x.label) + '" placeholder="Label">' +
+        '<input type="number" aria-label="Amount" data-act="extra" data-i="' + i + '" data-key="amount" value="' + esc(x.amount || "") + '" placeholder="Amount" min="0" step="1">' +
+        '<div class="seg"><button type="button" data-act="extra-kind" data-i="' + i + '" data-kind="oneoff"' + (x.kind !== "annual" ? ' aria-pressed="true"' : "") + '>One-off</button><button type="button" data-act="extra-kind" data-i="' + i + '" data-kind="annual"' + (x.kind === "annual" ? ' aria-pressed="true"' : "") + ">Annual</button></div>" +
+        '<label class="toggle small"><input type="checkbox" data-act="extra-indexed" data-i="' + i + '"' + (x.indexed ? " checked" : "") + (x.kind !== "annual" ? " disabled" : "") + "><span>Indexed</span></label>" +
+        '<button type="button" class="del" data-act="extra-del" data-i="' + i + '">Remove</button></div>');
+    });
+    out.push('<div><button type="button" class="btn btn-ghost btn-sm" data-act="extra-add">Add a line</button></div></div>');
+    out.push(navFooter(state.step) + "</section>");
+    return out.join("");
+  }
+
+  function renderQuote() {
+    var inp = state.inputs, e = inp.engagement;
+    var q = currentQuote();
+    var out = ['<section class="mq-card" id="quote-sheet"><header><span class="eyebrow no-print">Step ' + STEPS.length + " of " + STEPS.length + " · Quote</span>"];
+    if (!q.ready) {
+      out.push('<h2>Quote</h2><p class="lede">Score all eight factors to produce a quote.</p></header>' +
+        '<button type="button" class="btn btn-purple" data-act="go" data-step="9">Go to the tier</button>' + navFooter(state.step) + "</section>");
+      return out.join("");
+    }
+    var from = q.indicative ? "from " : "";
+    var termLabel = q.years === 1 ? "12 months" : q.years + " years";
+    out.push('<div class="quote-head"><div><h2>' + esc(model.service.name) + "</h2>" +
+      '<p class="lede">' + esc(e.client || "Client") + (e.workflow ? " · " + esc(e.workflow) : "") + "</p></div>" +
+      '<dl class="meta"><dt>Prepared by</dt><dd>' + esc(e.preparedBy || "—") + "</dd><dt>Date</dt><dd>" + esc(friendlyDate(e.date)) + "</dd><dt>Tier</dt><dd>" + esc(q.tier.label) + " (scorecard " + q.score.total + ")</dd><dt>Care</dt><dd>" + esc(q.careTier.label) + (q.care.extended ? ", extended coverage" : "") + "</dd></dl></div></header>");
+    if (q.indicative) out.push('<div class="rule"><div><b>Programme.</b> ' + esc(model.scorecard.tiers[3].text) + " Every figure here is a from-price; the engagement is scoped individually.</div></div>");
+    var flagged = model.pre_scope.checks.filter(function (c) { return e.checks[c.key] === c.flag_when; });
+    flagged.forEach(function (c) { out.push('<div class="rule no-print"><div><b>From the pre-scope.</b> ' + esc(c[c.flag_when]) + "</div></div>"); });
+
+    out.push('<div class="totals">' +
+      '<div class="tile lead"><span class="k">Total over ' + termLabel + '</span><span class="v num">' + from + money(q.contract) + "</span><span class=\"small\">" + esc(model.tax_note) + "</span></div>" +
+      '<div class="tile"><span class="k">Year 1</span><span class="v num">' + from + money(q.year1) + '</span><span class="small muted">Discovery, Build and first year of Care</span></div>' +
+      '<div class="tile"><span class="k">Recurring from year 2</span><span class="v num">' + from + money(q.schedule[1] ? q.schedule[1].total : MQ.rnd(q.recurring * (1 + q.cpiPercent / 100))) + '</span><span class="small muted">Care, +' + q.cpiPercent + "% each anniversary</span></div></div>");
+
+    out.push("<h3>What is included</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Line</th><th class=\"num\">Year 1 rate</th>" + (q.repeatPercent ? '<th class="num">Discount</th>' : "") + '<th class="num">Amount</th></tr></thead><tbody>');
+    q.lines.forEach(function (l) {
+      out.push("<tr><td>" + esc(l.label) + '<span class="detail">' + esc(l.detail) + '</span></td><td class="num">' + from + money(l.amount) + (l.recurs ? " / yr" : "") + "</td>" +
+        (q.repeatPercent ? '<td class="num">' + (l.discount ? "-" + money(l.discount) : "—") + "</td>" : "") +
+        '<td class="num">' + from + money(l.net) + (l.recurs ? " / yr" : "") + "</td></tr>");
+    });
+    out.push('<tr class="total"><td>Year 1</td><td></td>' + (q.repeatPercent ? "<td></td>" : "") + '<td class="num">' + from + money(q.year1) + "</td></tr></tbody></table></div>");
+
+    out.push("<h3>Year by year</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Year</th><th class=\"num\">One-off</th><th class=\"num\">Care</th>" + (q.schedule.some(function (s) { return s.extras; }) ? '<th class="num">Other annual</th>' : "") + '<th class="num">Total</th></tr></thead><tbody>');
+    var hasExtras = q.schedule.some(function (s) { return s.extras; });
+    q.schedule.forEach(function (s) {
+      out.push("<tr><td>Year " + s.year + (s.year > 1 ? ' <span class="detail">Care +' + q.cpiPercent + "% on year " + (s.year - 1) + "</span>" : "") + '</td><td class="num">' + (s.oneOff ? from + money(s.oneOff) : "—") + '</td><td class="num">' + from + money(s.care) + "</td>" +
+        (hasExtras ? '<td class="num">' + (s.extras ? money(s.extras) : "—") + "</td>" : "") + '<td class="num">' + from + money(s.total) + "</td></tr>");
+    });
+    out.push('<tr class="total"><td>Total over ' + termLabel + "</td><td></td><td></td>" + (hasExtras ? "<td></td>" : "") + '<td class="num">' + from + money(q.contract) + "</td></tr></tbody></table></div>");
+
+    out.push("<h3>Payment schedule</h3><div class=\"tbl-wrap\"><table><thead><tr><th>When</th><th>What</th><th class=\"num\">Amount</th></tr></thead><tbody>");
+    q.milestones.forEach(function (m) { out.push("<tr><td>" + esc(m.when) + "</td><td>" + esc(m.what) + '</td><td class="num">' + from + money(m.amount) + "</td></tr>"); });
+    out.push("</tbody></table></div>");
+
+    out.push("<h3>How it runs</h3><div class=\"tbl-wrap\"><table><thead><tr><th>Stage</th><th>Duration</th><th>What happens</th><th>Client time</th></tr></thead><tbody>");
+    out.push("<tr><td>Discovery</td><td>A week or two</td><td>" + esc(model.discovery.text) + "</td><td>Two 60-minute sessions</td></tr>");
+    model.build.stages.forEach(function (s) {
+      var dur = s.stage === "Build sprints" && q.sprints !== null ? esc(MQ.sprintsText(model, q.tierKey)) : esc(s.duration);
+      out.push("<tr><td>" + esc(s.stage) + "</td><td>" + dur + "</td><td>" + esc(s.text) + "</td><td>" + esc(s.client_time || "—") + "</td></tr>");
+    });
+    out.push("</tbody></table></div>");
+
+    out.push('<div class="cols"><div><h4>Momentum Care covers</h4><ul>' + model.care.covered.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div>" +
+      "<div><h4>Not covered</h4><ul>" + model.care.not_covered.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div></div>");
+    out.push('<p class="small muted">' + esc(q.careTier.label) + " Care: " + q.careTier.allowance_hours + " hours of change allowance a year, " + esc(q.careTier.cadence.toLowerCase()) + ", critical response " + esc(q.careTier.critical_response) + ". " + esc(model.care.allowance_note) + " Coverage " + esc(model.care.coverage) + "</p>");
+
+    out.push('<details class="terms"><summary>Commercial terms and what we need from you</summary><div class="cols" style="margin-top:12px"><div><h4>Terms</h4><ul>' +
+      model.terms.map(function (t) { return "<li><b>" + esc(t.term) + ".</b> " + esc(t.position) + "</li>"; }).join("") + "</ul></div><div><h4>What we need from the client</h4><ul>" +
+      model.client_needs.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div></div></details>");
+
+    out.push('<div class="actions no-print">' +
+      '<button type="button" class="btn btn-green" data-act="save"' + (state.dbState === "ready" ? "" : " disabled") + ">" + (state.savedId ? "Update in library" : "Save to library") + "</button>" +
+      '<button type="button" class="btn btn-ghost" data-act="copy">Copy summary</button>' +
+      '<button type="button" class="btn btn-ghost" data-act="print">Print</button>' +
+      (state.toast ? '<span class="toast" role="status">' + esc(state.toast) + "</span>" :
+        state.dbState === "none" ? '<span class="toast">The shared library is not available in this view. Copy or print instead.</span>' :
+        state.dbState === "connecting" ? '<span class="toast">Connecting to the library…</span>' : "") + "</div>");
+    out.push(navFooter(state.step) + "</section>");
+    return out.join("");
+  }
+
+  function renderSide() {
+    var inp = state.inputs;
+    var st = MQ.scoreTier(model, inp.scores, inp.linked);
+    var q = currentQuote();
+    var out = ['<aside class="mq-side"><div class="panel"><span class="eyebrow">Running quote</span>'];
+    out.push('<div class="score-track" aria-label="Scorecard progress">' + model.scorecard.factors.map(function (f) {
+      var p = inp.scores[f.key]; return '<span class="' + (p ? "p" + p : "") + '" title="' + esc(f.label) + (p ? ": " + p : "") + '"></span>';
+    }).join("") + "</div>");
+    if (q.ready) {
+      var from = q.indicative ? "from " : "";
+      out.push('<div class="big num">' + from + money(q.contract) + "<small>over " + (q.years === 1 ? "12 months" : q.years + " years") + ", ex GST</small></div>");
+      out.push("<dl><dt>Scorecard</dt><dd class=\"num\">" + st.total + " · " + esc(st.tier.label) + "</dd>" +
+        "<dt>Year 1</dt><dd class=\"num\">" + from + money(q.year1) + "</dd>" +
+        (q.schedule[1] ? "<dt>Year 2</dt><dd class=\"num\">" + from + money(q.schedule[1].total) + "</dd>" : "") +
+        (q.schedule[2] ? "<dt>Year 3</dt><dd class=\"num\">" + from + money(q.schedule[2].total) + "</dd>" : "") +
+        "<dt>Care</dt><dd>" + esc(q.careTier.label) + "</dd></dl>");
+      out.push('<p class="note">Care +' + q.cpiPercent + "% each anniversary. Year 1 rates, AUD ex GST.</p>");
+    } else {
+      out.push('<div class="big num">' + (st.scored ? st.total : "—") + "<small>" + st.scored + " of 8 factors scored</small></div>");
+      out.push('<p class="note">The tier appears once all eight factors are scored. Simple is 8 to 11, Moderate 12 to 16, Complex 17 to 24.</p>');
+    }
+    out.push("</div>");
+    if (inp.engagement.client || inp.engagement.workflow) {
+      out.push('<div class="small muted" style="padding:0 4px">' + esc(inp.engagement.client) + (inp.engagement.workflow ? " · " + esc(inp.engagement.workflow) : "") + (state.savedId ? ' <span class="chip green">Saved</span>' : "") + "</div>");
+    }
+    out.push("</aside>");
+    return out.join("");
+  }
+
+  function renderLibrary() {
+    var out = ['<div class="mq-lib"><header><span class="eyebrow">Shared library</span><h2>Saved quotes</h2>',
+      '<p class="muted" style="max-width:65ch">Every quote saved from this tool, by anyone who opens it. Open one to reload its answers; the quote is re-priced against the current model.</p></header>'];
+    if (state.dbState === "none") out.push('<div class="empty">The shared library is not available in this view. Quotes can still be copied or printed.</div>');
+    else if (!state.quotesLoaded) out.push('<div class="empty">Loading…</div>');
+    else if (!state.quotes.length) out.push('<div class="empty">Nothing saved yet. Finish a quote and choose Save to library.</div>');
+    else {
+      out.push('<div class="tbl-wrap"><table><thead><tr><th>Client</th><th>Workflow</th><th>Tier</th><th>Care</th><th>Term</th><th class="num">Total</th><th>Saved</th><th></th></tr></thead><tbody>');
+      state.quotes.forEach(function (d) {
+        var s = d.summary || {};
+        out.push("<tr><td>" + esc(s.client) + "</td><td>" + esc(s.workflow) + '</td><td><span class="chip">' + esc(s.tier) + " · " + esc(s.score) + "</span></td><td>" + esc(s.careTier) + "</td><td>" + (s.years === 1 ? "12 months" : s.years + " years") + '</td><td class="num">' + (s.indicative ? "from " : "") + money(s.total || 0) + '</td><td class="small muted">' + esc(friendlyDate(String(d.savedAt || "").slice(0, 10))) + (s.preparedBy ? "<br>" + esc(s.preparedBy) : "") + "</td>" +
+          '<td class="row-actions"><button type="button" class="btn btn-ghost btn-sm" data-act="open" data-id="' + esc(d.id) + '">Open</button><button type="button" class="btn btn-ghost btn-sm" data-act="delete" data-id="' + esc(d.id) + '">Delete</button></td></tr>');
+      });
+      out.push("</tbody></table></div>");
+    }
+    out.push("</div>");
+    return out.join("");
+  }
+
+  // ---------------------------------------------------------------------
+  // events
+  // ---------------------------------------------------------------------
+
+  function update(fn) { fn(); state.toast = ""; saveDraft(); render(); }
+
+  function onClick(ev) {
+    var el = ev.target.closest("[data-act]");
+    if (!el) return;
+    var act = el.getAttribute("data-act");
+    if (act === "go") return update(function () { state.step = parseInt(el.getAttribute("data-step"), 10); state.view = "wizard"; window.scrollTo(0, 0); });
+    if (act === "view") return update(function () { state.view = el.getAttribute("data-view"); window.scrollTo(0, 0); });
+    if (act === "new") return update(function () { state.inputs = blankInputs(); state.step = 0; state.savedId = null; state.view = "wizard"; window.scrollTo(0, 0); });
+    if (act === "check") return update(function () { state.inputs.engagement.checks[el.getAttribute("data-key")] = el.getAttribute("data-val"); delete state.inputs.example; });
+    if (act === "score") return update(function () {
+      state.inputs.scores[el.getAttribute("data-key")] = parseInt(el.getAttribute("data-pts"), 10); delete state.inputs.example;
+      if (state.step < STEPS.length - 1 && STEPS[state.step].key === "factor") { state.step += 1; window.scrollTo(0, 0); }
+    });
+    if (act === "care") return update(function () { state.inputs.careTier = el.getAttribute("data-key"); if (state.inputs.careTier !== model.care.extended_coverage.tier) state.inputs.extendedCoverage = false; });
+    if (act === "years") return update(function () { state.inputs.years = parseInt(el.getAttribute("data-years"), 10); });
+    if (act === "repeat") return update(function () { state.inputs.repeat = el.getAttribute("data-key"); });
+    if (act === "extra-add") return update(function () { state.inputs.extras.push({ label: "", amount: "", kind: "oneoff", indexed: false }); });
+    if (act === "extra-del") return update(function () { state.inputs.extras.splice(parseInt(el.getAttribute("data-i"), 10), 1); });
+    if (act === "extra-kind") return update(function () { var x = state.inputs.extras[parseInt(el.getAttribute("data-i"), 10)]; x.kind = el.getAttribute("data-kind"); if (x.kind !== "annual") x.indexed = false; });
+    if (act === "copy") return copySummary();
+    if (act === "print") { window.print(); return; }
+    if (act === "save") return saveQuote();
+    if (act === "open") return openQuote(el.getAttribute("data-id"));
+    if (act === "delete") return deleteQuote(el.getAttribute("data-id"));
+  }
+
+  function onChange(ev) {
+    var el = ev.target.closest("[data-act]");
+    if (!el) return;
+    var act = el.getAttribute("data-act");
+    if (act === "eng") return update(function () { state.inputs.engagement[el.getAttribute("data-key")] = el.value; delete state.inputs.example; });
+    if (act === "linked") return update(function () { state.inputs.linked = el.checked; });
+    if (act === "extended") return update(function () { state.inputs.extendedCoverage = el.checked; });
+    if (act === "extra") return update(function () {
+      var x = state.inputs.extras[parseInt(el.getAttribute("data-i"), 10)], k = el.getAttribute("data-key");
+      x[k] = k === "amount" ? (el.value === "" ? "" : Number(el.value)) : el.value;
+    });
+    if (act === "extra-indexed") return update(function () { state.inputs.extras[parseInt(el.getAttribute("data-i"), 10)].indexed = el.checked; });
+  }
+
+  function onInput(ev) {
+    // Keep the engagement fields live in state without re-rendering on every keystroke.
+    var el = ev.target.closest('[data-act="eng"]');
+    if (el) { state.inputs.engagement[el.getAttribute("data-key")] = el.value; saveDraft(); }
+  }
+
+  function copySummary() {
+    var q = currentQuote();
+    if (!q.ready) return;
+    var text = MQ.summaryText(model, q, state.inputs);
+    var done = function () { state.toast = "Summary copied."; render(); };
+    var fail = function () { state.toast = "Could not copy. Select the quote and copy it by hand."; render(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fail);
+    else {
+      try {
+        var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+        document.execCommand("copy"); document.body.removeChild(ta); done();
+      } catch (e) { fail(); }
+    }
+  }
+
+  // ---------------------------------------------------------------------
+  // the shared library
+  // ---------------------------------------------------------------------
+
+  function connectDb() {
+    var p = null;
+    try { if (root.claude && typeof root.claude.use === "function") p = root.claude.use("db"); } catch (e) { p = null; }
+    if (!p) { state.dbState = "none"; render(); return; }
+    p.then(function (db) {
+      if (!db) { state.dbState = "none"; render(); return; }
+      state.db = db; state.dbState = "ready";
+      try {
+        db.collection("quotes").orderBy("savedAt", "desc").limit(500).onSnapshot(function (snap) {
+          state.quotes = snap.docs.filter(function (d) { return d.exists; }).map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+          state.quotesLoaded = true; render();
+        }, function (err) { state.dbState = "none"; state.toast = "The library stopped responding (" + (err && err.code ? err.code : "unavailable") + ")."; render(); });
+      } catch (e) { state.dbState = "none"; render(); }
+      render();
+    }, function () { state.dbState = "none"; render(); });
+  }
+
+  function summaryFor(q) {
+    var e = state.inputs.engagement;
+    return { client: e.client, workflow: e.workflow, preparedBy: e.preparedBy, date: e.date,
+             tier: q.tier.label, score: q.score.total, careTier: q.careTier.label, years: q.years,
+             total: q.contract, year1: q.year1, recurring: q.recurring, indicative: q.indicative };
+  }
+
+  function saveQuote() {
+    var q = currentQuote();
+    if (!q.ready || !state.db) return;
+    var inputs = JSON.parse(JSON.stringify(state.inputs)); delete inputs.example;
+    var body = { inputs: inputs, summary: summaryFor(q), modelVersion: model.version, savedAt: new Date().toISOString() };
+    var ref = state.savedId ? state.db.doc("quotes/" + state.savedId) : state.db.collection("quotes").doc();
+    ref.set(body).then(function () {
+      state.savedId = ref.id; state.toast = state.savedId ? "Saved to the library." : "Saved."; saveDraft(); render();
+    }, function (err) {
+      state.toast = err && err.code === "quota_exceeded" ? "The library is full. Delete an old quote and try again." : "Could not save (" + (err && err.code ? err.code : "unavailable") + "). Try once more.";
+      render();
+    });
+  }
+
+  function openQuote(id) {
+    var d = null;
+    state.quotes.forEach(function (x) { if (x.id === id) d = x; });
+    if (!d || !d.inputs) return;
+    update(function () {
+      var inp = blankInputs();
+      state.inputs = Object.assign(inp, d.inputs, { engagement: Object.assign(inp.engagement, d.inputs.engagement || {}) });
+      state.savedId = id; state.step = STEPS.length - 1; state.view = "wizard"; window.scrollTo(0, 0);
+    });
+  }
+
+  function deleteQuote(id) {
+    if (!state.db) return;
+    var d = null; state.quotes.forEach(function (x) { if (x.id === id) d = x; });
+    var name = d && d.summary ? (d.summary.client + (d.summary.workflow ? " · " + d.summary.workflow : "")) : "this quote";
+    if (!window.confirm("Delete " + name + " from the shared library? Everyone loses it.")) return;
+    state.db.doc("quotes/" + id).delete().then(function () {
+      if (state.savedId === id) state.savedId = null;
+      state.toast = "Deleted."; saveDraft(); render();
+    }, function () { state.toast = "Could not delete. Try once more."; render(); });
+  }
+
+  // ---------------------------------------------------------------------
+
+  function start() {
+    loadDraft();
+    var app = document.getElementById("app");
+    app.addEventListener("click", onClick);
+    app.addEventListener("change", onChange);
+    app.addEventListener("input", onInput);
+    window.addEventListener("beforeprint", function () {
+      var t = document.querySelector(".mq details.terms"); if (t) t.open = true;
+    });
+    render();
+    connectDb();
+  }
+
+  root.MQAPP = { start: start, STEPS: STEPS, state: state };
+})(typeof globalThis !== "undefined" ? globalThis : this);
+
+</script>
+<script>
+MQAPP.start();
+</script>

@@ -1,0 +1,260 @@
+{
+  "_readme": [
+    "The one place a Momentum Services number lives. Taken from 'Momentum Solutions Architect",
+    "Service - Commercial model, rate card and service levels' (Acorn Works, September 2026),",
+    "client-facing sections 1 to 12 only. app/src/model.js reads it; tools/build_app.py inlines",
+    "it into the quoting tool. Change a value here and rebuild; never edit a number in the page.",
+    "Indexation is set at 7% a year on Care, replacing the document's 'greater of CPI or 3.5%'."
+  ],
+  "version": "2026-09-08",
+  "source": "Momentum SA commercial model v4, September 2026",
+  "currency": "AUD",
+  "tax_note": "All figures AUD, ex GST, Year 1 rates.",
+
+  "service": {
+    "name": "Momentum Solutions Architect Service",
+    "summary": "A Momentum Studio license gives you the visual Builder and the right to create workflows yourself. The Solutions Architect Service is the option to have Acorn do it instead: we scope the process, design the workflow, build it in your tenant, and own it from go-live.",
+    "components": [
+      {"key": "discovery", "label": "Discovery", "recurs": false, "text": "We map the process and produce a Workflow Design Document."},
+      {"key": "build", "label": "Build", "recurs": false, "text": "We configure, test and deploy the workflow."},
+      {"key": "care", "label": "Momentum Care", "recurs": true, "text": "We own the workflow from go-live."}
+    ],
+    "commitment": "Discovery and Build are one-off. Care is annual and recurs with your license. All three are committed together: Discovery is not sold on its own."
+  },
+
+  "pre_scope": {
+    "text": "No charge. One 45-minute call. Produces a provisional Complexity Scorecard, a tier and a quotable price. Score conservatively: where a factor is unclear, it scores high. Discovery re-scores with full information; if the tier moves, only the difference is billed or credited, once, in writing, at the end of Discovery.",
+    "checks": [
+      {"key": "studio", "question": "Does the client hold a Momentum Studio license?",
+       "yes": "Studio is in place. A custom workflow needs the Advanced Momentum Tenant feature, which Studio carries.",
+       "no": "A custom workflow needs the Advanced Momentum Tenant feature, so a Base client moves to Studio first. Quote the Studio uplift as its own line and add it under extra lines.",
+       "flag_when": "no"},
+      {"key": "blueprint", "question": "Does the process match a pre-built Blueprint?",
+       "yes": "Tell the client so on this call. A Blueprint is the cheaper answer and this service is not the right fit.",
+       "no": "No Blueprint covers it, so a custom build is the right conversation.",
+       "flag_when": "yes"},
+      {"key": "self_build", "question": "Does the client have the admin capacity and appetite to build it themselves?",
+       "yes": "Say so. The Builder is included in Studio and disqualifying in an hour is cheaper than disqualifying in a Discovery.",
+       "no": "The client wants Acorn to own the build. Continue.",
+       "flag_when": "yes"},
+      {"key": "integration", "question": "Does the workflow need data reported out to an external system beyond what Acorn's APIs support?",
+       "yes": "Custom integration is not included in this service. Momentum cannot receive data pushed in; integration is read-only reporting out. Quote it as a separate line item.",
+       "no": "No integration line. Where the client reads Momentum data themselves with Acorn's APIs there is no charge.",
+       "flag_when": "yes"}
+    ]
+  },
+
+  "scorecard": {
+    "rule": "Eight factors, each scoring 1, 2 or 3. The total sets the tier. Where a factor is unclear, it scores high.",
+    "factors": [
+      {"key": "nodes", "label": "Nodes / steps",
+       "ask": "Walk me through the process from the moment somebody starts a request to the moment it closes. How many distinct steps does it pass through?",
+       "why": "Every box on the Builder canvas is a step: a form somebody fills in, an automatic email, a wait, a hand-off, an end. Count every one, including the automatic ones the client does not think of as steps.",
+       "options": [
+         {"points": 1, "label": "6 or fewer"},
+         {"points": 2, "label": "7 to 15"},
+         {"points": 3, "label": "16 or more"}
+       ]},
+      {"key": "transitions", "label": "Transitions",
+       "ask": "At the busiest step, how many different ways can a request leave it? Include send-back, reject and loop-back paths.",
+       "why": "Transitions covers every path out of a step, including send-back and loop-back paths. It is scored on the busiest step, not the average. Momentum has no decision step: an approval is a form and the branching lives on the paths leaving it, so a reviewer with approve, reject, send back and escalate is four paths.",
+       "options": [
+         {"points": 1, "label": "1 to 2 per step"},
+         {"points": 2, "label": "3 to 4 per step"},
+         {"points": 3, "label": "5 or more per step"}
+       ]},
+      {"key": "forms", "label": "Forms",
+       "ask": "How many points are there where somebody has to fill something in or make a decision: the intake, each approval, each escalation, each review?",
+       "why": "Forms carries the approval and escalation load. Each approval or escalation stage needs its own form, so form count is the measure rather than tier count.",
+       "options": [
+         {"points": 1, "label": "1 to 2"},
+         {"points": 2, "label": "3 to 5"},
+         {"points": 3, "label": "6 or more"}
+       ]},
+      {"key": "routing", "label": "Routing data availability",
+       "ask": "When a request has to reach the right person, how does the system know who that is? Is the manager relationship, cost centre or team already held in the platform and kept current?",
+       "why": "Every field the workflow relies on to route correctly has to exist and be populated. Data that is not confirmed to exist is the most reliable predictor of a build running long, which is why a 3 here places the workflow at Moderate or above regardless of total.",
+       "options": [
+         {"points": 1, "label": "Confirmed in platform"},
+         {"points": 2, "label": "Derivable from existing fields"},
+         {"points": 3, "label": "Unconfirmed, or requires data not held in the platform"}
+       ]},
+      {"key": "external", "label": "External Momentum (public intake)",
+       "ask": "Does anybody outside the client's user base need to start a request without logging in, such as a supplier, an applicant or a member of the public?",
+       "why": "A public intake page means anonymous submitters, spam and duplicate handling, and a different test plan. It is either needed or it is not, so this factor scores 1 or 3.",
+       "options": [
+         {"points": 1, "label": "Not required"},
+         {"points": 3, "label": "Required"}
+       ]},
+      {"key": "course", "label": "Course / Momentum activity tie-in",
+       "ask": "Does the process connect to training? Does completing or enrolling in a course start it, or does it begin from inside a course itself?",
+       "why": "A completion or enrolment trigger needs the course link set up and tested with a real learner. A workflow that commences from a Course Momentum activity inside a course adds the activity, its timing setting and a test enrolment.",
+       "options": [
+         {"points": 1, "label": "None"},
+         {"points": 2, "label": "Completion or enrolment trigger"},
+         {"points": 3, "label": "Commences from a Course Momentum activity"}
+       ]},
+      {"key": "reporting", "label": "Reporting requirement",
+       "ask": "What does the client need to see afterwards? Is the live table of requests and its export enough, or do they need particular fields reported, or a generated report delivered somewhere?",
+       "why": "Standard Momentum reporting is the live table of every request with status and an export. Custom constant reporting surfaces routing-rule values. Generated reports delivered by email or SFTP are built and scheduled work.",
+       "options": [
+         {"points": 1, "label": "Standard Momentum reporting"},
+         {"points": 2, "label": "Custom constant reporting"},
+         {"points": 3, "label": "Custom generated reports delivered by email or SFTP"}
+       ]},
+      {"key": "visibility", "label": "Form visibility scopes",
+       "ask": "Should different people see different parts of the request? How many distinct audiences need to see only their own step or their own questions?",
+       "why": "Each visibility scope is a list to configure and a test from both sides: who can see it and who cannot. HR-only fields, a manager's view, an auditor's read-only view each count.",
+       "options": [
+         {"points": 1, "label": "1 to 2"},
+         {"points": 2, "label": "3 to 4"},
+         {"points": 3, "label": "5 or more"}
+       ]}
+    ],
+    "tiers": [
+      {"key": "simple", "label": "Simple", "min": 8, "max": 11},
+      {"key": "moderate", "label": "Moderate", "min": 12, "max": 16},
+      {"key": "complex", "label": "Complex", "min": 17, "max": 24},
+      {"key": "programme", "label": "Programme", "min": null, "max": null, "text": "Multiple linked workflows, or cross-workflow dependency. Scoped individually."}
+    ],
+    "floor_rule": {"factor": "routing", "points": 3, "min_tier": "moderate",
+                   "text": "A 3 on routing data availability places the workflow at Moderate or above regardless of total."},
+    "ceiling_rule": {"threes": 6, "tier": "programme",
+                     "text": "A workflow scoring 3 on six or more factors is quoted as a Programme even if the total lands below 17."},
+    "programme_rule": {"text": "Multiple linked workflows, or a cross-workflow dependency, is a Programme regardless of score."}
+  },
+
+  "prices": {
+    "_note": "Year 1 rates per workflow tier. Programme figures are 'from' and scoped individually.",
+    "simple":    {"discovery": 2450, "build": 7450,  "indicative": false},
+    "moderate":  {"discovery": 3450, "build": 16950, "indicative": false},
+    "complex":   {"discovery": 5650, "build": 32500, "indicative": false},
+    "programme": {"discovery": 7500, "build": 46000, "indicative": true}
+  },
+
+  "build": {
+    "sprints": {"simple": 0.5, "moderate": 1, "complex": 2, "programme": null},
+    "sprint_weeks": 2,
+    "stages": [
+      {"stage": "Build sprints", "duration": "0.5 to 3 sprints", "text": "Configuration in staging, internal functional and regression testing, demonstration at the end of each sprint.", "client_time": "60-minute demo per sprint"},
+      {"stage": "UAT", "duration": "5 business days", "text": "Client tests against the design document. Defects returned as one consolidated list.", "client_time": "Client-led"},
+      {"stage": "Rework", "duration": "Included", "text": "One consolidated rework pass.", "client_time": "Sign-off"},
+      {"stage": "Go-live", "duration": "Scheduled", "text": "Deployment against the release calendar, handover pack, administrator walkthrough.", "client_time": "60-minute session"},
+      {"stage": "Hypercare", "duration": "10 business days", "text": "Included. Critical issues handled at fastest response levels regardless of Care tier.", "client_time": "As needed"},
+      {"stage": "Warranty", "duration": "30 business days", "text": "Any defect measured against the signed design is fixed at no charge.", "client_time": ""}
+    ],
+    "included": [
+      "Detailed design of nodes, transitions, constants, forms and routing rules.",
+      "Configuration in staging, including notification templates and role scoping.",
+      "Internal testing before anything reaches the client.",
+      "UAT support and one consolidated rework pass.",
+      "Production deployment, handover pack (workflow documentation, form question set, escalation map) and administrator walkthrough.",
+      "Ten business days hypercare, thirty business days warranty."
+    ]
+  },
+
+  "discovery": {
+    "text": "Two sixty-minute working sessions inside a week or two, plus a documentation handover. The first walks the current process end to end; the second confirms the design drafted from it.",
+    "deliverables": [
+      "Workflow Design Document. Every step, branch, approval tier, form question, notification and escalation path, in the client's language.",
+      "Confirmed Complexity Scorecard. The provisional pre-scope score re-run with full information. Confirms or adjusts the tier.",
+      "Data-dependency register. Every field the workflow relies on to route correctly, verified as present and populated.",
+      "Build schedule. Sprint slots and a go-live date against the Acorn release calendar."
+    ]
+  },
+
+  "care": {
+    "text": "Approvers leave and need reassigning. The platform releases and configurations need re-checking. Processes change. Care is Acorn continuing to own the workflow rather than handing it over at go-live. Care at Essential or above is a condition of the service.",
+    "tiers": [
+      {"key": "essential", "label": "Essential", "percent_of_build": 18, "minimum": 2450, "allowance_hours": 8,  "cadence": "Annual health report", "critical_response": "4 business hrs", "service_credits": false},
+      {"key": "standard",  "label": "Standard",  "percent_of_build": 25, "minimum": 3950, "allowance_hours": 15, "cadence": "Quarterly health check", "critical_response": "2 business hrs", "service_credits": true},
+      {"key": "premier",   "label": "Premier",   "percent_of_build": 35, "minimum": 5950, "allowance_hours": 30, "cadence": "Monthly review, named Solutions Architect", "critical_response": "1 business hr", "service_credits": true}
+    ],
+    "table": {
+      "_note": "Published Year 1 Care fee by workflow tier and Care tier. Programme rows are 'from', derived from the from-Build at the tier percentage.",
+      "simple":    {"essential": 2450, "standard": 3950,  "premier": 5950},
+      "moderate":  {"essential": 3050, "standard": 4240,  "premier": 5950},
+      "complex":   {"essential": 5850, "standard": 8120,  "premier": 11380},
+      "programme": {"essential": 8280, "standard": 11500, "premier": 16100}
+    },
+    "extended_coverage": {"tier": "premier", "percent_of_care": 20, "label": "Extended coverage, 7:00am to 7:00pm AET", "text": "Premier can add 7:00am to 7:00pm coverage for 20% of the Care fee."},
+    "coverage": "8:30am to 5:30pm AET, Monday to Friday, excluding national public holidays and the Acorn end-of-year shutdown.",
+    "covered": [
+      "Break-fix on any defect in an Acorn-built workflow.",
+      "Compatibility check against every platform release, and remediation of anything a release breaks.",
+      "Correction of configuration drift.",
+      "Reassignment of constants and roles when people move or leave. In practice the most common request.",
+      "Notification and form wording changes, within allowance.",
+      "Incident triage and coordination with Support and Engineering."
+    ],
+    "not_covered": [
+      "New nodes, branches, forms or approval tiers.",
+      "New integration points.",
+      "Redesign that changes the complexity tier. Re-scoped as a build increment.",
+      "Changes made by the client's own admins in the Builder. Re-baselining is billable and suspends service levels on that workflow until complete.",
+      "Platform defects, covered by Acorn Support under the license.",
+      "Training beyond the included administrator walkthrough."
+    ],
+    "allowance_note": "Valid 12 months. Unused allowance does not carry over."
+  },
+
+  "indexation": {
+    "cpi_percent": 7,
+    "applies_to": "Care fees, and any line marked as indexed, at each anniversary.",
+    "text": "Care fees increase at each anniversary by 7%."
+  },
+
+  "discounts": {
+    "repeat_workflow": {
+      "text": "Second workflow within 12 months: 10% off Discovery and Build. Third and subsequent: 15%. Care is not volume-discounted.",
+      "positions": [
+        {"key": "first", "label": "First workflow", "percent": 0},
+        {"key": "second", "label": "Second workflow within 12 months", "percent": 10},
+        {"key": "third", "label": "Third or subsequent workflow", "percent": 15}
+      ]
+    }
+  },
+
+  "service_levels": [
+    {"severity": "Critical", "definition": "Workflow cannot be submitted, approved or progressed at all, and is blocking a statutory, safety, payroll-linked or time-critical process.", "response": "1 to 4 business hrs by Care tier", "workaround": "1 business day", "resolution": "3 business days"},
+    {"severity": "High", "definition": "Core function broken, workaround exists. Escalations not firing, wrong approver, notifications not sending.", "response": "4 business hrs", "workaround": "2 business days", "resolution": "5 business days"},
+    {"severity": "Medium", "definition": "Isolated defect or single-user impact. Cosmetic, non-blocking.", "response": "1 business day", "workaround": "", "resolution": "10 business days"},
+    {"severity": "Low / request", "definition": "Configuration change within Care allowance.", "response": "2 business days", "workaround": "", "resolution": "Next sprint slot, or 15 business days"}
+  ],
+
+  "terms": [
+    {"term": "Eligibility", "position": "Momentum Studio license required. A custom workflow needs the Advanced Momentum Tenant feature, so Base clients move to Studio first."},
+    {"term": "Pre-scope", "position": "No charge, one call, before quote. Not a design engagement and produces no deliverable beyond a tier and a price."},
+    {"term": "Discovery invoicing", "position": "In full on order, as part of the committed line item."},
+    {"term": "Build invoicing", "position": "50% on commencement of the first build sprint, 50% at go-live."},
+    {"term": "Care invoicing", "position": "Annually in advance, first year at go-live, co-terminus with the Momentum license."},
+    {"term": "Tier adjustment", "position": "One adjustment permitted, at the end of Discovery, in writing, priced as the difference between tiers only."},
+    {"term": "Care as a condition", "position": "Care at Essential or above is a condition of the service. Acorn does not hand over a workflow it built and decline responsibility for it."},
+    {"term": "Annual indexation", "position": "Care fees increase at each anniversary by 7%."},
+    {"term": "Sprint deferral", "position": "Over 10 business days' notice, no charge. Six to ten, 50% of the sprint fee. Five or fewer, 100%."},
+    {"term": "Integration", "position": "Not included. Scoped and quoted as a separate line item."},
+    {"term": "Minimum engagement", "position": "One Simple workflow."},
+    {"term": "Currency and tax", "position": "AUD, ex GST, Year 1 rates."}
+  ],
+
+  "client_needs": [
+    "A named business owner and a named decision maker. They can be the same person.",
+    "Test users and representative test data in staging before Discovery closes, covering every role and approval path.",
+    "Responses to our questions within three business days. Slower and the sprint clock stops.",
+    "Data dependencies verified together during Discovery, not during testing.",
+    "UAT completed inside the five-day window. A window that drifts pushes go-live to the next release slot.",
+    "Change requests raised through the agreed channel. Anything said in a demo is a candidate, not a commitment."
+  ],
+
+  "rate_card": {
+    "role": "Solutions Architect", "hourly": 225, "day": 1675, "sprint": 16400,
+    "out_of_hours": "1.5x rate",
+    "text": "Applies to change requests beyond the Care allowance, work outside a signed design, and engagements quoted on time rather than fixed price."
+  },
+
+  "worked_examples": [
+    {"_note": "Section 12 of the document. The per-factor split of example B is inferred so that it totals 21 with five 3s, which is what keeps it Complex under the ceiling rule."},
+    {"name": "Supplier onboarding, 5,000 users", "scores": {"nodes": 2, "transitions": 2, "forms": 2, "routing": 1, "external": 1, "course": 1, "reporting": 1, "visibility": 2}, "total": 12, "tier": "moderate", "care": "standard", "year1_service": 24640, "recurring": 4240},
+    {"name": "Grievance handling, 500 users", "scores": {"nodes": 3, "transitions": 2, "forms": 3, "routing": 3, "external": 3, "course": 2, "reporting": 3, "visibility": 2}, "total": 21, "tier": "complex", "care": "premier", "year1_service": 49530, "recurring": 11380}
+  ]
+}
