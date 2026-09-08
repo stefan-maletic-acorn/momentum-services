@@ -36,7 +36,7 @@
     model.pre_scope.checks.forEach(function (c) { checks[c.key] = null; });
     return {
       engagement: { client: "", workflow: "", preparedBy: "", date: today(), checks: checks, notes: "" },
-      scores: {}, linked: false,
+      scores: {},
       careTier: "standard", extendedCoverage: false, repeat: "first", years: 1, extras: [],
     };
   }
@@ -86,7 +86,7 @@
     var s = STEPS[i], inp = state.inputs;
     if (s.key === "engagement") return !!(inp.engagement.client && inp.engagement.workflow);
     if (s.key === "factor") return !!inp.scores[s.factor.key];
-    if (s.key === "tier") return MQ.scoreTier(model, inp.scores, inp.linked).complete;
+    if (s.key === "tier") return MQ.scoreTier(model, inp.scores).complete;
     if (s.key === "care") return !!inp.careTier;
     return false;
   }
@@ -177,8 +177,6 @@
         (msg ? '<div class="rule' + (flagged ? "" : " good") + '"><div>' + esc(msg) + "</div></div>" : "") + "</div>");
     });
     out.push("</div></div>");
-    out.push('<div class="sec"><h3>Programme check</h3><label class="toggle"><input type="checkbox" data-act="linked"' + (state.inputs.linked ? " checked" : "") + "><span><b>Multiple linked workflows, or a cross-workflow dependency.</b> " +
-      '<span class="muted">' + esc(model.scorecard.programme_rule.text) + "</span></span></label></div>");
     out.push(navFooter(state.step) + "</section>");
     return out.join("");
   }
@@ -189,7 +187,7 @@
 
   function renderFactor(s) {
     var f = s.factor, chosen = state.inputs.scores[f.key];
-    var st = MQ.scoreTier(model, state.inputs.scores, state.inputs.linked);
+    var st = MQ.scoreTier(model, state.inputs.scores);
     var out = ['<section class="mq-card"><header><span class="eyebrow">Step ' + (state.step + 1) + " of " + STEPS.length + " · Factor " + (s.index + 1) + " of 8</span><h2>" + esc(f.label) + "</h2></header>"];
     out.push('<div class="ask"><span class="eyebrow">Ask the client</span><blockquote>' + esc(f.ask) + "</blockquote></div>");
     out.push('<p class="why">' + esc(f.why) + "</p>");
@@ -210,7 +208,7 @@
 
   function renderTier() {
     var inp = state.inputs;
-    var st = MQ.scoreTier(model, inp.scores, inp.linked);
+    var st = MQ.scoreTier(model, inp.scores);
     var out = ['<section class="mq-card"><header><span class="eyebrow">Step ' + (state.step + 1) + " of " + STEPS.length + " · Result</span><h2>Provisional tier</h2>"];
     if (!st.complete) {
       var missing = model.scorecard.factors.filter(function (f) { return !inp.scores[f.key]; });
@@ -224,8 +222,7 @@
     out.push('<p class="lede">Price is set by workflow complexity, not account size. The scorecard total places the workflow in a tier; the tier sets the Discovery and Build price.</p></header>');
     out.push('<div class="tier-hero"><div class="score num">' + st.total + "<small>of 24</small></div><div>" +
       '<div class="eyebrow">Tier</div><div class="name">' + esc(st.tier.label) + "</div>" +
-      '<p class="small">' + (st.tierKey === "programme" ? esc(model.scorecard.tiers[3].text) + " Figures below are from-prices." :
-        "Discovery " + money(p.discovery) + " and Build " + money(p.build) + ". " + esc(MQ.sprintsText(model, st.tierKey)) + ", then five business days of UAT, ten of hypercare and thirty of warranty.") + "</p></div></div>");
+      '<p class="small">Discovery ' + money(p.discovery) + " and Build " + money(p.build) + ". " + esc(MQ.sprintsText(model, st.tierKey)) + ", then five business days of UAT, ten of hypercare and thirty of warranty.</p></div></div>");
     st.rules.forEach(function (r) { out.push('<div class="rule"><div><b>Rule applied.</b> ' + esc(r.text) + "</div></div>"); });
     out.push('<div class="sec"><h3>What drove it</h3><ul class="factor-list">');
     model.scorecard.factors.forEach(function (f) {
@@ -245,8 +242,8 @@
     }
     out.push('<div class="sec"><h3>The published tiers</h3><div class="tbl-wrap"><table><thead><tr><th>Tier</th><th>Score</th><th class="num">Discovery</th><th class="num">Build</th><th class="num">Care (Standard)</th><th class="num">Year 1 total</th></tr></thead><tbody>');
     model.scorecard.tiers.forEach(function (t) {
-      var pr = model.prices[t.key], care = model.care.table[t.key].standard, from = pr.indicative ? "from " : "";
-      out.push("<tr" + (t.key === st.tierKey ? ' class="current"' : "") + "><td>" + esc(t.label) + "</td><td>" + (t.min !== null ? t.min + " to " + t.max : "Linked") + '</td><td class="num">' + from + money(pr.discovery) + '</td><td class="num">' + from + money(pr.build) + '</td><td class="num">' + from + money(care) + '</td><td class="num">' + (pr.indicative ? "Scoped" : money(pr.discovery + pr.build + care)) + "</td></tr>");
+      var pr = model.prices[t.key], care = model.care.table[t.key].standard, from = "";
+      out.push("<tr" + (t.key === st.tierKey ? ' class="current"' : "") + "><td>" + esc(t.label) + "</td><td>" + t.min + " to " + t.max + '</td><td class="num">' + from + money(pr.discovery) + '</td><td class="num">' + from + money(pr.build) + '</td><td class="num">' + from + money(care) + '</td><td class="num">' + money(pr.discovery + pr.build + care) + "</td></tr>");
     });
     out.push("</tbody></table></div></div>");
     out.push(navFooter(state.step) + "</section>");
@@ -255,14 +252,14 @@
 
   function renderCare() {
     var inp = state.inputs;
-    var st = MQ.scoreTier(model, inp.scores, inp.linked);
+    var st = MQ.scoreTier(model, inp.scores);
     var out = ['<section class="mq-card"><header><span class="eyebrow">Step ' + (state.step + 1) + " of " + STEPS.length + " · Commercials</span><h2>Care and commercials</h2>",
       '<p class="lede">' + esc(model.care.text) + "</p></header>"];
     if (!st.complete) out.push('<div class="rule"><div>Score all eight factors first. Care is priced from the workflow tier, so the fees below will appear once the tier is known.</div></div>');
     out.push('<div class="sec"><h3>Care tier</h3><div class="care-grid">');
     model.care.tiers.forEach(function (ct) {
       var fee = st.complete ? model.care.table[st.tierKey][ct.key] : null;
-      var from = st.tierKey === "programme" ? "from " : "";
+      var from = "";
       out.push('<button type="button" class="pick care" data-act="care" data-key="' + ct.key + '"' + (inp.careTier === ct.key ? ' aria-pressed="true"' : "") + ">" +
         '<span class="name">' + esc(ct.label) + "</span>" +
         '<span class="fee num">' + (fee !== null ? from + money(fee) : "—") + '</span><span class="basis">a year · ' + ct.percent_of_build + "% of build, min " + money(ct.minimum) + "</span>" +
@@ -313,12 +310,11 @@
         '<button type="button" class="btn btn-purple" data-act="go" data-step="9">Go to the tier</button>' + navFooter(state.step) + "</section>");
       return out.join("");
     }
-    var from = q.indicative ? "from " : "";
+    var from = "";
     var termLabel = q.years === 1 ? "12 months" : q.years + " years";
     out.push('<div class="quote-head"><div><h2>' + esc(model.service.name) + "</h2>" +
       '<p class="lede">' + esc(e.client || "Client") + (e.workflow ? " · " + esc(e.workflow) : "") + "</p></div>" +
       '<dl class="meta"><dt>Prepared by</dt><dd>' + esc(e.preparedBy || "—") + "</dd><dt>Date</dt><dd>" + esc(friendlyDate(e.date)) + "</dd><dt>Tier</dt><dd>" + esc(q.tier.label) + " (scorecard " + q.score.total + ")</dd><dt>Care</dt><dd>" + esc(q.careTier.label) + (q.care.extended ? ", extended coverage" : "") + "</dd></dl></div></header>");
-    if (q.indicative) out.push('<div class="rule"><div><b>Programme.</b> ' + esc(model.scorecard.tiers[3].text) + " Every figure here is a from-price; the engagement is scoped individually.</div></div>");
     var flagged = model.pre_scope.checks.filter(function (c) { return e.checks[c.key] === c.flag_when; });
     flagged.forEach(function (c) { out.push('<div class="rule no-print"><div><b>From the pre-scope.</b> ' + esc(c[c.flag_when]) + "</div></div>"); });
 
@@ -376,14 +372,14 @@
 
   function renderSide() {
     var inp = state.inputs;
-    var st = MQ.scoreTier(model, inp.scores, inp.linked);
+    var st = MQ.scoreTier(model, inp.scores);
     var q = currentQuote();
     var out = ['<aside class="mq-side"><div class="panel"><span class="eyebrow">Running quote</span>'];
     out.push('<div class="score-track" aria-label="Scorecard progress">' + model.scorecard.factors.map(function (f) {
       var p = inp.scores[f.key]; return '<span class="' + (p ? "p" + p : "") + '" title="' + esc(f.label) + (p ? ": " + p : "") + '"></span>';
     }).join("") + "</div>");
     if (q.ready) {
-      var from = q.indicative ? "from " : "";
+      var from = "";
       out.push('<div class="big num">' + from + money(q.contract) + "<small>over " + (q.years === 1 ? "12 months" : q.years + " years") + ", ex GST</small></div>");
       out.push("<dl><dt>Scorecard</dt><dd class=\"num\">" + st.total + " · " + esc(st.tier.label) + "</dd>" +
         "<dt>Year 1</dt><dd class=\"num\">" + from + money(q.year1) + "</dd>" +
@@ -413,7 +409,7 @@
       out.push('<div class="tbl-wrap"><table><thead><tr><th>Client</th><th>Workflow</th><th>Tier</th><th>Care</th><th>Term</th><th class="num">Total</th><th>Saved</th><th></th></tr></thead><tbody>');
       state.quotes.forEach(function (d) {
         var s = d.summary || {};
-        out.push("<tr><td>" + esc(s.client) + "</td><td>" + esc(s.workflow) + '</td><td><span class="chip">' + esc(s.tier) + " · " + esc(s.score) + "</span></td><td>" + esc(s.careTier) + "</td><td>" + (s.years === 1 ? "12 months" : s.years + " years") + '</td><td class="num">' + (s.indicative ? "from " : "") + money(s.total || 0) + '</td><td class="small muted">' + esc(friendlyDate(String(d.savedAt || "").slice(0, 10))) + (s.preparedBy ? "<br>" + esc(s.preparedBy) : "") + "</td>" +
+        out.push("<tr><td>" + esc(s.client) + "</td><td>" + esc(s.workflow) + '</td><td><span class="chip">' + esc(s.tier) + " · " + esc(s.score) + "</span></td><td>" + esc(s.careTier) + "</td><td>" + (s.years === 1 ? "12 months" : s.years + " years") + '</td><td class="num">' + money(s.total || 0) + '</td><td class="small muted">' + esc(friendlyDate(String(d.savedAt || "").slice(0, 10))) + (s.preparedBy ? "<br>" + esc(s.preparedBy) : "") + "</td>" +
           '<td class="row-actions"><button type="button" class="btn btn-ghost btn-sm" data-act="open" data-id="' + esc(d.id) + '">Open</button><button type="button" class="btn btn-ghost btn-sm" data-act="delete" data-id="' + esc(d.id) + '">Delete</button></td></tr>');
       });
       out.push("</tbody></table></div>");
@@ -458,7 +454,6 @@
     if (!el) return;
     var act = el.getAttribute("data-act");
     if (act === "eng") return update(function () { state.inputs.engagement[el.getAttribute("data-key")] = el.value; delete state.inputs.example; });
-    if (act === "linked") return update(function () { state.inputs.linked = el.checked; });
     if (act === "extended") return update(function () { state.inputs.extendedCoverage = el.checked; });
     if (act === "extra") return update(function () {
       var x = state.inputs.extras[parseInt(el.getAttribute("data-i"), 10)], k = el.getAttribute("data-key");
@@ -513,7 +508,7 @@
     var e = state.inputs.engagement;
     return { client: e.client, workflow: e.workflow, preparedBy: e.preparedBy, date: e.date,
              tier: q.tier.label, score: q.score.total, careTier: q.careTier.label, years: q.years,
-             total: q.contract, year1: q.year1, recurring: q.recurring, indicative: q.indicative };
+             total: q.contract, year1: q.year1, recurring: q.recurring };
   }
 
   function saveQuote() {

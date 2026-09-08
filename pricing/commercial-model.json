@@ -114,29 +114,24 @@
     "tiers": [
       {"key": "simple", "label": "Simple", "min": 8, "max": 11},
       {"key": "moderate", "label": "Moderate", "min": 12, "max": 16},
-      {"key": "complex", "label": "Complex", "min": 17, "max": 24},
-      {"key": "programme", "label": "Programme", "min": null, "max": null, "text": "Multiple linked workflows, or cross-workflow dependency. Scoped individually."}
+      {"key": "complex", "label": "Complex", "min": 17, "max": 24}
     ],
     "floor_rule": {"factor": "routing", "points": 3, "min_tier": "moderate",
-                   "text": "A 3 on routing data availability places the workflow at Moderate or above regardless of total."},
-    "ceiling_rule": {"threes": 6, "tier": "programme",
-                     "text": "A workflow scoring 3 on six or more factors is quoted as a Programme even if the total lands below 17."},
-    "programme_rule": {"text": "Multiple linked workflows, or a cross-workflow dependency, is a Programme regardless of score."}
+                   "text": "A 3 on routing data availability places the workflow at Moderate or above regardless of total."}
   },
 
   "prices": {
-    "_note": "Year 1 rates per workflow tier. Programme figures are 'from' and scoped individually.",
-    "simple":    {"discovery": 2450, "build": 7450,  "indicative": false},
-    "moderate":  {"discovery": 3450, "build": 16950, "indicative": false},
-    "complex":   {"discovery": 5650, "build": 32500, "indicative": false},
-    "programme": {"discovery": 7500, "build": 46000, "indicative": true}
+    "_note": "Year 1 rates per workflow tier.",
+    "simple":    {"discovery": 2450, "build": 7450},
+    "moderate":  {"discovery": 3450, "build": 16950},
+    "complex":   {"discovery": 5650, "build": 32500}
   },
 
   "build": {
-    "sprints": {"simple": 0.5, "moderate": 1, "complex": 2, "programme": null},
+    "sprints": {"simple": 0.5, "moderate": 1, "complex": 2},
     "sprint_weeks": 2,
     "stages": [
-      {"stage": "Build sprints", "duration": "0.5 to 3 sprints", "text": "Configuration in staging, internal functional and regression testing, demonstration at the end of each sprint.", "client_time": "60-minute demo per sprint"},
+      {"stage": "Build sprints", "duration": "0.5 to 2 sprints", "text": "Configuration in staging, internal functional and regression testing, demonstration at the end of each sprint.", "client_time": "60-minute demo per sprint"},
       {"stage": "UAT", "duration": "5 business days", "text": "Client tests against the design document. Defects returned as one consolidated list.", "client_time": "Client-led"},
       {"stage": "Rework", "duration": "Included", "text": "One consolidated rework pass.", "client_time": "Sign-off"},
       {"stage": "Go-live", "duration": "Scheduled", "text": "Deployment against the release calendar, handover pack, administrator walkthrough.", "client_time": "60-minute session"},
@@ -171,11 +166,10 @@
       {"key": "premier",   "label": "Premier",   "percent_of_build": 35, "minimum": 5950, "allowance_hours": 30, "cadence": "Monthly review, named Solutions Architect", "critical_response": "1 business hr", "service_credits": true}
     ],
     "table": {
-      "_note": "Published Year 1 Care fee by workflow tier and Care tier. Programme rows are 'from', derived from the from-Build at the tier percentage.",
+      "_note": "Published Year 1 Care fee by workflow tier and Care tier.",
       "simple":    {"essential": 2450, "standard": 3950,  "premier": 5950},
       "moderate":  {"essential": 3050, "standard": 4240,  "premier": 5950},
-      "complex":   {"essential": 5850, "standard": 8120,  "premier": 11380},
-      "programme": {"essential": 8280, "standard": 11500, "premier": 16100}
+      "complex":   {"essential": 5850, "standard": 8120,  "premier": 11380}
     },
     "extended_coverage": {"tier": "premier", "percent_of_care": 20, "label": "Extended coverage, 7:00am to 7:00pm AET", "text": "Premier can add 7:00am to 7:00pm coverage for 20% of the Care fee."},
     "coverage": "8:30am to 5:30pm AET, Monday to Friday, excluding national public holidays and the Acorn end-of-year shutdown.",
@@ -253,7 +247,7 @@
   },
 
   "worked_examples": [
-    {"_note": "Section 12 of the document. The per-factor split of example B is inferred so that it totals 21 with five 3s, which is what keeps it Complex under the ceiling rule."},
+    {"_note": "Section 12 of the document. The per-factor split of example B is inferred so that it totals 21 with five 3s, which is how the document describes it."},
     {"name": "Supplier onboarding, 5,000 users", "scores": {"nodes": 2, "transitions": 2, "forms": 2, "routing": 1, "external": 1, "course": 1, "reporting": 1, "visibility": 2}, "total": 12, "tier": "moderate", "care": "standard", "year1_service": 24640, "recurring": 4240},
     {"name": "Grievance handling, 500 users", "scores": {"nodes": 3, "transitions": 2, "forms": 3, "routing": 3, "external": 3, "course": 2, "reporting": 3, "visibility": 2}, "total": 21, "tier": "complex", "care": "premier", "year1_service": 49530, "recurring": 11380}
   ]

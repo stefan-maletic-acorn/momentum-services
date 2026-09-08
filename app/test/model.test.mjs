@@ -37,31 +37,30 @@ test("worked example B: grievance handling is Complex, Premier Care, $49,530 the
 
 test("floor rule: a 3 on routing data lifts a total of 11 to Moderate", () => {
   const scores = { nodes: 1, transitions: 1, forms: 1, routing: 3, external: 1, course: 1, reporting: 2, visibility: 1 };
-  const st = MQ.scoreTier(model, scores, false);
+  const st = MQ.scoreTier(model, scores);
   assert.equal(st.total, 11);
   assert.equal(st.tierKey, "moderate");
   assert.equal(st.rules[0].key, "floor");
 });
 
-test("ceiling rule: six factors at 3 is a Programme even below 17", () => {
+test("six factors at 3 still tiers by total: 20 is Complex", () => {
   const scores = { nodes: 3, transitions: 3, forms: 3, routing: 1, external: 3, course: 1, reporting: 3, visibility: 3 };
-  const st = MQ.scoreTier(model, scores, false);
+  const st = MQ.scoreTier(model, scores);
   assert.equal(st.total, 20);
-  assert.equal(st.tierKey, "programme");
-  assert.equal(st.rules.at(-1).key, "ceiling");
-  const q = MQ.quote(model, { scores, careTier: "standard", years: 2 });
-  assert.equal(q.indicative, true);
-  assert.equal(q.lines[2].net, 11500);
+  assert.equal(st.tierKey, "complex");
+  assert.deepEqual(st.rules, []);
 });
 
-test("linked workflows are a Programme regardless of score", () => {
-  const scores = { nodes: 1, transitions: 1, forms: 1, routing: 1, external: 1, course: 1, reporting: 1, visibility: 1 };
-  assert.equal(MQ.scoreTier(model, scores, true).tierKey, "programme");
-  assert.equal(MQ.scoreTier(model, scores, false).tierKey, "simple");
+test("the maximum score of 24 is Complex and the minimum of 8 is Simple", () => {
+  const all3 = Object.fromEntries(model.scorecard.factors.map((f) => [f.key, 3]));
+  const all1 = Object.fromEntries(model.scorecard.factors.map((f) => [f.key, 1]));
+  assert.equal(MQ.scoreTier(model, all3).tierKey, "complex");
+  assert.equal(MQ.scoreTier(model, all1).tierKey, "simple");
+  assert.equal(model.scorecard.tiers.length, 3);
 });
 
 test("an incomplete scorecard has no tier", () => {
-  const st = MQ.scoreTier(model, { nodes: 2 }, false);
+  const st = MQ.scoreTier(model, { nodes: 2 });
   assert.equal(st.complete, false);
   assert.equal(st.tierKey, null);
   assert.equal(MQ.quote(model, { scores: { nodes: 2 } }).ready, false);
@@ -112,14 +111,14 @@ test("payment milestones add up to the contract", () => {
 
 test("what would lower the tier names the factor and the saving", () => {
   const scores = { nodes: 2, transitions: 2, forms: 2, routing: 1, external: 1, course: 1, reporting: 1, visibility: 2 };
-  const low = MQ.whatWouldLower(model, scores, false);
+  const low = MQ.whatWouldLower(model, scores);
   assert.equal(low.length, 4);
   assert.equal(low[0].tier, "Simple");
   assert.equal(low[0].saving, (3450 + 16950) - (2450 + 7450));
 });
 
 test("the published Care table agrees with percent-of-build and the floors", () => {
-  for (const tier of ["simple", "moderate", "complex", "programme"]) {
+  for (const tier of ["simple", "moderate", "complex"]) {
     for (const ct of model.care.tiers) {
       const expected = Math.max(ct.minimum, model.prices[tier].build * ct.percent_of_build / 100);
       const published = model.care.table[tier][ct.key];

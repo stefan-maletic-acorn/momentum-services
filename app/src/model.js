@@ -5,7 +5,7 @@
  * it to the worked examples in the document and the page can call the same
  * code. Every number comes from the model; this file only does arithmetic.
  *
- *   MQ.scoreTier(model, scores, linked)   -> the tier and the rules that fired
+ *   MQ.scoreTier(model, scores)           -> the tier and the rules that fired
  *   MQ.quote(model, inputs)               -> lines, a year-by-year schedule, totals
  *   MQ.summaryText(model, q, inputs)      -> the plain-text cut for the clipboard
  */
@@ -33,7 +33,7 @@
     return null;
   }
 
-  var ORDER = ["simple", "moderate", "complex", "programme"];
+  var ORDER = ["simple", "moderate", "complex"];
 
   function tierForTotal(model, total) {
     var tiers = model.scorecard.tiers;
@@ -41,15 +41,14 @@
       var t = tiers[i];
       if (t.min !== null && t.max !== null && total >= t.min && total <= t.max) return t.key;
     }
-    return total > 24 ? "programme" : "simple";
+    return total > 24 ? "complex" : "simple";
   }
 
   /**
    * Score the eight factors. `scores` maps factor key to points (1, 2 or 3);
-   * an unscored factor is missing. `linked` is true when the client has
-   * multiple linked workflows or a cross-workflow dependency.
+   * an unscored factor is missing.
    */
-  function scoreTier(model, scores, linked) {
+  function scoreTier(model, scores) {
     var sc = model.scorecard;
     var total = 0, threes = 0, scored = 0;
     for (var i = 0; i < sc.factors.length; i++) {
@@ -64,14 +63,6 @@
         ORDER.indexOf(key) < ORDER.indexOf(sc.floor_rule.min_tier)) {
       key = sc.floor_rule.min_tier;
       rules.push({ key: "floor", text: sc.floor_rule.text });
-    }
-    if (complete && threes >= sc.ceiling_rule.threes && key !== "programme") {
-      key = sc.ceiling_rule.tier;
-      rules.push({ key: "ceiling", text: sc.ceiling_rule.text });
-    }
-    if (linked && key !== "programme") {
-      key = "programme";
-      rules.push({ key: "linked", text: sc.programme_rule.text });
     }
     return {
       total: total, threes: threes, scored: scored, complete: complete,
@@ -96,10 +87,10 @@
 
   /** The savings a lower score on one factor would bring: for each factor
    *  scored above 1, what tier a one-point reduction would land in. */
-  function whatWouldLower(model, scores, linked) {
-    var now = scoreTier(model, scores, linked);
+  function whatWouldLower(model, scores) {
+    var now = scoreTier(model, scores);
     var out = [];
-    if (!now.complete || linked) return out;
+    if (!now.complete) return out;
     for (var i = 0; i < model.scorecard.factors.length; i++) {
       var f = model.scorecard.factors[i];
       var pts = scores[f.key];
@@ -108,7 +99,7 @@
       for (var j = 0; j < f.options.length; j++) if (f.options[j].points < pts) lower = f.options[j].points;
       var copy = {}; for (var k in scores) copy[k] = scores[k];
       copy[f.key] = lower;
-      var then = scoreTier(model, copy, linked);
+      var then = scoreTier(model, copy);
       if (then.tierKey !== now.tierKey && ORDER.indexOf(then.tierKey) < ORDER.indexOf(now.tierKey)) {
         var saving = (model.prices[now.tierKey].discovery + model.prices[now.tierKey].build) -
                      (model.prices[then.tierKey].discovery + model.prices[then.tierKey].build);
@@ -125,14 +116,14 @@
    * Price an engagement.
    *
    * inputs: {
-   *   scores: {factorKey: points}, linked: bool,
+   *   scores: {factorKey: points},
    *   careTier: "essential"|"standard"|"premier", extendedCoverage: bool,
    *   repeat: "first"|"second"|"third", years: 1|2|3,
    *   extras: [{label, amount, kind: "oneoff"|"annual", indexed: bool}]
    * }
    */
   function quote(model, inputs) {
-    var st = scoreTier(model, inputs.scores || {}, !!inputs.linked);
+    var st = scoreTier(model, inputs.scores || {});
     if (!st.tierKey) return { ready: false, score: st };
 
     var tierKey = st.tierKey;
@@ -193,20 +184,19 @@
     if (oneOffExtras) milestones.splice(1, 0, { when: "On order", what: "Other one-off lines", amount: oneOffExtras });
 
     return {
-      ready: true, score: st, tierKey: tierKey, tier: st.tier, indicative: !!prices.indicative,
+      ready: true, score: st, tierKey: tierKey, tier: st.tier,
       careTier: careTierByKey(model, careKey), care: care, repeatPercent: pct, years: years,
       cpiPercent: model.indexation.cpi_percent,
       lines: lines, schedule: schedule, contract: contract,
       year1: schedule[0].total, recurring: careY1 + annualIndexed + annualFlat,
       serviceYear1: (discovery - discDiscount) + (build - buildDiscount) + careY1,
       milestones: milestones, sprints: model.build.sprints[tierKey],
-      lowering: whatWouldLower(model, inputs.scores || {}, !!inputs.linked),
+      lowering: whatWouldLower(model, inputs.scores || {}),
     };
   }
 
   function sprintsText(model, tierKey) {
     var n = model.build.sprints[tierKey];
-    if (n === null || n === undefined) return "Sprints scoped individually";
     if (n === 0.5) return "Half a two-week sprint";
     return n + (n === 1 ? " two-week sprint" : " two-week sprints");
   }
@@ -221,11 +211,11 @@
   function summaryText(model, q, inputs) {
     var eng = inputs.engagement || {};
     var out = [];
-    var from = q.indicative ? "from " : "";
+    var from = "";
     out.push("Momentum Solutions Architect Service - quote");
     if (eng.client) out.push("Client: " + eng.client);
     if (eng.workflow) out.push("Workflow: " + eng.workflow);
-    out.push("Tier: " + q.tier.label + " (scorecard " + q.score.total + ")" + (q.indicative ? " - scoped individually, figures are indicative" : ""));
+    out.push("Tier: " + q.tier.label + " (scorecard " + q.score.total + ")");
     out.push("Care: " + q.careTier.label + (q.care.extended ? " with extended coverage" : ""));
     out.push("");
     q.lines.forEach(function (l) {

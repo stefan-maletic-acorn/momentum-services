@@ -18,9 +18,8 @@ Twelve steps in a rail, one on screen at a time.
 2. **The eight scorecard factors, one per step.** Each shows the question to
    ask the client, why the factor drives effort, and the 1 / 2 / 3 options
    from the commercial model. Unclear scores high.
-3. **Tier.** The total, the tier, which rules fired (floor on routing data,
-   ceiling on six 3s, linked workflows are a Programme), what drove it, and
-   what simplifying a factor would save.
+3. **Tier.** The total, the tier, whether the routing-data floor rule fired,
+   what drove it, and what simplifying a factor would save.
 4. **Care and commercials.** Essential, Standard or Premier Care; extended
    coverage on Premier; the term; the repeat-workflow discount; other lines
    such as an Advanced Momentum uplift or an integration quoted separately.
