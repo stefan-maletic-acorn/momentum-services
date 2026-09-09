@@ -53,13 +53,13 @@
          {"points": 2, "label": "3 to 5"},
          {"points": 3, "label": "6 or more"}
        ]},
-      {"key": "routing", "label": "Routing data availability",
-       "ask": "When a request has to reach the right person, how does the system know who that is? Is the manager relationship, cost centre or team already held in the platform and kept current?",
-       "why": "Every field the workflow relies on to route correctly has to exist and be populated. Data that is not confirmed to exist is the most reliable predictor of a build running long, which is why a 3 here places the workflow at Moderate or above regardless of total.",
+      {"key": "routing", "label": "Defining assignees",
+       "ask": "When a request has to reach the right person, how is that person defined? Is it always the same named user, the applicant's direct manager, or does the applicant choose who it goes to?",
+       "why": "Every step that somebody has to action needs an assignee the workflow can resolve. A specified set user is a constant: set once, tested once. The direct manager depends on the manager relationship being held in the platform and kept current for every applicant, so it has to be verified in Discovery. Letting the applicant select the right person adds a user-selection question, routing from that answer, and handling for a wrong or missing selection, and is the pattern that most often runs long.",
        "options": [
-         {"points": 1, "label": "Confirmed in platform"},
-         {"points": 2, "label": "Derivable from existing fields"},
-         {"points": 3, "label": "Unconfirmed, or requires data not held in the platform"}
+         {"points": 1, "label": "A specified set user"},
+         {"points": 2, "label": "Direct manager"},
+         {"points": 3, "label": "The applicant selects the right person"}
        ]},
       {"key": "external", "label": "External Momentum (public intake)",
        "ask": "Does anybody outside the client's user base need to start a request without logging in, such as a supplier, an applicant or a member of the public?",
@@ -99,7 +99,7 @@
       {"key": "complex", "label": "Complex", "min": 17, "max": 24}
     ],
     "floor_rule": {"factor": "routing", "points": 3, "min_tier": "moderate",
-                   "text": "A 3 on routing data availability places the workflow at Moderate or above regardless of total."}
+                   "text": "A 3 on defining assignees places the workflow at Moderate or above regardless of total."}
   },
 
   "prices": {

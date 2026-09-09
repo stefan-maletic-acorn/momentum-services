@@ -42,7 +42,7 @@ test("a Complex workflow at score 18 with Standard Care is $17,330 in year 1", (
   assert.equal(q.year1, 2950 + 11500 + 2880);
 });
 
-test("floor rule: a 3 on routing data lifts a total of 11 to Moderate", () => {
+test("floor rule: a 3 on defining assignees lifts a total of 11 to Moderate", () => {
   const scores = { nodes: 1, transitions: 1, forms: 1, routing: 3, external: 1, course: 1, reporting: 2, visibility: 1 };
   const st = MQ.scoreTier(model, scores);
   assert.equal(st.total, 11);

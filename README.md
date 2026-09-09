@@ -21,7 +21,7 @@ result.
    shows the question to ask the client directly above three large answer
    options, with why the factor drives effort underneath. Unclear scores
    high. Choosing an option records it and nothing else.
-3. **Tiers.** Each workflow's total, tier, whether the routing-data floor
+3. **Tiers.** Each workflow's total, tier, whether the assignee floor
    rule fired, what drove it, and what simplifying a factor would save.
 4. **Care and commercials.** One Care tier for the quote (Essential,
    Standard or Premier), each workflow's fee priced from its own tier;
