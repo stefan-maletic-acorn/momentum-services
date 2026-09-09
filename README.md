@@ -36,6 +36,18 @@ Saved quotes live in the artifact's own database, so anyone who opens the
 tool sees the same library. Opening a saved quote reloads its answers and
 re-prices them against the current model.
 
+## The service guide
+
+`docs/service-guide.html` is the client-facing *Momentum Care Service Guide*:
+the delivery stages and what "done" means at each, the three protections
+that start at go-live (hypercare, warranty, Care), the Care tiers and the
+allowance rules, every inclusion and exclusion elaborated with how it is
+handled instead, the service levels with worked business-hours examples,
+how to raise a request, and the commercial terms. The prose lives in the
+template; every figure is a `{{marker}}` filled from the commercial model by
+`tools/build_service_guide.py`, so a price change rebuilds the guide too.
+The built page is `docs/dist/momentum-care-service-guide.html`.
+
 ## The numbers
 
 Every figure comes from `pricing/commercial-model.json`. The structure is the
@@ -59,6 +71,9 @@ in by hand.
 
 ```
 pricing/commercial-model.json   every number: scorecard, tiers, prices, Care, discounts, terms
+docs/service-guide.html         the service guide template: prose plus {{markers}} for every figure
+docs/dist/momentum-care-service-guide.html   the built guide (generated, committed)
+tools/build_service_guide.py    fills the guide's markers from the model and inlines the tokens
 design-system/tokens.css        Acorn design tokens (identical to the copy in momentum-docs)
 design-system/fonts.css         the Google Fonts URL
 app/index.html                  the page template the build fills in
@@ -77,6 +92,8 @@ python3 tools/build_app.py --selftest   # placeholders filled, nothing internal 
 python3 tools/build_app.py              # writes app/dist/momentum-quoting-tool.html
 node --test app/test/model.test.mjs     # the two calibration engagements, the floor rule,
                                         # multi-workflow discounts, the 7% schedule, extra lines
+python3 tools/build_service_guide.py --selftest   # every marker filled, every published line present
+python3 tools/build_service_guide.py             # writes docs/dist/momentum-care-service-guide.html
 ```
 
 Then publish `app/dist/momentum-quoting-tool.html` with the Artifact tool to
