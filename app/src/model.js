@@ -2,18 +2,25 @@
  *
  * Pure functions over the commercial model (pricing/commercial-model.json)
  * and a set of inputs. No DOM, no state, so app/test/model.test.mjs can hold
- * it to the worked examples in the document and the page can call the same
- * code. Every number comes from the model; this file only does arithmetic.
+ * it to the model and the page can call the same code. Every number comes
+ * from the model; this file only does arithmetic.
  *
- *   MQ.scoreTier(model, scores)           -> the tier and the rules that fired
- *   MQ.quote(model, inputs)               -> lines, a year-by-year schedule, totals
- *   MQ.summaryText(model, q, inputs)      -> the plain-text cut for the clipboard
+ *   MQ.scoreTier(model, scores)      -> the tier for one workflow and the rules that fired
+ *   MQ.quote(model, inputs)          -> per-workflow lines, a year-by-year schedule, totals
+ *   MQ.summaryText(model, q, inputs) -> the plain-text cut for the clipboard
+ *
+ * inputs: {
+ *   engagement: { client, preparedBy, date, existingWorkflows },
+ *   workflows:  [ { id, name, scores: {factorKey: 1|2|3} } ],
+ *   careTier: "essential"|"standard"|"premier", extendedCoverage: bool, years: 1|2|3,
+ *   extras: [{label, amount, kind: "oneoff"|"annual", indexed: bool}]
+ * }
  */
 (function (root) {
   "use strict";
 
   /** Round half away from zero to whole dollars, the way a spreadsheet
-   *  does, so the page and the document agree to the dollar. */
+   *  does, so the page and the model agree to the dollar. */
   function rnd(v) {
     var sign = v < 0 ? -1 : 1;
     return sign * Math.round(Math.abs(v) + 1e-9);
@@ -39,17 +46,16 @@
     var tiers = model.scorecard.tiers;
     for (var i = 0; i < tiers.length; i++) {
       var t = tiers[i];
-      if (t.min !== null && t.max !== null && total >= t.min && total <= t.max) return t.key;
+      if (total >= t.min && total <= t.max) return t.key;
     }
     return total > 24 ? "complex" : "simple";
   }
 
-  /**
-   * Score the eight factors. `scores` maps factor key to points (1, 2 or 3);
-   * an unscored factor is missing.
-   */
+  /** Score the eight factors of one workflow. `scores` maps factor key to
+   *  points (1, 2 or 3); an unscored factor is missing. */
   function scoreTier(model, scores) {
     var sc = model.scorecard;
+    scores = scores || {};
     var total = 0, threes = 0, scored = 0;
     for (var i = 0; i < sc.factors.length; i++) {
       var pts = scores[sc.factors[i].key];
@@ -58,7 +64,6 @@
     var complete = scored === sc.factors.length;
     var rules = [];
     var key = complete ? tierForTotal(model, total) : null;
-
     if (complete && scores[sc.floor_rule.factor] === sc.floor_rule.points &&
         ORDER.indexOf(key) < ORDER.indexOf(sc.floor_rule.min_tier)) {
       key = sc.floor_rule.min_tier;
@@ -79,10 +84,12 @@
     return { base: base, extended: extra, total: base + extra };
   }
 
-  function repeatPercent(model, positionKey) {
+  /** The repeat-workflow discount for the workflow at `position` in the
+   *  client's portfolio: 0 is their first workflow with Acorn. */
+  function discountPercent(model, position) {
     var ps = model.discounts.repeat_workflow.positions;
-    for (var i = 0; i < ps.length; i++) if (ps[i].key === positionKey) return ps[i].percent;
-    return 0;
+    var idx = Math.max(0, Math.min(ps.length - 1, position));
+    return ps[idx].percent;
   }
 
   /** The savings a lower score on one factor would bring: for each factor
@@ -105,100 +112,87 @@
                      (model.prices[then.tierKey].discovery + model.prices[then.tierKey].build);
         var label = "";
         for (var o = 0; o < f.options.length; o++) if (f.options[o].points === lower) label = f.options[o].label;
-        out.push({ factor: f.label, from: pts, to: lower, toLabel: label,
-                   tier: then.tier.label, saving: saving });
+        out.push({ factor: f.label, from: pts, to: lower, toLabel: label, tier: then.tier.label, saving: saving });
       }
     }
     return out;
   }
 
-  /**
-   * Price an engagement.
-   *
-   * inputs: {
-   *   scores: {factorKey: points},
-   *   careTier: "essential"|"standard"|"premier", extendedCoverage: bool,
-   *   repeat: "first"|"second"|"third", years: 1|2|3,
-   *   extras: [{label, amount, kind: "oneoff"|"annual", indexed: bool}]
-   * }
-   */
-  function quote(model, inputs) {
-    var st = scoreTier(model, inputs.scores || {});
-    if (!st.tierKey) return { ready: false, score: st };
+  function durationText(model, tierKey) {
+    return model.build.duration[tierKey] || "";
+  }
 
-    var tierKey = st.tierKey;
-    var prices = model.prices[tierKey];
+  /** Price an engagement of one or more workflows. */
+  function quote(model, inputs) {
+    var wfs = inputs.workflows || [];
+    var scored = wfs.map(function (w) { return scoreTier(model, w.scores); });
+    var ready = wfs.length > 0 && scored.every(function (s) { return s.complete; });
+    if (!ready) return { ready: false, scores: scored };
+
     var careKey = inputs.careTier || "standard";
-    var care = careFee(model, tierKey, careKey, !!inputs.extendedCoverage);
-    var pct = repeatPercent(model, inputs.repeat || "first");
+    var careTier = careTierByKey(model, careKey);
     var years = Math.max(1, Math.min(3, inputs.years || 1));
     var cpi = model.indexation.cpi_percent / 100;
+    var existing = Math.max(0, parseInt((inputs.engagement || {}).existingWorkflows, 10) || 0);
     var extras = (inputs.extras || []).filter(function (e) { return e && e.label && isFinite(e.amount) && e.amount !== 0; });
 
-    var discovery = prices.discovery, build = prices.build;
-    var discDiscount = rnd(discovery * pct / 100), buildDiscount = rnd(build * pct / 100);
-
-    var lines = [
-      { key: "discovery", label: "Discovery", detail: "Workflow Design Document, confirmed scorecard, data-dependency register", amount: discovery, discount: discDiscount, net: discovery - discDiscount, recurs: false },
-      { key: "build", label: "Build", detail: sprintsText(model, tierKey) + ", UAT, go-live, hypercare and warranty", amount: build, discount: buildDiscount, net: build - buildDiscount, recurs: false },
-      { key: "care", label: "Momentum Care, " + careTierByKey(model, careKey).label, detail: "Year 1, annually in advance from go-live", amount: care.base, discount: 0, net: care.base, recurs: true },
-    ];
-    if (care.extended) {
-      lines.push({ key: "extended", label: model.care.extended_coverage.label, detail: model.care.extended_coverage.percent_of_care + "% of the Care fee", amount: care.extended, discount: 0, net: care.extended, recurs: true });
+    var lines = [], workflows = [], oneOff = 0, careBase = 0, careExt = 0;
+    wfs.forEach(function (w, i) {
+      var st = scored[i], p = model.prices[st.tierKey];
+      var pct = discountPercent(model, existing + i);
+      var dDisc = rnd(p.discovery * pct / 100), bDisc = rnd(p.build * pct / 100);
+      var care = careFee(model, st.tierKey, careKey, !!inputs.extendedCoverage);
+      var name = w.name || ("Workflow " + (i + 1));
+      lines.push({ key: "discovery-" + i, wf: i, workflow: name, label: "Discovery", detail: "Workflow Design Document, confirmed scorecard, data-dependency register", amount: p.discovery, discount: dDisc, net: p.discovery - dDisc, recurs: false });
+      lines.push({ key: "build-" + i, wf: i, workflow: name, label: "Build", detail: durationText(model, st.tierKey) + ", then UAT, go-live, hypercare and warranty", amount: p.build, discount: bDisc, net: p.build - bDisc, recurs: false });
+      lines.push({ key: "care-" + i, wf: i, workflow: name, label: "Momentum Care, " + careTier.label, detail: "Year 1, annually in advance from go-live", amount: care.base, discount: 0, net: care.base, recurs: true });
+      oneOff += (p.discovery - dDisc) + (p.build - bDisc);
+      careBase += care.base; careExt += care.extended;
+      workflows.push({ index: i, name: name, score: st, tierKey: st.tierKey, tier: st.tier,
+                       discovery: p.discovery, build: p.build, discountPercent: pct,
+                       discoveryNet: p.discovery - dDisc, buildNet: p.build - bDisc, oneOff: (p.discovery - dDisc) + (p.build - bDisc),
+                       care: care, duration: durationText(model, st.tierKey), lowering: whatWouldLower(model, w.scores) });
+    });
+    if (careExt) {
+      lines.push({ key: "extended", label: model.care.extended_coverage.label, detail: model.care.extended_coverage.percent_of_care + "% of the Care fee, all workflows", amount: careExt, discount: 0, net: careExt, recurs: true });
     }
+    var annualIndexed = 0, annualFlat = 0, oneOffExtras = 0;
     extras.forEach(function (e, i) {
-      lines.push({ key: "extra-" + i, label: e.label, detail: e.kind === "annual" ? (e.indexed ? "Annual, indexed at " + model.indexation.cpi_percent + "%" : "Annual, not indexed") : "One-off", amount: rnd(e.amount), discount: 0, net: rnd(e.amount), recurs: e.kind === "annual", indexed: !!e.indexed, extra: true });
+      var amt = rnd(e.amount), annual = e.kind === "annual";
+      lines.push({ key: "extra-" + i, label: e.label, detail: annual ? (e.indexed ? "Annual, indexed at " + model.indexation.cpi_percent + "%" : "Annual, not indexed") : "One-off", amount: amt, discount: 0, net: amt, recurs: annual, indexed: !!e.indexed, extra: true });
+      if (!annual) oneOffExtras += amt; else if (e.indexed) annualIndexed += amt; else annualFlat += amt;
     });
 
-    var oneOff = 0, careY1 = care.total, annualIndexed = 0, annualFlat = 0;
-    lines.forEach(function (l) {
-      if (!l.recurs) oneOff += l.net;
-      else if (l.extra) { if (l.indexed) annualIndexed += l.net; else annualFlat += l.net; }
-    });
-
+    var careY1 = careBase + careExt;
     var schedule = [];
     for (var y = 1; y <= years; y++) {
       var factor = Math.pow(1 + cpi, y - 1);
       var careY = rnd(careY1 * factor);
       var extrasY = rnd(annualIndexed * factor) + annualFlat;
-      schedule.push({
-        year: y, factor: factor,
-        oneOff: y === 1 ? oneOff : 0,
-        care: careY, extras: extrasY,
-        total: (y === 1 ? oneOff : 0) + careY + extrasY,
-        uplift: y === 1 ? 0 : careY - rnd(careY1 * Math.pow(1 + cpi, y - 2)),
-      });
+      var one = y === 1 ? oneOff + oneOffExtras : 0;
+      schedule.push({ year: y, factor: factor, oneOff: one, care: careY, extras: extrasY, total: one + careY + extrasY });
     }
     var contract = 0; schedule.forEach(function (s) { contract += s.total; });
 
-    var milestones = [
-      { when: "On order", what: "Discovery, in full", amount: discovery - discDiscount },
-      { when: "First build sprint", what: "Build, 50%", amount: rnd((build - buildDiscount) / 2) },
-      { when: "Go-live", what: "Build, 50%", amount: (build - buildDiscount) - rnd((build - buildDiscount) / 2) },
-      { when: "Go-live", what: "Care year 1, annually in advance", amount: careY1 + annualIndexed + annualFlat },
-    ];
+    var discoveryNet = 0, buildNet = 0;
+    workflows.forEach(function (w) { discoveryNet += w.discoveryNet; buildNet += w.buildNet; });
+    var milestones = [{ when: "On order", what: "Discovery, in full" + (workflows.length > 1 ? ", all workflows" : ""), amount: discoveryNet }];
+    if (oneOffExtras) milestones.push({ when: "On order", what: "Other one-off lines", amount: oneOffExtras });
+    milestones.push({ when: "First build sprint", what: "Build, 50%", amount: rnd(buildNet / 2) });
+    milestones.push({ when: "Go-live", what: "Build, 50%", amount: buildNet - rnd(buildNet / 2) });
+    milestones.push({ when: "Go-live", what: "Care year 1, annually in advance", amount: careY1 + annualIndexed + annualFlat });
     for (var yy = 2; yy <= years; yy++) {
       milestones.push({ when: "Anniversary " + (yy - 1), what: "Care year " + yy + ", +" + model.indexation.cpi_percent + "%", amount: schedule[yy - 1].total });
     }
-    var oneOffExtras = 0; lines.forEach(function (l) { if (l.extra && !l.recurs) oneOffExtras += l.net; });
-    if (oneOffExtras) milestones.splice(1, 0, { when: "On order", what: "Other one-off lines", amount: oneOffExtras });
 
     return {
-      ready: true, score: st, tierKey: tierKey, tier: st.tier,
-      careTier: careTierByKey(model, careKey), care: care, repeatPercent: pct, years: years,
-      cpiPercent: model.indexation.cpi_percent,
+      ready: true, workflows: workflows, careTier: careTier, careExtended: careExt, years: years,
+      cpiPercent: model.indexation.cpi_percent, existing: existing,
       lines: lines, schedule: schedule, contract: contract,
       year1: schedule[0].total, recurring: careY1 + annualIndexed + annualFlat,
-      serviceYear1: (discovery - discDiscount) + (build - buildDiscount) + careY1,
-      milestones: milestones, sprints: model.build.sprints[tierKey],
-      lowering: whatWouldLower(model, inputs.scores || {}),
+      serviceYear1: oneOff + careY1, milestones: milestones,
+      anyDiscount: workflows.some(function (w) { return w.discountPercent > 0; }),
     };
-  }
-
-  function sprintsText(model, tierKey) {
-    var n = model.build.sprints[tierKey];
-    if (n === 0.5) return "Half a two-week sprint";
-    return n + (n === 1 ? " two-week sprint" : " two-week sprints");
   }
 
   function money(model, v) {
@@ -211,29 +205,30 @@
   function summaryText(model, q, inputs) {
     var eng = inputs.engagement || {};
     var out = [];
-    var from = "";
     out.push("Momentum Solutions Architect Service - quote");
     if (eng.client) out.push("Client: " + eng.client);
-    if (eng.workflow) out.push("Workflow: " + eng.workflow);
-    out.push("Tier: " + q.tier.label + " (scorecard " + q.score.total + ")");
-    out.push("Care: " + q.careTier.label + (q.care.extended ? " with extended coverage" : ""));
+    out.push("Care: " + q.careTier.label + (q.careExtended ? " with extended coverage" : ""));
     out.push("");
+    q.workflows.forEach(function (w) {
+      out.push(w.name + " - " + w.tier.label + " (scorecard " + w.score.total + ")");
+      out.push("  Discovery " + money(model, w.discoveryNet) + ", Build " + money(model, w.buildNet) + (w.discountPercent ? " (" + w.discountPercent + "% repeat-workflow discount)" : "") + ", Care " + money(model, w.care.base) + " a year");
+    });
     q.lines.forEach(function (l) {
-      out.push(l.label + ": " + from + money(model, l.net) + (l.discount ? " (" + q.repeatPercent + "% repeat-workflow discount applied)" : "") + (l.recurs ? " a year" : ""));
+      if (l.wf === undefined) out.push(l.label + ": " + money(model, l.net) + (l.recurs ? " a year" : ""));
     });
     out.push("");
     q.schedule.forEach(function (s) {
-      out.push("Year " + s.year + ": " + from + money(model, s.total) + (s.year > 1 ? " (Care +" + q.cpiPercent + "%)" : ""));
+      out.push("Year " + s.year + ": " + money(model, s.total) + (s.year > 1 ? " (Care +" + q.cpiPercent + "%)" : ""));
     });
-    out.push("Total over " + (q.years === 1 ? "12 months" : q.years + " years") + ": " + from + money(model, q.contract));
+    out.push("Total over " + (q.years === 1 ? "12 months" : q.years + " years") + ": " + money(model, q.contract));
     out.push("");
     out.push(model.tax_note + " Care indexes at " + q.cpiPercent + "% each anniversary.");
     return out.join("\n");
   }
 
   var MQ = { rnd: rnd, money: money, ORDER: ORDER, tierByKey: tierByKey, careTierByKey: careTierByKey,
-             scoreTier: scoreTier, careFee: careFee, whatWouldLower: whatWouldLower, quote: quote,
-             sprintsText: sprintsText, summaryText: summaryText };
+             scoreTier: scoreTier, careFee: careFee, discountPercent: discountPercent, whatWouldLower: whatWouldLower,
+             quote: quote, durationText: durationText, summaryText: summaryText };
   root.MQ = MQ;
   if (typeof module !== "undefined" && module.exports) module.exports = MQ;
 })(typeof globalThis !== "undefined" ? globalThis : this);

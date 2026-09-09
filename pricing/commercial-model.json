@@ -23,25 +23,7 @@
   },
 
   "pre_scope": {
-    "text": "No charge. One 45-minute call. Produces a provisional Complexity Scorecard, a tier and a quotable price. Score conservatively: where a factor is unclear, it scores high. Discovery re-scores with full information; if the tier moves, only the difference is billed or credited, once, in writing, at the end of Discovery.",
-    "checks": [
-      {"key": "studio", "question": "Does the client hold an Advanced Momentum license?",
-       "yes": "Advanced Momentum is in place, so the tenant carries the feature a custom workflow needs.",
-       "no": "A custom workflow needs the Advanced Momentum Tenant feature, so a Base client moves to Advanced Momentum first. Quote the Advanced Momentum uplift as its own line and add it under extra lines.",
-       "flag_when": "no"},
-      {"key": "blueprint", "question": "Does the process match a pre-built Blueprint?",
-       "yes": "Tell the client so on this call. A Blueprint is the cheaper answer and this service is not the right fit.",
-       "no": "No Blueprint covers it, so a custom build is the right conversation.",
-       "flag_when": "yes"},
-      {"key": "self_build", "question": "Does the client have the admin capacity and appetite to build it themselves?",
-       "yes": "Say so. The Builder is included in Advanced Momentum and disqualifying in an hour is cheaper than disqualifying in a Discovery.",
-       "no": "The client wants Acorn to own the build. Continue.",
-       "flag_when": "yes"},
-      {"key": "integration", "question": "Does the workflow need data reported out to an external system beyond what Acorn's APIs support?",
-       "yes": "Custom integration is not included in this service. Momentum cannot receive data pushed in; integration is read-only reporting out. Quote it as a separate line item.",
-       "no": "No integration line. Where the client reads Momentum data themselves with Acorn's APIs there is no charge.",
-       "flag_when": "yes"}
-    ]
+    "text": "No charge. One 45-minute call. Produces a provisional Complexity Scorecard, a tier and a quotable price. Score conservatively: where a factor is unclear, it scores high. Discovery re-scores with full information; if the tier moves, only the difference is billed or credited, once, in writing, at the end of Discovery."
   },
 
   "scorecard": {
@@ -122,16 +104,16 @@
 
   "prices": {
     "_note": "Year 1 rates per workflow tier.",
-    "simple":    {"discovery": 2450, "build": 7450},
-    "moderate":  {"discovery": 3450, "build": 16950},
-    "complex":   {"discovery": 5650, "build": 32500}
+    "pricing_note": "Acorn revision, September 2026: roughly a third of the document's published prices.",
+    "simple":    {"discovery": 1450, "build": 3950},
+    "moderate":  {"discovery": 1950, "build": 7450},
+    "complex":   {"discovery": 2950, "build": 11500}
   },
 
   "build": {
-    "sprints": {"simple": 0.5, "moderate": 1, "complex": 2},
-    "sprint_weeks": 2,
+    "duration": {"simple": "1 to 2 weeks", "moderate": "2 to 4 weeks", "complex": "4 to 6 weeks"},
     "stages": [
-      {"stage": "Build sprints", "duration": "0.5 to 2 sprints", "text": "Configuration in staging, internal functional and regression testing, demonstration at the end of each sprint.", "client_time": "60-minute demo per sprint"},
+      {"stage": "Build", "duration": "1 to 6 weeks by tier", "text": "Configuration in staging, internal functional and regression testing, a demonstration at the end of the build.", "client_time": "60-minute demo"},
       {"stage": "UAT", "duration": "5 business days", "text": "Client tests against the design document. Defects returned as one consolidated list.", "client_time": "Client-led"},
       {"stage": "Rework", "duration": "Included", "text": "One consolidated rework pass.", "client_time": "Sign-off"},
       {"stage": "Go-live", "duration": "Scheduled", "text": "Deployment against the release calendar, handover pack, administrator walkthrough.", "client_time": "60-minute session"},
@@ -161,15 +143,15 @@
   "care": {
     "text": "Approvers leave and need reassigning. The platform releases and configurations need re-checking. Processes change. Care is Acorn continuing to own the workflow rather than handing it over at go-live. Care at Essential or above is a condition of the service.",
     "tiers": [
-      {"key": "essential", "label": "Essential", "percent_of_build": 18, "minimum": 2450, "allowance_hours": 8,  "cadence": "Annual health report", "critical_response": "4 business hrs", "service_credits": false},
-      {"key": "standard",  "label": "Standard",  "percent_of_build": 25, "minimum": 3950, "allowance_hours": 15, "cadence": "Quarterly health check", "critical_response": "2 business hrs", "service_credits": true},
-      {"key": "premier",   "label": "Premier",   "percent_of_build": 35, "minimum": 5950, "allowance_hours": 30, "cadence": "Monthly review, named Solutions Architect", "critical_response": "1 business hr", "service_credits": true}
+      {"key": "essential", "label": "Essential", "percent_of_build": 18, "minimum": 1250, "allowance_hours": 8,  "cadence": "Annual health report", "critical_response": "4 business hrs", "service_credits": false},
+      {"key": "standard",  "label": "Standard",  "percent_of_build": 25, "minimum": 1950, "allowance_hours": 15, "cadence": "Quarterly health check", "critical_response": "2 business hrs", "service_credits": true},
+      {"key": "premier",   "label": "Premier",   "percent_of_build": 35, "minimum": 2950, "allowance_hours": 30, "cadence": "Monthly review, named Solutions Architect", "critical_response": "1 business hr", "service_credits": true}
     ],
     "table": {
-      "_note": "Published Year 1 Care fee by workflow tier and Care tier.",
-      "simple":    {"essential": 2450, "standard": 3950,  "premier": 5950},
-      "moderate":  {"essential": 3050, "standard": 4240,  "premier": 5950},
-      "complex":   {"essential": 5850, "standard": 8120,  "premier": 11380}
+      "_note": "Published Year 1 Care fee by workflow tier and Care tier: the greater of the floor and the percentage of build, rounded to $10.",
+      "simple":    {"essential": 1250, "standard": 1950, "premier": 2950},
+      "moderate":  {"essential": 1340, "standard": 1950, "premier": 2950},
+      "complex":   {"essential": 2070, "standard": 2880, "premier": 4030}
     },
     "extended_coverage": {"tier": "premier", "percent_of_care": 20, "label": "Extended coverage, 7:00am to 7:00pm AET", "text": "Premier can add 7:00am to 7:00pm coverage for 20% of the Care fee."},
     "coverage": "8:30am to 5:30pm AET, Monday to Friday, excluding national public holidays and the Acorn end-of-year shutdown.",
@@ -247,8 +229,8 @@
   },
 
   "worked_examples": [
-    {"_note": "Section 12 of the document. The per-factor split of example B is inferred so that it totals 21 with five 3s, which is how the document describes it."},
-    {"name": "Supplier onboarding, 5,000 users", "scores": {"nodes": 2, "transitions": 2, "forms": 2, "routing": 1, "external": 1, "course": 1, "reporting": 1, "visibility": 2}, "total": 12, "tier": "moderate", "care": "standard", "year1_service": 24640, "recurring": 4240},
-    {"name": "Grievance handling, 500 users", "scores": {"nodes": 3, "transitions": 2, "forms": 3, "routing": 3, "external": 3, "course": 2, "reporting": 3, "visibility": 2}, "total": 21, "tier": "complex", "care": "premier", "year1_service": 49530, "recurring": 11380}
+    {"_note": "The two engagements from section 12 of the document, priced on the revised table above. Calibration for the tests, not the document's published figures."},
+    {"name": "Supplier onboarding, 5,000 users", "scores": {"nodes": 2, "transitions": 2, "forms": 2, "routing": 1, "external": 1, "course": 1, "reporting": 1, "visibility": 2}, "total": 12, "tier": "moderate", "care": "standard", "year1_service": 11350, "recurring": 1950},
+    {"name": "Grievance handling, 500 users", "scores": {"nodes": 3, "transitions": 2, "forms": 3, "routing": 3, "external": 3, "course": 2, "reporting": 3, "visibility": 2}, "total": 21, "tier": "complex", "care": "premier", "year1_service": 18480, "recurring": 4030}
   ]
 }

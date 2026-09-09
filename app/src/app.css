@@ -93,8 +93,9 @@
   border:1.5px solid var(--color-border);color:var(--color-fg-muted);background:var(--color-surface)}
 .mq-rail .rail-step.done .dot{background:var(--acorn-green);border-color:var(--acorn-green);color:var(--acorn-blue-black)}
 .mq-rail .rail-step[aria-current="step"] .dot{background:var(--white);border-color:var(--white);color:var(--acorn-purple)}
-.mq-rail .rail-step .label{flex:1;min-width:0}
-.mq-rail .rail-step .pts{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;height:22px;min-width:22px;
+.mq-rail .rail-step .body{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.mq-rail .rail-step .label{min-width:0;overflow-wrap:anywhere}
+.mq-rail .rail-step .pts{display:inline-flex;align-items:center;justify-content:center;height:22px;min-width:22px;
   font-family:var(--font-display);font-weight:700;font-size:var(--fs-xs);padding:0 7px;border-radius:var(--radius-pill);
   background:var(--purple-100);color:var(--color-fg)}
 .mq-rail .rail-step[aria-current="step"] .pts{background:var(--white);color:var(--acorn-purple)}
@@ -132,9 +133,9 @@
 .mq .pick[aria-pressed="true"]::after{content:"✓";position:absolute;top:12px;right:12px;width:24px;height:24px;border-radius:50%;
   background:var(--acorn-green);color:var(--acorn-blue-black);font-family:var(--font-display);font-weight:700;font-size:var(--fs-sm);
   display:inline-flex;align-items:center;justify-content:center}
-.mq .opt{min-height:132px;padding-right:calc(var(--space-5) + 20px)}
+.mq .opt{min-height:104px;padding:var(--space-4);padding-right:calc(var(--space-4) + 22px)}
 .mq .opt .pts{font-family:var(--font-display);font-weight:700;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--acorn-purple)}
-.mq .opt .txt{font-weight:500;line-height:1.35;font-size:var(--fs-base)}
+.mq .opt .txt{font-weight:600;line-height:1.3;font-size:var(--fs-lg);font-family:var(--font-display);letter-spacing:-0.01em}
 .mq .opt .hint{font-size:var(--fs-sm);color:var(--color-fg-muted)}
 .mq .rule{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3) var(--space-4);
   border-radius:var(--radius-sm);background:var(--yellow-50);font-size:var(--fs-sm);line-height:1.5;max-width:80ch}
@@ -143,6 +144,35 @@
 .mq .rule.good::before{background:var(--acorn-green)}
 .mq .rule.info{background:var(--purple-50)}
 .mq .rule.info::before{background:var(--acorn-purple)}
+
+/* Factor blocks on a scorecard step: the question sits directly above its
+   options; the why sits under them in small type. */
+.mq .factors{display:flex;flex-direction:column;gap:var(--space-4)}
+.mq .factor-block{border:1.5px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-4)}
+.mq .factor-block.scored{border-color:var(--purple-300)}
+.mq .fb-head{display:flex;align-items:center;gap:var(--space-3)}
+.mq .fb-head h3{flex:1;min-width:0;font-size:var(--fs-xs);font-weight:600;color:var(--color-fg-muted);letter-spacing:.06em;text-transform:uppercase}
+.mq .fb-num{flex:0 0 26px;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:700;font-size:var(--fs-xs);background:var(--acorn-blue-black);color:var(--white)}
+.mq .factor-block.scored .fb-num{background:var(--acorn-green);color:var(--acorn-blue-black)}
+.mq .fb-head .pts{flex:0 0 auto;font-family:var(--font-display);font-weight:700;font-size:var(--fs-xs);padding:3px 10px;border-radius:var(--radius-pill);background:var(--purple-100);color:var(--color-fg)}
+.mq .fb-head .pts.todo{background:var(--color-bg-muted);color:var(--color-fg-muted);font-weight:600}
+.mq .fb-ask{font-family:var(--font-display);font-weight:600;font-size:var(--fs-xl);line-height:1.3;letter-spacing:-0.01em;max-width:80ch;margin:0}
+.mq .factor-block .why{font-size:var(--fs-sm)}
+.mq .score-line{padding:var(--space-4) var(--space-5);border-radius:var(--radius-md);background:var(--purple-50);font-size:var(--fs-base)}
+
+/* The list of workflows on the engagement step. */
+.mq .wf-list{display:flex;flex-direction:column;gap:var(--space-2)}
+.mq .wf-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:var(--space-3);align-items:center}
+.mq .wf-row .dot{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:var(--fs-xs);background:var(--acorn-blue-black);color:var(--white)}
+.mq .wf-row .chip{white-space:nowrap}
+@media (max-width:640px){.mq .wf-row{grid-template-columns:auto minmax(0,1fr)} .mq .wf-row .chip,.mq .wf-row .btn{grid-column:2}}
+.mq .discount-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-2)}
+.mq .discount-list li{display:flex;justify-content:space-between;gap:var(--space-4);padding:12px 16px;border:1.5px solid var(--color-border);border-radius:var(--radius-sm);font-size:var(--fs-sm)}
+.mq .care .breakdown{font-size:var(--fs-xs);color:var(--color-fg-muted);line-height:1.5}
+.mq .wf-result{padding-bottom:var(--space-6);border-bottom:1px solid var(--color-border)}
+.mq .wf-result:last-of-type{border-bottom:0}
+.mq tr.group td{background:var(--purple-50);font-size:var(--fs-sm);padding-top:10px;padding-bottom:10px}
 
 /* Form fields. */
 .mq .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4)}
@@ -153,8 +183,6 @@
   font:inherit;font-size:var(--fs-base);color:var(--color-fg);background:var(--color-surface);
   border:1.5px solid var(--color-border);border-radius:var(--radius-sm);padding:10px 14px;min-height:44px;width:100%;min-width:0}
 .mq input:focus,.mq select:focus{border-color:var(--acorn-purple);outline:none;box-shadow:0 0 0 3px var(--purple-100)}
-.mq .check{display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-5);border:1.5px solid var(--color-border);border-radius:var(--radius-md)}
-.mq .check .q{font-weight:500;line-height:1.4}
 
 /* Segmented controls: one row, never wrapping, equal height. */
 .mq .seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:minmax(0,auto);border:1.5px solid var(--color-border);
@@ -194,8 +222,7 @@
 .mq .care .basis{font-size:var(--fs-sm);color:var(--color-fg-muted)}
 .mq .care .stats{display:flex;flex-direction:column;gap:var(--space-3);margin-top:var(--space-3);
   padding-top:var(--space-4);border-top:1px solid var(--color-border)}
-.mq .care .stat{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-3);min-width:0}
-.mq .care .stat .v{text-align:right}
+.mq .care .stat{display:flex;flex-direction:column;gap:2px;min-width:0}
 .mq .care .stat .k{font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--color-fg-muted)}
 .mq .care .stat .v{font-size:var(--fs-sm);font-weight:500;line-height:1.35}
 
@@ -205,7 +232,7 @@
 @media (max-width:640px){.mq .tier-hero{grid-template-columns:1fr}}
 .mq .tier-hero .score{font-family:var(--font-display);font-weight:700;font-size:var(--fs-6xl);line-height:1;letter-spacing:-0.04em;color:var(--acorn-purple);text-align:center}
 .mq .tier-hero .score small{display:block;font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--color-fg-muted);font-weight:600;margin-top:6px}
-.mq .tier-hero .name{font-family:var(--font-display);font-weight:700;font-size:var(--fs-4xl);letter-spacing:-0.03em;line-height:1.05;margin-bottom:var(--space-2)}
+.mq .tier-hero .name{font-family:var(--font-display);font-weight:700;font-size:var(--fs-3xl);letter-spacing:-0.03em;line-height:1.05;margin-bottom:var(--space-2)}
 .mq .factor-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 var(--space-6)}
 @media (max-width:640px){.mq .factor-list{grid-template-columns:1fr}}
 .mq .factor-list li{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-3);padding:12px 0;border-bottom:1px solid var(--color-border);font-size:var(--fs-sm)}
