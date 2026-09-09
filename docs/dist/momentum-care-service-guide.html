@@ -1,0 +1,779 @@
+<title>Momentum Care Service Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  
+  --acorn-green:      #23dba7;  
+  --acorn-purple:     #743bfc;  
+  --acorn-red:        #ea5274;  
+  --acorn-yellow:     #fcb01a;  
+  --acorn-blue-black: #16252d;  
+
+  
+  --white:    #ffffff;
+  --paper:    #fbfbfb;
+  --ink:      #16252d;
+  --gray-100: #f5f5f5;
+  --gray-600: #405f7c;
+  --gray-700: #2c3539;
+  --slate-100:#d5d8d9;  
+
+  
+  --green-500:  #23dba7;  --green-300:  #91edd3;  --green-100:  #d3f8ed;  --green-50:  #e9fbf6;
+  --purple-500: #743bfc;  --purple-300: #b99dfd;  --purple-100: #e3d8fd;  --purple-50: #f1ebff;
+  --yellow-500: #fcb01a;  --yellow-300: #fdd78c;  --yellow-100: #feefd1;  --yellow-50: #fff7e8;
+  --red-500:    #ea5274;  --red-300:    #f4a8b9;  --red-100:    #fbdce3;  --red-50:    #fdedf1;
+
+  
+  --color-bg:            var(--white);
+  --color-bg-muted:      var(--gray-100);
+  --color-bg-dark:       var(--acorn-blue-black);
+  --color-bg-brand:      var(--acorn-purple);
+  --color-bg-accent:     var(--acorn-green);
+  --color-fg:            var(--acorn-blue-black);
+  --color-fg-muted:      var(--gray-600);
+  --color-fg-on-dark:    var(--white);
+  --color-fg-on-brand:   var(--white);
+  --color-fg-accent:     var(--acorn-green);
+  --color-fg-link:       var(--acorn-purple);
+  --color-border:        #e5e7eb;
+  --color-focus-ring:    var(--acorn-purple);
+  --color-success:       var(--acorn-green);
+  --color-warning:       var(--acorn-yellow);
+  --color-danger:        var(--acorn-red);
+
+  
+  --chart-1:     var(--purple-500);
+  --chart-2:     var(--yellow-500);
+  --chart-3:     var(--gray-600);
+  --chart-4:     var(--green-500);
+  --chart-5:     var(--acorn-blue-black);
+  --chart-6:     var(--purple-300);
+  --chart-other: var(--slate-100);
+
+  
+  --chart-seq-1:    var(--acorn-blue-black);
+  --chart-seq-2:    var(--purple-500);
+  --chart-seq-3:    var(--purple-300);
+  --chart-seq-4:    var(--purple-100);
+  --chart-seq-edge: var(--purple-300);   
+
+  
+  --chart-nm:       var(--color-border);
+
+  
+  --momentum-trigger:     #e64f77;  
+  --momentum-event:       #54b394;  
+  --momentum-action-form: #223976;  
+  --momentum-action-wait: #e64f77;  
+  --momentum-terminal:    #9d5ca4;  
+
+  
+  --font-display: "Signika", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-hand:    "Gochi Hand", cursive;
+  --font-mono:    ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  
+  --fs-xs: 0.75rem; --fs-sm: 0.875rem; --fs-base: 1rem; --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;  --fs-2xl: 1.75rem; --fs-3xl: 2rem;  --fs-4xl: 2.5rem;
+  --fs-5xl: 3.375rem; --fs-6xl: 4rem;
+
+  
+  --radius-xs: 4px; --radius-sm: 8px; --radius-md: 12px;
+  --radius-lg: 16px; --radius-xl: 24px; --radius-pill: 9999px;
+
+  
+  --shadow-sm:   0 1px 2px rgba(22,37,45,.06);
+  --shadow-md:   0 4px 12px rgba(22,37,45,.08);
+  --shadow-lg:   0 10px 25px rgba(22,37,45,.10);
+  --shadow-card: 0 10px 30px rgba(116,59,252,.08);
+
+  
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px; --space-5: 24px;
+  --space-6: 32px; --space-7: 48px; --space-8: 64px; --space-9: 96px;
+
+  
+  --ease-acorn: cubic-bezier(0.77, 0, 0.18, 1);
+  --dur-fast: 200ms;
+  --dur-med:  500ms;
+  --dur-slow: 2s;
+}
+</style>
+<style>
+/* The service guide. Tokens only, light and dark, prints as a clean document. */
+:root{
+  --color-page:var(--paper);
+  --color-surface:var(--white);
+  --sev-critical:var(--acorn-red);
+  --sev-high:var(--acorn-yellow);
+  --sev-medium:var(--acorn-purple);
+  --sev-low:var(--gray-600);
+  --toc-w:232px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --color-surface:#131b21;--color-page:#0b1014;--color-bg:#131b21;--color-bg-muted:#1a2329;
+  --paper:#172026;--color-fg:#e6edf1;--color-fg-muted:#9aa7ae;
+  --color-fg-link:var(--purple-300);--color-border:#2a353d;--gray-100:#1a2329;
+  --purple-100:#2b2148;--purple-50:#1c1733;--red-50:#2f171e;--red-100:#3d1e28;
+  --yellow-50:#2f2412;--yellow-100:#3d3016;--green-100:#123830;--green-50:#0f2a24;
+  --sev-low:#9aa7ae}}
+:root[data-theme="dark"]{
+  --color-surface:#131b21;--color-page:#0b1014;--color-bg:#131b21;--color-bg-muted:#1a2329;
+  --paper:#172026;--color-fg:#e6edf1;--color-fg-muted:#9aa7ae;
+  --color-fg-link:var(--purple-300);--color-border:#2a353d;--gray-100:#1a2329;
+  --purple-100:#2b2148;--purple-50:#1c1733;--red-50:#2f171e;--red-100:#3d1e28;
+  --yellow-50:#2f2412;--yellow-100:#3d3016;--green-100:#123830;--green-50:#0f2a24;
+  --sev-low:#9aa7ae}
+
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:var(--font-body);color:var(--color-fg);background:var(--color-page);
+  line-height:1.55;font-size:var(--fs-base);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:700;line-height:1.15;letter-spacing:-0.02em;text-wrap:balance;margin:0;color:inherit}
+h1{font-size:var(--fs-4xl);letter-spacing:-0.03em}
+h2{font-size:var(--fs-2xl);letter-spacing:-0.03em}
+h3{font-size:var(--fs-lg)}
+h4{font-size:var(--fs-base);font-weight:600}
+p{margin:0}
+a{color:var(--color-fg-link)}
+:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--color-fg-muted)}
+.small{font-size:var(--fs-sm)}
+.eyebrow{font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--color-fg-muted)}
+.clause{font-family:var(--font-display);font-weight:600;color:var(--acorn-purple);margin-right:.5em;font-variant-numeric:tabular-nums}
+h2 .clause{font-size:var(--fs-lg);vertical-align:.18em;letter-spacing:0}
+h3 .clause{font-size:var(--fs-sm);vertical-align:.12em;letter-spacing:0}
+
+/* Masthead: the one dark band. */
+.mast{background:var(--acorn-blue-black);color:var(--white);padding:var(--space-7) var(--space-6) var(--space-7)}
+.mast .in{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--space-6);align-items:end}
+.mast .eyebrow{color:var(--green-300)}
+.mast h1{color:var(--white);margin-top:var(--space-2);max-width:18ch}
+.mast .sub{margin-top:var(--space-3);max-width:60ch;color:var(--slate-100);font-size:var(--fs-lg);line-height:1.4;font-weight:300}
+.mast dl{margin:0;display:grid;grid-template-columns:auto auto;gap:var(--space-1) var(--space-4);font-size:var(--fs-sm);align-self:end}
+.mast dt{color:var(--green-300);font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+.mast dd{margin:0;color:var(--white)}
+@media (max-width:800px){.mast{padding:var(--space-6) var(--space-4)}.mast .in{grid-template-columns:1fr;align-items:start}.mast dl{align-self:start}}
+
+/* Page: sticky contents beside the article. */
+.page{max-width:1180px;margin:0 auto;padding:var(--space-7) var(--space-6) var(--space-9);display:grid;
+  grid-template-columns:var(--toc-w) minmax(0,1fr);gap:var(--space-8);align-items:start}
+@media (max-width:960px){.page{grid-template-columns:1fr;gap:var(--space-6);padding:var(--space-6) var(--space-4) var(--space-8)}.toc{position:static}}
+.toc{position:sticky;top:var(--space-5)}
+.toc .eyebrow{margin-bottom:var(--space-3)}
+.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;font-size:var(--fs-sm)}
+.toc a{display:flex;gap:var(--space-2);padding:6px var(--space-3);border-radius:var(--radius-sm);color:var(--color-fg);text-decoration:none;line-height:1.3}
+.toc a:hover{background:var(--purple-50)}
+.toc a .clause{min-width:1.6em;margin-right:0}
+.toc .foot{margin-top:var(--space-5);padding-top:var(--space-4);border-top:1px solid var(--color-border);font-size:var(--fs-xs);color:var(--color-fg-muted);line-height:1.5}
+
+/* Article. Sections are numbered clauses so a client can cite one. */
+article{min-width:0;display:flex;flex-direction:column;gap:var(--space-8)}
+section{display:flex;flex-direction:column;gap:var(--space-5);scroll-margin-top:var(--space-5)}
+section > h2{padding-bottom:var(--space-3);border-bottom:2px solid var(--acorn-purple)}
+.sub-sec{display:flex;flex-direction:column;gap:var(--space-3);scroll-margin-top:var(--space-5)}
+.prose{max-width:68ch;display:flex;flex-direction:column;gap:var(--space-3)}
+.prose ul,.prose ol{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px}
+.lede{font-size:var(--fs-lg);line-height:1.45;color:var(--color-fg-muted);max-width:62ch;font-weight:300}
+b,strong{font-weight:600}
+
+/* Callouts: a rule with a coloured edge, as in the quoting tool. */
+.rule{display:flex;gap:var(--space-3);align-items:flex-start;padding:var(--space-3) var(--space-4);border-radius:var(--radius-sm);
+  background:var(--yellow-50);font-size:var(--fs-sm);line-height:1.5;max-width:76ch}
+.rule::before{content:"";flex:0 0 4px;align-self:stretch;border-radius:2px;background:var(--acorn-yellow)}
+.rule.good{background:var(--green-50)}.rule.good::before{background:var(--acorn-green)}
+.rule.info{background:var(--purple-50)}.rule.info::before{background:var(--acorn-purple)}
+.rule.stop{background:var(--red-50)}.rule.stop::before{background:var(--acorn-red)}
+
+/* Tables. */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface)}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-sm)}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--color-border);line-height:1.45}
+thead th{font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--color-fg-muted);
+  background:var(--color-bg-muted);white-space:nowrap}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
+tbody th[scope="row"]{font-weight:600;white-space:nowrap}
+tbody th .detail{display:block;font-weight:400;font-size:var(--fs-xs);color:var(--color-fg-muted);white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+table.sla th[scope="row"]{padding-left:0}
+table.sla .sev{display:inline-flex;align-items:center;gap:8px;padding-left:14px;font-weight:600;white-space:nowrap}
+table.sla .sev::before{content:"";width:6px;height:22px;border-radius:3px;background:var(--sev-low);margin-left:-14px}
+table.sla .sev-critical .sev::before{background:var(--sev-critical)}
+table.sla .sev-high .sev::before{background:var(--sev-high)}
+table.sla .sev-medium .sev::before{background:var(--sev-medium)}
+table.sla .sev-low .sev::before{background:var(--sev-low)}
+
+/* Inclusions and exclusions: definition lists with a coloured edge. Green
+   means Care does it; red means it is priced some other way. */
+.dl{margin:0;display:flex;flex-direction:column;gap:var(--space-4)}
+.dl .item{display:grid;grid-template-columns:4px minmax(0,1fr);gap:var(--space-4);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4) var(--space-5)}
+.dl .item::before{content:"";grid-column:1;grid-row:1 / span 2;border-radius:2px;background:var(--acorn-green);align-self:stretch}
+.dl dt,.dl dd{grid-column:2}
+.dl.out .item::before{background:var(--acorn-red)}
+.dl.out .pub::before{color:var(--acorn-red)}
+.dl dt{font-family:var(--font-display);font-weight:600;font-size:var(--fs-lg);letter-spacing:-0.01em;line-height:1.25}
+.dl dd{margin:0;display:flex;flex-direction:column;gap:var(--space-2);max-width:72ch}
+.dl .body{display:flex;flex-direction:column;gap:var(--space-2)}
+.dl .pub{font-family:var(--font-display);font-weight:500;color:var(--color-fg-muted);font-size:var(--fs-sm);letter-spacing:-0.005em}
+.dl .pub::before{content:"Published position. ";font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-size:var(--fs-xs);color:var(--acorn-purple)}
+.dl .facts{display:flex;flex-wrap:wrap;gap:var(--space-2) var(--space-4);margin-top:var(--space-1);font-size:var(--fs-xs)}
+.dl .facts span{display:inline-flex;gap:6px;align-items:baseline}
+.dl .facts b{font-family:var(--font-display);font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--color-fg-muted)}
+.dl .facts .chip{font-family:var(--font-display);font-weight:600;padding:2px 9px;border-radius:var(--radius-pill);background:var(--purple-100);color:var(--color-fg)}
+.dl .facts .chip.green{background:var(--green-100)}
+.dl .facts .chip.red{background:var(--red-100)}
+.dl .facts .chip.yellow{background:var(--yellow-100)}
+
+/* The three protections after go-live, as a compact comparison. */
+.protect{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4)}
+@media (max-width:760px){.protect{grid-template-columns:1fr}}
+.protect .p{border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-3);background:var(--color-surface)}
+.protect .p .k{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:var(--fs-lg)}
+.protect .p .k::before{content:"";width:12px;height:12px;border-radius:50%;flex:0 0 auto}
+.protect .hyper .k::before{background:var(--acorn-green)}
+.protect .warranty .k::before{background:var(--acorn-yellow)}
+.protect .care .k::before{background:var(--acorn-purple)}
+.protect dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px var(--space-3);font-size:var(--fs-sm)}
+.protect dt{color:var(--color-fg-muted);font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);letter-spacing:.05em;text-transform:uppercase;padding-top:3px}
+.protect dd{margin:0}
+
+/* The delivery timeline. Proportions are indicative; the labels carry the numbers. */
+.timeline{margin:0;display:flex;flex-direction:column;gap:var(--space-3)}
+.tl-track{display:grid;grid-template-columns:5fr 2fr 1.4fr 24px 8fr;gap:6px;align-items:stretch;min-width:640px}
+.timeline .wrap{overflow-x:auto;padding-bottom:var(--space-1)}
+.tl-seg,.tl-bar{border-radius:var(--radius-xs);padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-height:58px;justify-content:center}
+.tl-seg .k,.tl-bar .k,.tl-mark .k{font-family:var(--font-display);font-weight:700;font-size:var(--fs-sm);line-height:1.2}
+.tl-seg .v,.tl-bar .v{font-size:var(--fs-xs);color:inherit;opacity:.85;line-height:1.3}
+.tl-seg.build{background:var(--purple-100);color:var(--color-fg)}
+.tl-seg.uat{background:var(--purple-300);color:var(--acorn-blue-black)}
+.tl-seg.rework{background:var(--acorn-purple);color:var(--white)}
+.tl-mark{position:relative;display:flex;align-items:center;justify-content:center}
+.tl-mark::before{content:"";position:absolute;top:-6px;bottom:-6px;left:50%;width:2px;margin-left:-1px;background:var(--acorn-blue-black);border-radius:1px}
+.tl-mark .k{position:absolute;top:-24px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:var(--fs-xs);color:var(--color-fg)}
+.tl-after{display:flex;flex-direction:column;gap:6px}
+.tl-bar{min-height:0;padding:8px 12px;flex-direction:row;align-items:baseline;gap:10px}
+.tl-bar.hyper{background:var(--acorn-green);color:var(--acorn-blue-black);width:28%}
+.tl-bar.warranty{background:var(--acorn-yellow);color:var(--acorn-blue-black);width:62%}
+.tl-bar.care{background:var(--acorn-blue-black);color:var(--white);width:100%}
+.tl-bar .v{white-space:nowrap}
+.tl-bar.hyper .v,.tl-bar.warranty .v{display:none}
+@media (min-width:1100px){.tl-bar.warranty .v{display:inline}}
+.timeline figcaption{font-size:var(--fs-sm);color:var(--color-fg-muted);max-width:72ch;margin-top:var(--space-3)}
+.tl-track{margin-top:var(--space-5)}
+
+/* Worked examples of the clock. */
+.clocks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-4)}
+@media (max-width:760px){.clocks{grid-template-columns:1fr}}
+.clock{border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-4) var(--space-5);background:var(--color-surface);display:flex;flex-direction:column;gap:6px;font-size:var(--fs-sm)}
+.clock .k{font-family:var(--font-display);font-weight:600;font-size:var(--fs-xs);letter-spacing:.06em;text-transform:uppercase;color:var(--color-fg-muted)}
+.clock .v{font-family:var(--font-display);font-weight:700;font-size:var(--fs-lg);letter-spacing:-0.02em;line-height:1.2}
+
+/* Terms and definitions. */
+dl.terms{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4) var(--space-6)}
+@media (max-width:760px){dl.terms{grid-template-columns:1fr}}
+dl.terms .term{display:flex;flex-direction:column;gap:4px;font-size:var(--fs-sm);padding-bottom:var(--space-3);border-bottom:1px solid var(--color-border)}
+dl.terms dt{font-family:var(--font-display);font-weight:600;font-size:var(--fs-base)}
+dl.terms dd{margin:0;color:var(--color-fg-muted)}
+.roles th[scope="row"]{white-space:normal}
+
+@media print{
+  :root{--color-page:#fff;--color-surface:#fff}
+  .mast{background:#16252d !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .toc{display:none}
+  .page{grid-template-columns:1fr;padding:24px 0}
+  section{break-inside:avoid-page}
+  .tbl-wrap,.dl .item,.protect .p,.clock{break-inside:avoid}
+  a{color:inherit;text-decoration:none}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+
+<header class="mast">
+  <div class="in">
+    <div>
+      <p class="eyebrow">Momentum Solutions Architect Service</p>
+      <h1>Momentum Care Service Guide</h1>
+      <p class="sub">Service levels, delivery standards, and what Momentum Care includes and excludes, from the first Discovery session to steady state.</p>
+    </div>
+    <dl>
+      <dt>Issued</dt><dd>September 2026</dd>
+      <dt>Model</dt><dd>2026-09-08</dd>
+      <dt>Figures</dt><dd>All figures AUD, ex GST, Year 1 rates.</dd>
+    </dl>
+  </div>
+</header>
+
+<div class="page">
+<nav class="toc" aria-label="Contents">
+  <p class="eyebrow">Contents</p>
+  <ol>
+    <li><a href="#s1"><span class="clause">1</span>About this guide</a></li>
+    <li><a href="#s2"><span class="clause">2</span>The service in one page</a></li>
+    <li><a href="#s3"><span class="clause">3</span>Delivery standards</a></li>
+    <li><a href="#s4"><span class="clause">4</span>The Care period</a></li>
+    <li><a href="#s5"><span class="clause">5</span>Care tiers and allowance</a></li>
+    <li><a href="#s6"><span class="clause">6</span>What Care includes</a></li>
+    <li><a href="#s7"><span class="clause">7</span>What Care excludes</a></li>
+    <li><a href="#s8"><span class="clause">8</span>Service levels</a></li>
+    <li><a href="#s9"><span class="clause">9</span>Raising a request</a></li>
+    <li><a href="#s10"><span class="clause">10</span>What we need from you</a></li>
+    <li><a href="#s11"><span class="clause">11</span>Commercial terms</a></li>
+    <li><a href="#s12"><span class="clause">12</span>Definitions</a></li>
+  </ol>
+  <p class="foot">Every figure in this guide is drawn from the Momentum Services commercial model, 2026-09-08. Where this guide and your order differ, the order applies.</p>
+</nav>
+
+<article>
+
+<section id="s1">
+  <h2><span class="clause">1</span>About this guide</h2>
+  <div class="prose">
+    <p class="lede">An Advanced Momentum license gives you the visual Builder and the right to create workflows yourself. The Solutions Architect Service is the option to have Acorn do it instead: we scope the process, design the workflow, build it in your tenant, and own it from go-live.</p>
+    <p>This guide explains how that service is delivered and supported. It sets out what happens at each stage between order and go-live, the three periods of protection that begin on the go-live date, what Momentum Care covers and what it does not, and the service levels we hold ourselves to when something goes wrong.</p>
+    <p>It is written for the people who live with the workflow after it is built: the business owner who sponsored it, the administrators who run it day to day, and the manager who signs the renewal. It is also the reference our Solutions Architects work from, so both sides are reading the same page.</p>
+    <p>It describes the standard service. Your quote and order name the workflows, the tier of each, the Care tier and the term. Where an order includes a position that differs from this guide, the order applies.</p>
+  </div>
+</section>
+
+<section id="s2">
+  <h2><span class="clause">2</span>The service in one page</h2>
+  <div class="prose">
+    <p>The service has three components. <b>Discovery</b> maps the process and produces a Workflow Design Document. <b>Build</b> configures, tests and deploys the workflow. <b>Momentum Care</b> is Acorn continuing to own the workflow from go-live. Discovery and Build are one-off. Care is annual and recurs with your license. All three are committed together: Discovery is not sold on its own.</p>
+  </div>
+  
+<figure class="timeline" aria-labelledby="timeline-cap">
+  <div class="wrap"><div class="tl-track">
+    <div class="tl-seg build"><span class="k">Build</span><span class="v">1 to 6 weeks</span></div>
+    <div class="tl-seg uat"><span class="k">UAT</span><span class="v">5 business days</span></div>
+    <div class="tl-seg rework"><span class="k">Rework</span><span class="v">One pass</span></div>
+    <div class="tl-mark"><span class="k">Go-live</span></div>
+    <div class="tl-after">
+      <div class="tl-bar hyper"><span class="k">Hypercare</span><span class="v">10 business days</span></div>
+      <div class="tl-bar warranty"><span class="k">Warranty</span><span class="v">30 business days</span></div>
+      <div class="tl-bar care"><span class="k">Momentum Care</span><span class="v">Annual, renews with the license</span></div>
+    </div>
+  </div></div>
+  <figcaption id="timeline-cap">The delivery period. Hypercare, warranty and Care all start on the go-live date and run concurrently, so the first thirty business days are covered three ways.</figcaption>
+</figure>
+  <div class="sub-sec">
+    <h3>Three protections start on the go-live date</h3>
+    <div class="protect">
+      <div class="p hyper">
+        <div class="k">Hypercare</div>
+        <dl>
+          <dt>Runs</dt><dd>10 business days from go-live</dd>
+          <dt>Does</dt><dd>Heightened attention while the first real requests move through. Critical issues at the Premier response time, 1 business hr, whatever your Care tier.</dd>
+          <dt>Cost</dt><dd>Included in Build</dd>
+        </dl>
+      </div>
+      <div class="p warranty">
+        <div class="k">Warranty</div>
+        <dl>
+          <dt>Runs</dt><dd>30 business days from go-live</dd>
+          <dt>Does</dt><dd>Any defect measured against the signed design document is fixed at no charge and draws nothing from your Care allowance.</dd>
+          <dt>Cost</dt><dd>Included in Build</dd>
+        </dl>
+      </div>
+      <div class="p care">
+        <div class="k">Momentum Care</div>
+        <dl>
+          <dt>Runs</dt><dd>Annually from go-live, renewing with your Momentum license</dd>
+          <dt>Does</dt><dd>Break-fix, release compatibility, drift correction, reassignment of people, wording changes within allowance, incident coordination. Sections 5 to 8.</dd>
+          <dt>Cost</dt><dd>Annual fee by tier, indexed at 7% each anniversary</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s3">
+  <h2><span class="clause">3</span>Delivery standards</h2>
+  <div class="prose">
+    <p>Delivery runs to a fixed shape whatever the workflow. The stages below are the same for a Simple, Moderate or Complex workflow. What changes is the length of the build sprint and the amount of design there is to confirm.</p>
+  </div>
+
+  <div class="sub-sec" id="s3-1">
+    <h3><span class="clause">3.1</span>Pre-scope and Discovery</h3>
+    <div class="prose">
+      <p><b>Pre-scope</b> is a free 45-minute call before any quote. It scores the workflow against the Complexity Scorecard and produces a tier and a price. It is not a design engagement and produces no deliverable beyond those two things. Where a factor is unclear on the call, it scores high, so a pre-scope price is a ceiling more often than a floor.</p>
+      <p><b>Discovery.</b> Two sixty-minute working sessions inside a week or two, plus a documentation handover. The first walks the current process end to end; the second confirms the design drafted from it. It produces four things:</p>
+      <ul><li>Workflow Design Document. Every step, branch, approval tier, form question, notification and escalation path, in the client&#x27;s language.</li><li>Confirmed Complexity Scorecard. The provisional pre-scope score re-run with full information. Confirms or adjusts the tier.</li><li>Data-dependency register. Every field the workflow relies on to route correctly, verified as present and populated.</li><li>Build schedule. Sprint slots and a go-live date against the Acorn release calendar.</li></ul>
+      <p>The signed Workflow Design Document is the baseline for everything that follows. Build is measured against it, UAT tests against it, warranty defects are defined by it, and Care maintains what it describes. Anything not in the signed design is not in scope, however sensible it sounds.</p>
+      <p>Discovery re-scores the workflow with full information. If the confirmed tier differs from the pre-scope tier, one adjustment is made at the end of Discovery, in writing, and only the difference between the two tiers is billed or credited. There is no second adjustment: after Discovery the tier is fixed, and any change that would move it is handled as a build increment under section 7.</p>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s3-2">
+    <h3><span class="clause">3.2</span>Build</h3>
+    <div class="prose">
+      <p>Build is a single sprint of configuration in your staging environment, followed by our own testing before anything reaches you. A Simple workflow takes 1 to 2 weeks, a Moderate one 2 to 4 weeks, a Complex one 4 to 6 weeks. The sprint is scheduled in Discovery against the Acorn release calendar and the go-live date is set at the same time.</p>
+      <p>Build includes:</p>
+      <ul><li>Detailed design of nodes, transitions, constants, forms and routing rules.</li><li>Configuration in staging, including notification templates and role scoping.</li><li>Internal testing before anything reaches the client.</li><li>UAT support and one consolidated rework pass.</li><li>Production deployment, handover pack (workflow documentation, form question set, escalation map) and administrator walkthrough.</li><li>Ten business days hypercare, thirty business days warranty.</li></ul>
+    </div>
+    <div class="tbl-wrap"><table><thead><tr><th>Stage</th><th>Duration</th><th>What happens</th><th>Your time</th></tr></thead><tbody><tr><th scope="row">Build</th><td>1 to 6 weeks by tier</td><td>Configuration in staging, internal functional and regression testing, a demonstration at the end of the build.</td><td>60-minute demo</td></tr><tr><th scope="row">UAT</th><td>5 business days</td><td>Client tests against the design document. Defects returned as one consolidated list.</td><td>Client-led</td></tr><tr><th scope="row">Rework</th><td>Included</td><td>One consolidated rework pass.</td><td>Sign-off</td></tr><tr><th scope="row">Go-live</th><td>Scheduled</td><td>Deployment against the release calendar, handover pack, administrator walkthrough.</td><td>60-minute session</td></tr><tr><th scope="row">Hypercare</th><td>10 business days</td><td>Included. Critical issues handled at fastest response levels regardless of Care tier.</td><td>As needed</td></tr><tr><th scope="row">Warranty</th><td>30 business days</td><td>Any defect measured against the signed design is fixed at no charge.</td><td><span class="muted">None</span></td></tr></tbody></table></div>
+    <div class="prose">
+      <h4>The sprint clock</h4>
+      <p>A sprint has a start date and an end date, and your go-live slot is booked on the strength of them. The clock runs while we have what we need from you. When we are waiting on an answer, a test user or a piece of data for more than three business days, the clock stops, and it restarts when the item arrives. A stopped clock does not extend the sprint; it moves the whole schedule, including the go-live slot, to the next release window that fits.</p>
+      <p>A sprint can be deferred before it starts. Not included. Scoped and quoted as a separate line item. The fee reflects a Solutions Architect held for a slot that cannot be resold at short notice.</p>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s3-3">
+    <h3><span class="clause">3.3</span>User acceptance testing and rework</h3>
+    <div class="prose">
+      <p>UAT is yours to run, and it runs for five business days from the demonstration at the end of the build. You test the workflow in staging against the signed design document, using the test users and data you set up before Discovery closed, and covering every role and every approval path. We support you through it: we answer questions, explain behaviour and help reproduce anything unexpected.</p>
+      <p>Defects come back to us as <b>one consolidated list</b> at the end of the window rather than one at a time. A defect is anything the workflow does that the signed design says it should not, or anything the design says it should do that it does not. Something the design does not mention is not a defect; it is a change request, and it goes through the process in 3.5.</p>
+      <p>We then make <b>one rework pass</b>, fixing everything on the list, and you confirm the fixes and sign off. Sign-off is the trigger for go-live. A UAT window that drifts past five days, or a defect list that arrives in pieces, pushes go-live to the next release slot, because the deployment is booked against the release calendar and cannot float.</p>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s3-4">
+    <h3><span class="clause">3.4</span>Go-live</h3>
+    <div class="prose">
+      <p>Go-live is the deployment of the signed-off workflow into production against the release calendar. It comes with a <b>handover pack</b> and a sixty-minute <b>administrator walkthrough</b>. The handover pack contains the workflow documentation, the full form question set, and the escalation map showing who receives what and when. The walkthrough covers how to read the live table of requests, how to find a stuck request, what the administrators may change themselves and, just as importantly, what they should ask us to change so that the workflow stays covered.</p>
+      <p>The go-live date is the date that matters commercially and for service. Hypercare, warranty and Care all start on it. The second half of the Build fee and the first year of Care are invoiced on it.</p>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s3-5">
+    <h3><span class="clause">3.5</span>Change during delivery</h3>
+    <div class="prose">
+      <p>Good ideas surface in every demonstration and every UAT. They are welcome, and they are candidates, not commitments. A change to the signed design is raised through the agreed channel as a change request, assessed against the scorecard, and either priced from the rate card, added as a build increment, or parked for the Care allowance once the workflow is live. Nothing said in a demo changes the design until it is written down and agreed.</p>
+      <p>This is not bureaucracy for its own sake. The build is fixed price against a fixed design, and the go-live slot is fixed against the release calendar. Changing the design mid-build puts both at risk, and the change is nearly always cheaper and safer as a small increment after go-live.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s4">
+  <h2><span class="clause">4</span>The Care period</h2>
+  <div class="prose">
+    <p class="lede">Approvers leave and need reassigning. The platform releases and configurations need re-checking. Processes change. Care is Acorn continuing to own the workflow rather than handing it over at go-live. Care at Essential or above is a condition of the service.</p>
+    <p>The period after go-live is where most of the value of the service is delivered, and it is where the boundaries matter most. Three protections begin on the go-live date. Two of them expire; one renews.</p>
+  </div>
+
+  <div class="sub-sec" id="s4-1">
+    <h3><span class="clause">4.1</span>Hypercare, the first ten business days</h3>
+    <div class="prose">
+      <p>The first real requests through a new workflow find the things no test plan does: a manager relationship that was never populated, a notification that reads oddly to the person receiving it, a reviewer who did not realise they were a reviewer. Hypercare is ten business days of heightened attention to catch them quickly.</p>
+      <p>During hypercare, any issue we assess as Critical is handled at the fastest response time in the service, 1 business hr, regardless of your Care tier. We watch the live table of requests each business day for anything stuck or routed to the wrong person, and we tell you before you have to tell us. Fixes made in hypercare draw nothing from your Care allowance.</p>
+      <p>Hypercare is included in the Build fee. It is not a second UAT window: it does not reopen the design, and requests for new behaviour raised during it are handled as change requests.</p>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s4-2">
+    <h3><span class="clause">4.2</span>Warranty, the first thirty business days</h3>
+    <div class="prose">
+      <p>Warranty is our commitment that the workflow does what the signed design document says it does. For thirty business days from go-live, any defect measured against the signed design is fixed at no charge, at the service levels of your Care tier, without drawing on your Care allowance.</p>
+      <p>A warranty defect is one where the workflow's behaviour and the signed design disagree. The following are not warranty defects, and are handled as Care requests or change requests instead:</p>
+      <ul>
+        <li>Behaviour the signed design does not describe, or describes as you now realise you did not want.</li>
+        <li>Routing that fails because a data dependency on the register was not populated as agreed, or has since changed.</li>
+        <li>Anything altered by your own administrators in the Builder after go-live.</li>
+        <li>Defects in the Momentum platform itself, which Acorn Support handles under your license.</li>
+      </ul>
+      <p>Warranty is included in the Build fee. It overlaps with hypercare for its first ten business days and with Care for all of them.</p>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s4-3">
+    <h3><span class="clause">4.3</span>Momentum Care, ongoing</h3>
+    <div class="prose">
+      <p>Care starts on the go-live date and runs for twelve months at a time, renewing with your Momentum license so that the two never fall out of step. Over 10 business days&#x27; notice, no charge. Six to ten, 50% of the sprint fee. Five or fewer, 100%. The fee is invoiced annually in advance, the first year on go-live, and increases by 7% at each anniversary.</p>
+      <p>Care fees increase at each anniversary by 7%. A workflow built by Acorn is covered by Care at Essential or above for as long as it runs in your tenant. If Care is not renewed, the workflow keeps running, but it has no service levels, no release compatibility check and no allowance, and Acorn is no longer responsible for its behaviour. Bringing it back under Care later requires a re-baseline at the rate card, so it is materially cheaper to keep Care continuous.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s5">
+  <h2><span class="clause">5</span>Care tiers and allowance</h2>
+  <div class="prose">
+    <p>Care comes in three tiers. One tier applies to every workflow on an order, and each workflow's fee is priced from its own complexity tier. The difference between tiers is speed, attention and allowance, not what is covered: sections 6 and 7 apply equally to all three.</p>
+  </div>
+  <div class="tbl-wrap"><table><thead><tr><th>Care tier</th><th>Annual fee</th><th class="num">Change allowance</th><th>Review cadence</th><th>Critical response</th><th>Service credits</th></tr></thead><tbody><tr><th scope="row">Essential</th><td>18% of build, minimum $1,250</td><td class="num">8 hrs</td><td>Annual health report</td><td>4 business hrs</td><td>No</td></tr><tr><th scope="row">Standard</th><td>25% of build, minimum $1,950</td><td class="num">15 hrs</td><td>Quarterly health check</td><td>2 business hrs</td><td>Yes</td></tr><tr><th scope="row">Premier</th><td>35% of build, minimum $2,950</td><td class="num">30 hrs</td><td>Monthly review, named Solutions Architect</td><td>1 business hr</td><td>Yes</td></tr></tbody></table></div>
+  <div class="sub-sec">
+    <h3>Year 1 Care fee by workflow tier</h3>
+    <div class="tbl-wrap"><table><thead><tr><th>Workflow tier</th><th class="num">Essential</th><th class="num">Standard</th><th class="num">Premier</th></tr></thead><tbody><tr><th scope="row">Simple workflow <span class="detail">Build $3,950</span></th><td class="num">$1,250</td><td class="num">$1,950</td><td class="num">$2,950</td></tr><tr><th scope="row">Moderate workflow <span class="detail">Build $7,450</span></th><td class="num">$1,340</td><td class="num">$1,950</td><td class="num">$2,950</td></tr><tr><th scope="row">Complex workflow <span class="detail">Build $11,500</span></th><td class="num">$2,070</td><td class="num">$2,880</td><td class="num">$4,030</td></tr></tbody></table></div>
+    <p class="small muted">The greater of the tier's minimum and its percentage of the Build fee, rounded to $10. Care is not volume-discounted. All figures AUD, ex GST, Year 1 rates.</p>
+  </div>
+
+  <div class="sub-sec" id="s5-1">
+    <h3><span class="clause">5.1</span>Coverage window</h3>
+    <div class="prose">
+      <p>Standard coverage is 8:30am to 5:30pm AET, Monday to Friday, excluding national public holidays and the Acorn end-of-year shutdown. Service level clocks run only inside this window, and a request received outside it is treated as received at the start of the next covered hour. Section 8.3 shows how that works in practice.</p>
+      <p>Premier can add 7:00am to 7:00pm coverage for 20% of the Care fee. Extended coverage widens the window in which the clocks run and in which a Solutions Architect will pick up a Critical issue. It does not change the response, workaround or resolution targets themselves, and it does not cover weekends or public holidays.</p>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s5-2">
+    <h3><span class="clause">5.2</span>The change allowance</h3>
+    <div class="prose">
+      <p>Each tier includes a number of Solutions Architect hours a year, per workflow, for small changes that keep the workflow matched to your organisation: reworded notifications, a new option on a form question, an adjusted reminder interval. The allowance is what makes Care more than break-fix.</p>
+      <ul>
+        <li><b>What draws on it.</b> Changes you ask for that alter what the workflow says or how a setting is tuned, without adding structure. Section 6 marks each inclusion as drawing on the allowance or not.</li>
+        <li><b>What does not.</b> Break-fix, release compatibility work, drift correction, reassignment of constants and roles, incident coordination, and anything done under hypercare or warranty. These are the service, not the allowance.</li>
+        <li><b>How it is counted.</b> In quarter-hour increments of Solutions Architect time, from the moment we start the change to the moment it is confirmed in production, including the testing.</li>
+        <li><b>When it runs out.</b> Further changes in that year are quoted from the rate card at $225 an hour, or held for the next allowance year if they can wait. We tell you when you are at three-quarters of the allowance, and again when it is exhausted.</li>
+        <li><b>Validity.</b> Valid 12 months. Unused allowance does not carry over. The allowance is per workflow and cannot be pooled across workflows or transferred between them.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s5-3">
+    <h3><span class="clause">5.3</span>Reviews and health checks</h3>
+    <div class="prose">
+      <p>Every tier includes a regular look at the workflow's health, at a cadence that rises with the tier.</p>
+      <ul>
+        <li><b>Annual health report</b> (Essential). A written report at each anniversary: request volumes and completion times, requests that stalled and where, constants and roles that point to people who have left or moved, releases applied in the year and what each needed, allowance used, and recommendations.</li>
+        <li><b>Quarterly health check</b> (Standard). The same report every quarter, with a thirty-minute call to walk through it and agree any allowance work for the coming quarter.</li>
+        <li><b>Monthly review with a named Solutions Architect</b> (Premier). A named Solutions Architect who knows your workflows, a monthly review call, and a standing view of the quarter's changes and the release calendar ahead. Your named architect is the first escalation point for anything Critical or High.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="s6">
+  <h2><span class="clause">6</span>What Care includes</h2>
+  <div class="prose">
+    <p>Care covers six kinds of work. Each entry below gives the published position, what it means in practice, and whether the work draws on your allowance. Where a service level applies, the severity it is usually assessed at is shown so you know what to expect.</p>
+  </div>
+  <dl class="dl">
+    <div class="item"><dt>Break-fix on any defect in an Acorn-built workflow</dt>
+      <dd><div class="body"><p class="pub">Break-fix on any defect in an Acorn-built workflow.</p>
+        <p>If a workflow we built stops doing what its signed design says, we fix it. That includes a transition that no longer fires, a form that will not submit, an escalation that fails to trigger after its wait, a routing rule that sends a request to the wrong person because the rule is wrong, and a notification that goes out with the wrong content or to the wrong recipient. Break-fix continues after warranty for as long as Care runs.</p>
+        <p>We diagnose in production data where we can and reproduce in staging where we cannot. Where the cause is a platform defect rather than the workflow, we hand it to Acorn Support under your license and stay on the incident until it is resolved, see section 7.</p>
+      </div>
+      <div class="facts"><span><b>Allowance</b><span class="chip green">Not drawn</span></span><span><b>Service level</b><span class="chip">Critical, High or Medium by impact</span></span><span><b>Raised by</b><span class="chip">You, or us during a health check</span></span></div></dd></div>
+
+    <div class="item"><dt>Compatibility check against every platform release, and remediation of anything a release breaks</dt>
+      <dd><div class="body"><p class="pub">Compatibility check against every platform release, and remediation of anything a release breaks.</p>
+        <p>Momentum releases on the Acorn release calendar. Before each release reaches your tenant we run every Acorn-built workflow against it in staging, end to end on its main path and on each approval branch. If a release changes behaviour the workflow depends on, we adjust the workflow so that it works the same way after the release as before, and we tell you what changed and why.</p>
+        <p>You do not need to raise a request for this. It happens on the release schedule, and the outcome is recorded in your next health report or review.</p>
+      </div>
+      <div class="facts"><span><b>Allowance</b><span class="chip green">Not drawn</span></span><span><b>Service level</b><span class="chip">Proactive, before release</span></span><span><b>Raised by</b><span class="chip">Us, on the release calendar</span></span></div></dd></div>
+
+    <div class="item"><dt>Correction of configuration drift</dt>
+      <dd><div class="body"><p class="pub">Correction of configuration drift.</p>
+        <p>Drift is the gap that opens between the signed design and the live configuration when nobody meant to change anything: a notification template edited to fix a typo that also lost a merge field, a role scope that no longer matches after a team restructure, a constant that was cleared during housekeeping. We check the live configuration against the design at each health check and correct drift we find, and we correct drift you report at any time.</p>
+        <p>Drift is different from a deliberate change made by your administrators in the Builder. That is section 7.</p>
+      </div>
+      <div class="facts"><span><b>Allowance</b><span class="chip green">Not drawn</span></span><span><b>Service level</b><span class="chip">Medium, or High if it affects routing</span></span><span><b>Raised by</b><span class="chip">You, or us during a health check</span></span></div></dd></div>
+
+    <div class="item"><dt>Reassignment of constants and roles when people move or leave</dt>
+      <dd><div class="body"><p class="pub">Reassignment of constants and roles when people move or leave. In practice the most common request.</p>
+        <p>The most common request under Care, and the one that most often blocks a live request. A workflow routes to people through constants (a named approver, a finance inbox, an HR partner) and roles. When one of those people leaves, changes role or goes on extended leave, the workflow needs to know. Tell us who has replaced whom and we update the constants and roles, check for requests currently waiting on the old assignee, and reassign those so they keep moving.</p>
+        <p>Where you can tell us in advance, we schedule the change for the handover date. Where we learn of it because a request has stalled, we treat it as a High or Critical issue depending on what is waiting.</p>
+      </div>
+      <div class="facts"><span><b>Allowance</b><span class="chip green">Not drawn</span></span><span><b>Service level</b><span class="chip">Low if planned, High or Critical if a request is stuck</span></span><span><b>Raised by</b><span class="chip">You</span></span></div></dd></div>
+
+    <div class="item"><dt>Notification and form wording changes, within allowance</dt>
+      <dd><div class="body"><p class="pub">Notification and form wording changes, within allowance.</p>
+        <p>The words in a workflow age faster than its structure. A policy is renamed, a form question needs a clearer label or one more option in its list, a reminder should go out after three days instead of five, a notification should copy a second inbox. Changes like these that alter what the workflow says or how a setting is tuned, without adding a node, a path, a form or an approval tier, are made from your Care allowance.</p>
+        <p>We confirm each change in staging, apply it in production, and note the allowance used. A change that turns out to need new structure, for example a new question that must route differently by its answer, is a change request under section 7 rather than an allowance item, and we will say so before starting.</p>
+      </div>
+      <div class="facts"><span><b>Allowance</b><span class="chip yellow">Drawn</span></span><span><b>Service level</b><span class="chip">Low / request</span></span><span><b>Raised by</b><span class="chip">You</span></span></div></dd></div>
+
+    <div class="item"><dt>Incident triage and coordination with Support and Engineering</dt>
+      <dd><div class="body"><p class="pub">Incident triage and coordination with Support and Engineering.</p>
+        <p>When something goes wrong you should not have to work out whether it is the workflow, the platform, your data or your users before you can ask for help. Raise it with us. We triage it, assign a severity, and either fix it under Care or route it to Acorn Support or Engineering with the diagnosis already done. We remain your single point of contact for the incident and keep you updated until it closes, whoever is doing the fixing.</p>
+      </div>
+      <div class="facts"><span><b>Allowance</b><span class="chip green">Not drawn</span></span><span><b>Service level</b><span class="chip">By assessed severity</span></span><span><b>Raised by</b><span class="chip">You</span></span></div></dd></div>
+  </dl>
+</section>
+
+<section id="s7">
+  <h2><span class="clause">7</span>What Care excludes</h2>
+  <div class="prose">
+    <p>Care keeps a workflow doing what it was designed to do. It does not grow it, and it does not cover work outside the signed design. Each exclusion below says why it sits outside Care and how it is handled instead, so that nothing is a surprise when it comes up.</p>
+  </div>
+  <dl class="dl out">
+    <div class="item"><dt>New nodes, branches, forms or approval tiers</dt>
+      <dd><div class="body"><p class="pub">New nodes, branches, forms or approval tiers.</p>
+        <p>Adding a step, a new path out of a step, a new form or another level of approval changes the structure the workflow was scored, priced and tested on. Each new element carries its own design, configuration, notification templates, role scoping and a test from every side, which is exactly the work Build is priced for.</p>
+        <p><b>Instead:</b> raised as a change request. Small additions are quoted from the rate card. Larger additions are re-scored against the scorecard and quoted as a build increment with its own mini Discovery, build, UAT and go-live, and are then covered by Care from the day they go live.</p>
+      </div>
+      <div class="facts"><span><b>Handled as</b><span class="chip red">Change request or build increment</span></span><span><b>Priced from</b><span class="chip">Rate card or tier table</span></span></div></dd></div>
+
+    <div class="item"><dt>New integration points</dt>
+      <dd><div class="body"><p class="pub">New integration points.</p>
+        <p>Connecting a workflow to a system outside the platform, whether that is a payroll or finance system, an identity source, an SFTP drop or a webhook, is integration work with its own design, security review, testing and failure modes. One Simple workflow.</p>
+        <p><b>Instead:</b> scoped and quoted as a separate line item on the order, and once live, its ongoing support is agreed alongside it.</p>
+      </div>
+      <div class="facts"><span><b>Handled as</b><span class="chip red">Separate line item</span></span><span><b>Priced from</b><span class="chip">Quoted on scope</span></span></div></dd></div>
+
+    <div class="item"><dt>Redesign that changes the complexity tier</dt>
+      <dd><div class="body"><p class="pub">Redesign that changes the complexity tier. Re-scoped as a build increment.</p>
+        <p>If a change to the process would move the workflow from one complexity tier to another, it is not a maintenance change: it is a different workflow with the same name. The scorecard exists so that both sides can see this objectively rather than argue about it.</p>
+        <p><b>Instead:</b> re-scoped as a build increment. We re-run the scorecard with you, quote the difference between tiers plus the build work, and re-baseline the design document. Care re-prices from the new tier at the next anniversary.</p>
+      </div>
+      <div class="facts"><span><b>Handled as</b><span class="chip red">Build increment</span></span><span><b>Priced from</b><span class="chip">Tier table</span></span></div></dd></div>
+
+    <div class="item"><dt>Changes made by your own administrators in the Builder</dt>
+      <dd><div class="body"><p class="pub">Changes made by the client&#x27;s own admins in the Builder. Re-baselining is billable and suspends service levels on that workflow until complete.</p>
+        <p>An Advanced Momentum license gives your administrators the Builder, and they are entitled to use it. But once a workflow we built has been changed by someone else, we can no longer say whether its behaviour matches the design, and so we can no longer stand behind it. Care fees increase at each anniversary by 7%.</p>
+        <p><b>Instead:</b> service levels on that workflow are suspended from the moment we identify a change we did not make, and we tell you the same day. A re-baseline, quoted from the rate card, reviews the live configuration against the design, updates the design document to what you now want, tests it, and restores service levels on completion. The fastest way to avoid this is to send us the change instead: most of what an administrator would change in the Builder is a Care allowance item.</p>
+      </div>
+      <div class="facts"><span><b>Handled as</b><span class="chip red">Re-baseline, service levels suspended</span></span><span><b>Priced from</b><span class="chip">Rate card</span></span></div></dd></div>
+
+    <div class="item"><dt>Platform defects</dt>
+      <dd><div class="body"><p class="pub">Platform defects, covered by Acorn Support under the license.</p>
+        <p>A defect in Momentum itself, in the Builder, in the platform's email delivery or in a feature the workflow uses as designed, is a product matter covered by Acorn Support under your license and fixed by Acorn Engineering on the release calendar. It is not a defect in the workflow and is not something Care can fix by reconfiguring.</p>
+        <p><b>Instead:</b> we identify it, raise it with Support with the diagnosis attached, apply a workflow-level workaround under Care where one exists, and keep the incident open on our side until the platform fix is released. The Care service level for the workaround applies; the platform fix follows Support's own service levels.</p>
+      </div>
+      <div class="facts"><span><b>Handled as</b><span class="chip red">Acorn Support under the license</span></span><span><b>Priced from</b><span class="chip">No charge</span></span></div></dd></div>
+
+    <div class="item"><dt>Training beyond the included administrator walkthrough</dt>
+      <dd><div class="body"><p class="pub">Training beyond the included administrator walkthrough.</p>
+        <p>Go-live includes one sixty-minute administrator walkthrough, and the handover pack is written to be handed to a new administrator later. End-user training, training for a second cohort of administrators, or refresher sessions after a restructure are a separate service.</p>
+        <p><b>Instead:</b> quoted from the rate card by the hour or the day, or as part of a wider training engagement.</p>
+      </div>
+      <div class="facts"><span><b>Handled as</b><span class="chip red">Separate service</span></span><span><b>Priced from</b><span class="chip">Rate card</span></span></div></dd></div>
+  </dl>
+  <div class="rule info"><div><b>The rate card.</b> Work outside Care is priced at $225 an hour, $1,675 a day or $16,400 a sprint for a Solutions Architect, with work outside the coverage window at 1.5x rate. Applies to change requests beyond the Care allowance, work outside a signed design, and engagements quoted on time rather than fixed price.</div></div>
+</section>
+
+<section id="s8">
+  <h2><span class="clause">8</span>Service levels</h2>
+  <div class="prose">
+    <p>Service levels describe how quickly we respond to, work around and resolve an issue with a workflow under Care, by the severity of that issue. They apply from go-live, run inside the coverage window in section 5.1, and are the same for every workflow tier. The Care tier sets the Critical response time and whether service credits apply.</p>
+  </div>
+
+  <div class="sub-sec" id="s8-1">
+    <h3><span class="clause">8.1</span>Severity definitions and targets</h3>
+    <div class="tbl-wrap"><table class="sla"><thead><tr><th>Severity</th><th>Definition</th><th>Response</th><th>Workaround</th><th>Resolution</th></tr></thead><tbody><tr class="sev-critical"><th scope="row"><span class="sev">Critical</span></th><td>Workflow cannot be submitted, approved or progressed at all, and is blocking a statutory, safety, payroll-linked or time-critical process.</td><td>1 to 4 business hrs by Care tier</td><td>1 business day</td><td>3 business days</td></tr><tr class="sev-high"><th scope="row"><span class="sev">High</span></th><td>Core function broken, workaround exists. Escalations not firing, wrong approver, notifications not sending.</td><td>4 business hrs</td><td>2 business days</td><td>5 business days</td></tr><tr class="sev-medium"><th scope="row"><span class="sev">Medium</span></th><td>Isolated defect or single-user impact. Cosmetic, non-blocking.</td><td>1 business day</td><td><span class="muted">n/a</span></td><td>10 business days</td></tr><tr class="sev-low"><th scope="row"><span class="sev">Low / request</span></th><td>Configuration change within Care allowance.</td><td>2 business days</td><td><span class="muted">n/a</span></td><td>Next sprint slot, or 15 business days</td></tr></tbody></table></div>
+    <div class="prose">
+      <p>Critical response is 4 business hrs on Essential, 2 business hrs on Standard and 1 business hr on Premier. During hypercare every workflow gets 1 business hr regardless of tier.</p>
+      <ul>
+        <li><b>Critical.</b> Nobody can submit, approve or progress requests through the workflow at all, and the process it serves has a statutory, safety, payroll or hard-deadline consequence. A leave request workflow down on the payroll cut-off day is Critical. The same workflow down on a quiet Tuesday with two weeks to cut-off is High.</li>
+        <li><b>High.</b> A core function is broken but the process can still complete, with effort. Escalations not firing, a request routed to the wrong approver, notifications not sending so people do not know they have something to do. Requests can still be moved on by hand, so it is not Critical, but every day it persists costs you time.</li>
+        <li><b>Medium.</b> One user, one request or one path is affected, or the problem is cosmetic. A form label that is misleading, a single request that stalled once, a notification with a typo in the subject line.</li>
+        <li><b>Low / request.</b> Not a defect. A configuration change within the Care allowance, raised through the normal channel. The resolution target is the next sprint slot, because allowance changes are batched into scheduled work, or fifteen business days at the outside.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s8-2">
+    <h3><span class="clause">8.2</span>What each clock measures</h3>
+    <div class="prose">
+      <ul>
+        <li><b>Response</b> is the time from your request reaching the agreed channel inside the coverage window to a Solutions Architect acknowledging it, confirming the severity, and telling you what happens next. It is a person, not an automatic receipt.</li>
+        <li><b>Workaround</b> is the time to a state where the process can complete again, even if not elegantly: requests reassigned by hand, a path temporarily bypassed, a notification sent manually. The workaround stops the harm while the fix is built.</li>
+        <li><b>Resolution</b> is the time to the underlying cause being fixed in production and confirmed, or, for a Low request, the change being made. Where a resolution needs a platform release, the resolution target applies to the workaround and the platform fix follows the release calendar.</li>
+      </ul>
+      <p>All three clocks start at the same moment and run concurrently. They are measured in business hours and business days inside the coverage window, so a target of one business day is 9 covered hours, not 24 elapsed hours.</p>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s8-3">
+    <h3><span class="clause">8.3</span>Business hours in practice</h3>
+    <div class="prose">
+      <p>The coverage window is 8:30am to 5:30pm AET, Monday to Friday, excluding national public holidays and the Acorn end-of-year shutdown. That is 9 business hours a day. A request raised at 3:00pm is due a response as follows.</p>
+    </div>
+    <div class="clocks">
+      <div class="clock"><span class="k">Critical on Essential, 4 business hrs</span><span class="v">10:00am the next business day</span><span class="muted">Two and a half hours remain in the day; the rest carries into the next morning.</span></div>
+      <div class="clock"><span class="k">Critical on Premier, 1 business hr</span><span class="v">4:00pm the same day</span><span class="muted">Inside the same coverage window.</span></div>
+      <div class="clock"><span class="k">High, 4 business hrs</span><span class="v">10:00am the next business day</span><span class="muted">The same arithmetic, on every tier.</span></div>
+    </div>
+    <div class="prose">
+      <p>A request raised at 7:00pm on a Friday without extended coverage is treated as received at 8:30am on Monday, and the clocks start then. A request raised on a national public holiday or during the Acorn end-of-year shutdown starts on the next covered day. With extended coverage on Premier, the window is 7:00am to 7:00pm and the same arithmetic applies to the wider day.</p>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s8-4">
+    <h3><span class="clause">8.4</span>When the clocks pause</h3>
+    <div class="prose">
+      <p>The clocks measure our time, not everybody's. They pause, and restart where they left off, when:</p>
+      <ul>
+        <li>We have asked you for information, access or a decision we need to proceed, until it arrives.</li>
+        <li>The issue is a platform defect and has been handed to Acorn Support, for the resolution clock only. The workaround clock keeps running.</li>
+        <li>The coverage window closes, until it reopens.</li>
+        <li>You have asked us to hold, for example to avoid a change during a live approval round.</li>
+      </ul>
+      <p>Service levels are suspended altogether on a workflow that has been changed in the Builder by someone other than Acorn, until a re-baseline is complete, as set out in section 7.</p>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s8-5">
+    <h3><span class="clause">8.5</span>Assigning severity and escalating</h3>
+    <div class="prose">
+      <p>You tell us how urgent something is when you raise it. The Solutions Architect confirms the severity at response against the definitions in 8.1, and tells you if it differs from what you asked for and why. Severity can be raised or lowered as the situation changes: a High issue that is still open on the morning of a statutory deadline becomes Critical.</p>
+      <p>If you believe an issue is being handled at the wrong severity, or a target has been missed, escalate to the named Solutions Architect on Premier or to the Momentum Services lead on any tier. The escalation is acknowledged within the response time for the severity you believe applies.</p>
+    </div>
+  </div>
+
+  <div class="sub-sec" id="s8-6">
+    <h3><span class="clause">8.6</span>Service credits</h3>
+    <div class="prose">
+      <p>Service credits apply on Standard and Premier, and not on Essential. Where we miss a resolution target on a Critical or High issue and the clock was running, a credit against the next Care invoice is applied on the schedule set out in your order. Credits are the remedy for a missed target; they are not payable where the clock was paused under 8.4, where service levels were suspended under section 7, or where the issue is a platform defect being resolved by Acorn Support.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s9">
+  <h2><span class="clause">9</span>Raising a request</h2>
+  <div class="prose">
+    <p>Everything under Care, whether an incident or a change, is raised through the agreed channel named in your order. One channel means one queue, one record and one set of clocks. A request mentioned in a review call or a hallway conversation is a candidate until it is in the channel.</p>
+    <p>A good request lets us start work without a round trip. Include:</p>
+    <ul>
+      <li>The workflow's name, and the request or instance number from the live table if one request is affected.</li>
+      <li>What you expected to happen and what happened instead, with a screenshot where it helps.</li>
+      <li>Who is affected and what is waiting on it, so we can confirm severity quickly.</li>
+      <li>For a change, the exact new wording or setting you want, and whether it can wait for the next scheduled slot.</li>
+      <li>Who to contact, and the best way to reach them if the issue is Critical.</li>
+    </ul>
+    <p>We acknowledge the request within the response time for its severity, and we keep you updated: at least daily on a Critical issue while it is open, at each milestone on a High issue, and at resolution on Medium issues and Low requests. Every request is closed with a note saying what was done, and change requests record the allowance used.</p>
+  </div>
+</section>
+
+<section id="s10">
+  <h2><span class="clause">10</span>What we need from you</h2>
+  <div class="prose">
+    <p>The service levels and the delivery schedule assume a few things on your side. None of them is onerous, and each one exists because its absence is the most common reason a build runs long or an incident stays open.</p>
+    <ul><li>A named business owner and a named decision maker. They can be the same person.</li><li>Test users and representative test data in staging before Discovery closes, covering every role and approval path.</li><li>Responses to our questions within three business days. Slower and the sprint clock stops.</li><li>Data dependencies verified together during Discovery, not during testing.</li><li>UAT completed inside the five-day window. A window that drifts pushes go-live to the next release slot.</li><li>Change requests raised through the agreed channel. Anything said in a demo is a candidate, not a commitment.</li></ul>
+  </div>
+  <div class="tbl-wrap">
+    <table class="roles">
+      <thead><tr><th>Role</th><th>Who</th><th>During delivery</th><th>Under Care</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Business owner</th><td>The person accountable for the process the workflow runs</td><td>Walks us through the current process in Discovery, confirms the design, leads UAT and signs off</td><td>Owns the workflow's fitness, receives the health report, approves allowance changes</td></tr>
+        <tr><th scope="row">Decision maker</th><td>The person who can commit budget and approve scope. Often the same person as the business owner</td><td>Signs the design document and approves the one tier adjustment if there is one</td><td>Approves change requests and build increments, signs the renewal</td></tr>
+        <tr><th scope="row">Administrators</th><td>The people who run the platform day to day</td><td>Set up test users and data in staging, attend the walkthrough</td><td>Raise requests, report leavers and movers, and do not change Acorn-built workflows in the Builder</td></tr>
+        <tr><th scope="row">Acorn Solutions Architect</th><td>Named on Premier; a rostered architect on Essential and Standard</td><td>Runs Discovery, builds, tests, demonstrates, deploys and hands over</td><td>Triages incidents, makes changes, runs release checks and health reviews</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s11">
+  <h2><span class="clause">11</span>Commercial terms</h2>
+  <div class="prose">
+    <p>The positions that govern the service, as published in the commercial model. Your order restates the ones that apply to you.</p>
+  </div>
+  <dl class="terms"><div class="term"><dt>Eligibility</dt><dd>Advanced Momentum license required. A custom workflow needs the Advanced Momentum Tenant feature, so Base clients move to Advanced Momentum first.</dd></div><div class="term"><dt>Pre-scope</dt><dd>No charge, one call, before quote. Not a design engagement and produces no deliverable beyond a tier and a price.</dd></div><div class="term"><dt>Discovery invoicing</dt><dd>In full on order, as part of the committed line item.</dd></div><div class="term"><dt>Build invoicing</dt><dd>50% on commencement of the first build sprint, 50% at go-live.</dd></div><div class="term"><dt>Care invoicing</dt><dd>Annually in advance, first year at go-live, co-terminus with the Momentum license.</dd></div><div class="term"><dt>Tier adjustment</dt><dd>One adjustment permitted, at the end of Discovery, in writing, priced as the difference between tiers only.</dd></div><div class="term"><dt>Care as a condition</dt><dd>Care at Essential or above is a condition of the service. Acorn does not hand over a workflow it built and decline responsibility for it.</dd></div><div class="term"><dt>Annual indexation</dt><dd>Care fees increase at each anniversary by 7%.</dd></div><div class="term"><dt>Sprint deferral</dt><dd>Over 10 business days&#x27; notice, no charge. Six to ten, 50% of the sprint fee. Five or fewer, 100%.</dd></div><div class="term"><dt>Integration</dt><dd>Not included. Scoped and quoted as a separate line item.</dd></div><div class="term"><dt>Minimum engagement</dt><dd>One Simple workflow.</dd></div><div class="term"><dt>Currency and tax</dt><dd>AUD, ex GST, Year 1 rates.</dd></div></dl>
+  <div class="rule"><div><b>Repeat workflows.</b> Second workflow within 12 months: 10% off Discovery and Build. Third and subsequent: 15%. Care is not volume-discounted.</div></div>
+</section>
+
+<section id="s12">
+  <h2><span class="clause">12</span>Definitions</h2>
+  <dl class="terms">
+    <div class="term"><dt>Workflow</dt><dd>One Momentum process built in your tenant from a signed design: its nodes, transitions, forms, constants, routing rules and notifications together.</dd></div>
+    <div class="term"><dt>Node or step</dt><dd>One box on the Builder canvas: a form somebody fills in, an automatic email, a wait, a hand-off or an end.</dd></div>
+    <div class="term"><dt>Transition or path</dt><dd>One way a request can leave a step, including approve, reject, send-back and loop-back paths.</dd></div>
+    <div class="term"><dt>Constant</dt><dd>A named value the workflow routes or refers to, most often a person or inbox, set once and used by many steps.</dd></div>
+    <div class="term"><dt>Role scope</dt><dd>Who can see or act on a form or a step. Each scope is configured and tested from both sides.</dd></div>
+    <div class="term"><dt>Signed design</dt><dd>The Workflow Design Document as signed at the end of Discovery, plus any later re-baseline or build increment signed since.</dd></div>
+    <div class="term"><dt>Complexity tier</dt><dd>Simple, Moderate or Complex, set by the eight-factor Complexity Scorecard and confirmed in Discovery.</dd></div>
+    <div class="term"><dt>Care tier</dt><dd>Essential, Standard or Premier. One Care tier applies to every workflow on an order.</dd></div>
+    <div class="term"><dt>Allowance</dt><dd>The Solutions Architect hours a year, per workflow, included in a Care tier for changes within the signed design.</dd></div>
+    <div class="term"><dt>Business hours and days</dt><dd>Hours and days inside the coverage window in section 5.1. 9 business hours make one business day.</dd></div>
+    <div class="term"><dt>Release calendar</dt><dd>Acorn's published schedule of platform releases, against which go-lives and sprint slots are booked.</dd></div>
+    <div class="term"><dt>Re-baseline</dt><dd>A rate-card review that brings the design document and the live configuration back into agreement after a change Acorn did not make, restoring service levels.</dd></div>
+    <div class="term"><dt>Build increment</dt><dd>A scoped, priced addition to a live workflow: its own design, build, UAT and go-live, then covered by Care.</dd></div>
+    <div class="term"><dt>Drift</dt><dd>An unintended difference between the signed design and the live configuration.</dd></div>
+  </dl>
+</section>
+
+</article>
+</div>
